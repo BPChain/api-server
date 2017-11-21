@@ -1,0 +1,29 @@
+{
+  "name": "api-server",
+  "version": "1.0.0",
+  "description": "api-server",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --exec babel-node -- src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BPChain/api-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BPChain/api-server/issues"
+  },
+  "homepage": "https://github.com/BPChain/api-server#readme",
+  "devDependencies": {
+    "babel-eslint": "^8.0.2",
+    "eslint": "^4.11.0",
+    "eslint-plugin-react": "^7.5.1"
+  },
+  "dependencies": {
+    "axios": "^0.17.1",
+    "express": "^4.16.2"
+  }
+}
