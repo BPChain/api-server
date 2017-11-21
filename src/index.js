@@ -1,4 +1,4 @@
-const axios = require('axios')
+const cors = require('cors')
 const express = require('express')
 const path = require('path')
 
@@ -6,6 +6,7 @@ const ethereumPublic = require('../components/public/ethereum/aggregator.js')
 const app = express()
 const log = console 
 
+app.use(cors())
 app.get('/api/ethereum/publicStat', async (request, response) => {
   
   response.send(await ethereumPublic())  
