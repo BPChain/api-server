@@ -4,7 +4,7 @@
   "description": "api-server",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node -- src/index.js",
+    "start": "nodemon --exec node -- src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "nodemon": "^1.12.1"
   }
 }
