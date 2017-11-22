@@ -2,12 +2,22 @@ const cors = require('cors')
 const express = require('express')
 const NodeCache = require('node-cache')
 const path = require('path')
-
+const ws = require('ws')
 const ethereumPublic = require('../components/public/ethereum/aggregator.js')
 
 const app = express()
 const log = console 
 const cache = new NodeCache({stdTTL: 60, errorOnMissing: true})
+
+const WebSocketServer = ws.Server
+const wsServer = new WebSocketServer({port: 3030})
+wsServer.on('connection', (socket) => {
+  socket.on('message', (message) => {
+    log.info('received: %s', message)
+    socket.send(200)
+  })
+})
+
 
 app.use(cors())
 app.get('/api/ethereum/publicStat', async (request, response) => {
