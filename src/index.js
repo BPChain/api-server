@@ -17,8 +17,14 @@ const wsServer = new WebSocketServer({port: 3030})
 wsServer.on('connection', (socket) => {
   socket.on('message', (message) => {
     log.info('received: %s', message)
-    privateData = JSON.parse(message)
-    socket.send(200)
+    try {
+      privateData = JSON.parse(message)
+      socket.send(200)
+    } 
+    catch (error) {
+      log.info(error)
+      socket.send(415)
+    } 
   })
 })
 
