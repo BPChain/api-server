@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon --exec node -- src/index.js",
     "lint": "eslint .",
-    "test": "npm lint"
+    "test": "npm run lint"
   },
   "repository": {
     "type": "git",
