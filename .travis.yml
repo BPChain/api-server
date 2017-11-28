@@ -5,3 +5,5 @@ cache:
   directories:
     - node_modules
 sudo: enabled
+notifications:
+  email: false
