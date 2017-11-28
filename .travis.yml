@@ -7,3 +7,4 @@ cache:
 sudo: enabled
 notifications:
   email: false
+  
