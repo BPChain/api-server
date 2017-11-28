@@ -28,9 +28,6 @@ module.exports = async (options) => {
     isBufferA = !isBufferA
   }, 15000) 
 
-  // const currentBuffer = BufferA
-
-
   mongoConnector.connect('mongodb://localhost/privateChains')
 
   const WebSocketServer = ws.Server
