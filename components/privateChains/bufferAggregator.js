@@ -2,11 +2,6 @@ const mongoose = require('mongoose')
 
 const log = console
 
-const mongoConnector = require('../../src/mongoConnector')
-
-
-mongoConnector.connect('mongodb://localhost/privateChains')
-
 module.exports = async (options) => {
   const {chainName, filledBuffer, Schema, StorageSchema} = options
 
@@ -145,7 +140,6 @@ module.exports = async (options) => {
     avgGasPrice: aggregatedValues.avgGasPrice,
     avgDifficulty: aggregatedValues.avgDifficulty,
   })
-
   dataLine.save((error, savedData) => {
     if (error) {
       log.info(error)

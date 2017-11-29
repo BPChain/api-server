@@ -7,7 +7,7 @@ const bufferAggregator = require('./bufferAggregator')
 const log = console
 
 
-module.exports = async (options) => {
+module.exports = async (options = {}) => {
   const {chainName, schema} = options
 
   const StorageSchema = require(`../../schemas/${chainName}Storage`)()
@@ -58,7 +58,7 @@ module.exports = async (options) => {
             throw error
           }
           else {
-            log.info('Successfully stored input with id: ', savedModel.id)
+            log.info('Successfully stored input with id: ', savedModel.hostId)
             socket.send(200)
           }
         })
