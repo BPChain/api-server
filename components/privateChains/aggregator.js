@@ -26,9 +26,7 @@ module.exports = async (options = {}) => {
 
   const line = data[data.length - 1]
   dataLine = Object.assign(dataLine, line)
-  log.info('data 0', dataLine)
 
-  log.info('data ', dataLine)
   return dataLine
 }
 

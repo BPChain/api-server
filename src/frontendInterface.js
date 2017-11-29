@@ -25,7 +25,6 @@ module.exports = () => {
         log.info(`Cache access error: ${error}`)
         const data = await ethereumPublic({chainName: 'ethereum'})
         response.send(data)
-        log.info(data)
         cache.set('ethereumPublicStat', data, (cachingError, success) => {
           if (!cachingError && success) {
             log.info('New public ethereum data cached.')
@@ -44,7 +43,6 @@ module.exports = () => {
       else {
         log.info(`Cache access error: ${error}`)
         const data = await ethereumPrivate({chainName: 'ethereum'})
-        log.info(data)
         response.send(data)
         cache.set('ethereumPrivateStat', data, (cachingError, success) => {
           if (!cachingError && success) {
