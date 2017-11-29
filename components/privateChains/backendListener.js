@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const ws = require('ws')
 
 const mongoConnector = require('../../src/mongoConnector')
+const aggregator = require('./aggregator')
 
 const log = console
 
@@ -9,6 +10,7 @@ const log = console
 module.exports = async (options) => {
   const {chainName, schema} = options
 
+  const StorageSchema = require(`../../schemas/${chainName}Storage`)()
   const Schema = require(`../../schemas/${schema}`)()
   const BufferA = mongoose.model(`${chainName}_buffer_a`, Schema)
   const BufferB = mongoose.model(`${chainName}_buffer_b`, Schema)
@@ -20,13 +22,25 @@ module.exports = async (options) => {
     if (isBufferA) {
       CurrentBuffer = BufferB
       log.info('Change Buffer to Buffer B')
+      aggregator({
+        chainName,
+        filledBuffer: '_buffer_a',
+        Schema,
+        StorageSchema,
+      })
     }
     else {
       CurrentBuffer = BufferA
-      log.info('Change Buffer to Buffer A')      
+      log.info('Change Buffer to Buffer A')
+      aggregator({
+        chainName,
+        filledBuffer: '_buffer_b',
+        Schema,
+        StorageSchema,
+      })
     }
     isBufferA = !isBufferA
-  }, 15000) 
+  }, 15000)
 
   mongoConnector.connect('mongodb://localhost/privateChains')
 
@@ -48,11 +62,11 @@ module.exports = async (options) => {
             socket.send(200)
           }
         })
-      } 
+      }
       catch (error) {
         log.info(error)
         socket.send(415)
-      } 
+      }
     })
   })
 }
