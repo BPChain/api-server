@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const ws = require('ws')
 
 const mongoConnector = require('../../src/mongoConnector')
-const aggregator = require('./aggregator')
+const bufferAggregator = require('./bufferAggregator')
 
 const log = console
 
@@ -22,7 +22,7 @@ module.exports = async (options) => {
     if (isBufferA) {
       CurrentBuffer = BufferB
       log.info('Change Buffer to Buffer B')
-      aggregator({
+      bufferAggregator({
         chainName,
         filledBuffer: '_buffer_a',
         Schema,
@@ -31,8 +31,8 @@ module.exports = async (options) => {
     }
     else {
       CurrentBuffer = BufferA
-      log.info('Change Buffer to Buffer A')
-      aggregator({
+      log.info('Change buffer to buffer b')
+      bufferAggregator({
         chainName,
         filledBuffer: '_buffer_b',
         Schema,
