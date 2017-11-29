@@ -6,11 +6,11 @@ A simple API-Server that provides a RESTful interface for the frontend, a Websoc
 
 To start the server open two seperate terminals. Then you run 
 ```shell
-initDatabase.sh
+./initDatabase.sh
 ``` 
 in the first terminal and 
 
 ```shell
-initServer.sh
+./initServer.sh
 ```
 in the second terminal. Both actions require root privileges and docker.io.
