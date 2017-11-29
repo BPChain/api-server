@@ -2,7 +2,7 @@ const path = require('path')
 
 module.exports = async (options = {}) => {
 
-  const {chainName = 'ethereum'} = options
+  const {chainName} = options
 
   const basePath = path.join(__dirname, chainName)
 
@@ -33,5 +33,5 @@ module.exports = async (options = {}) => {
     hashRate: await hashRate(),
     timeToNextEpoch: await timeToNextEpoch(),
   }
-  
+
 }

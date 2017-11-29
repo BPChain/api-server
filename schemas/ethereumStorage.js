@@ -6,6 +6,7 @@ module.exports = () => {
     chain: {type: String},
     timeStamp: {type: Number},
     numberOfHosts: {type: Number},
+    numberOfMiners: {type: Number},
     avgHashrate: {type: Number},
     avgBlocktime: {type: Number},
     avgGasPrice: {type: Number},
