@@ -10,8 +10,8 @@ module.exports = async (options) => {
   const {chainName, schema} = options
 
   const Schema = require(`../../schemas/${schema}`)()
-  const BufferA = mongoose.model(`${chainName}-buffer-a`, Schema)
-  const BufferB = mongoose.model(`${chainName}-buffer-b`, Schema)
+  const BufferA = mongoose.model(`${chainName}_buffer_a`, Schema)
+  const BufferB = mongoose.model(`${chainName}_buffer_b`, Schema)
 
   let CurrentBuffer = BufferA
 
@@ -32,6 +32,7 @@ module.exports = async (options) => {
 
   const WebSocketServer = ws.Server
   const wsServer = new WebSocketServer({port: 3030})
+  log.info('Backend socket running on port 3030')
   wsServer.on('connection', (socket) => {
     socket.on('message', (message) => {
       log.info('received: %s', message)
@@ -43,7 +44,7 @@ module.exports = async (options) => {
             throw error
           }
           else {
-            log.info('Successfully saved:', savedModel)
+            log.info('Successfully stored input with id: ', savedModel.id)
             socket.send(200)
           }
         })
