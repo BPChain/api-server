@@ -59,13 +59,13 @@ module.exports = async (options = {}) => {
           }
           else {
             log.info('Successfully stored input with id: ', savedModel.hostId)
-            socket.send(200)
+            // socket.send(200)
           }
         })
       }
       catch (error) {
         log.info(error)
-        socket.send(415)
+        // socket.send(415)
       }
     })
   })
