@@ -6,7 +6,7 @@ const log = console
 async function getHashrate () {
   try {
     const hashrate =
-    (await axios.get(config.ethereum.hashRate))
+    (await axios.get(config.ethereum.publicChain.hashRate))
       .data.data
     return hashrate
   }

@@ -6,7 +6,7 @@ const log = console
 async function getActiveMiners () {
   try {
     const activeMiners =
-    (await axios.get(config.ethereum.activeMiners))
+    (await axios.get(config.ethereum.publicChain.activeMiners))
       .data.data
     return activeMiners
   }

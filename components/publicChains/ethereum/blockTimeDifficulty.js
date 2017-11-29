@@ -6,7 +6,7 @@ const log = console
 async function getBlockTimeDifficulty () {
   try {
     const blockTimeDifficulty =
-    (await axios.get(config.ethereum.blockTimeDifficulty))
+    (await axios.get(config.ethereum.publicChain.blockTimeDifficulty))
       .data.data
     return blockTimeDifficulty
   }
