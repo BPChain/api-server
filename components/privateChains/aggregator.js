@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const log = console
 
 
 module.exports = async (options = {}) => {
