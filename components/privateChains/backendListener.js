@@ -44,7 +44,7 @@ module.exports = async (options) => {
             throw error
           }
           else {
-            log.info('Successfully stored input with id: ' + savedModel.id)
+            log.info('Successfully stored input with id: ', savedModel.id)
             socket.send(200)
           }
         })
