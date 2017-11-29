@@ -6,7 +6,7 @@ const log = console
 async function getTimeToNextEpoch () {
   try {
     const timeToNextEpoch =
-    (await axios.get(config.ethereum.timeToNextEpoch))
+    (await axios.get(config.ethereum.publicChain.timeToNextEpoch))
       .data.data
     return timeToNextEpoch
   }

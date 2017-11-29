@@ -6,7 +6,7 @@ const log = console
 async function getAverageBlockTime () {
   try {
     const blocktime =
-    (await axios.get(config.ethereum.averageBlockTime))
+    (await axios.get(config.ethereum.publicChain.averageBlockTime))
       .data.data
     return blocktime
   }

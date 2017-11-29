@@ -1,17 +1,25 @@
 const config = {
   ethereum: {
-    activeMiners: 
+    privateChain: {
+      name:
+        'ethereum',
+      schema:
+        'ethereumschema',
+    },
+    publicChain: {
+      activeMiners: 
       'https://api.nanopool.org/v1/eth/pool/activeminers',
-    activeWorkers: 
+      activeWorkers: 
       'https://api.nanopool.org/v1/eth/pool/activeworkers',
-    averageBlockTime:
+      averageBlockTime:
       'https://api.nanopool.org/v1/eth/network/avgblocktime',
-    blockTimeDifficulty: 
+      blockTimeDifficulty: 
       'https://api.nanopool.org/v1/eth/block_stats/0/5',
-    hashRate: 
+      hashRate: 
       'https://api.nanopool.org/v1/eth/pool/hashrate',
-    timeToNextEpoch:
+      timeToNextEpoch:
       'https://api.nanopool.org/v1/eth/network/timetonextepoch',
+    },
   },
 }
 
