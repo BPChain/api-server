@@ -4,4 +4,13 @@ A simple API-Server that provides a RESTful interface for the frontend, a Websoc
 
 ## Start the server
 
-To start the server open two seperate terminals. Then you run initDatabase.sh in the first terminal and initServer.sh in the second terminal. Both actions require root privileges and docker.io.
+To start the server open two seperate terminals. Then you run 
+```shell
+initDatabase.sh
+``` 
+in the first terminal and 
+
+```shell
+initServer.sh
+```
+in the second terminal. Both actions require root privileges and docker.io.
