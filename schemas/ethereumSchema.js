@@ -6,8 +6,8 @@ module.exports = () => {
     hostId: {type: String},
     isMining: {type: Number},
     hashrate: {type: Number},
-    avgBlocktime: {type: Number, default: 20},
+    avgBlocktime: {type: Number},
     gasPrice: {type: Number},
-    avgDifficulty: {type: Number, default: 20},
+    avgDifficulty: {type: Number},
   })
 }
