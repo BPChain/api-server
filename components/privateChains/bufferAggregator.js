@@ -1,13 +1,17 @@
-const mongoose = require('mongoose')
-
 const log = console
 
 module.exports = async (options) => {
-  const {chainName, filledBuffer, Schema, StorageSchema} = options
+  const {
+    chainName,
+    filledBuffer,
+    Schema,
+    StorageSchema,
+    connection,
+  } = options
 
   log.info('Aggregate files from', filledBuffer)
-  const Buffer = mongoose.model(`${chainName}${filledBuffer}`, Schema)
-  const Storage = mongoose.model(`${chainName}_storage`, StorageSchema)
+  const Buffer = connection.model(`${chainName}${filledBuffer}`, Schema)
+  const Storage = connection.model(`${chainName}_storage`, StorageSchema)
 
   const aggregatedValues = {
     numberOfHosts: 0,
@@ -45,7 +49,7 @@ module.exports = async (options) => {
   }
 
   async function aggregateNumberOfHosts () {
-    
+
     const result = await Buffer
       .aggregate(
         [{
@@ -66,7 +70,7 @@ module.exports = async (options) => {
   }
 
   async function aggregateNumberOfMiners () {
-    
+
     const result = await Buffer
       .aggregate(
         [{
@@ -114,7 +118,7 @@ module.exports = async (options) => {
     .catch(log.error)
 
   await  Buffer.collection.remove({})
-  
+
 
   const dataLine = new Storage({
     chain: chainName,

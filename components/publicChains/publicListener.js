@@ -1,25 +1,41 @@
-const path = require('path')
-const fse = require('fs-extra')
+const chainValueCollector = require('./chainValueCollector')
 
 const log = console
 
 module.exports = async (options = {}) => {
-  const {chainName} = options
 
-  const basePath = path.join(__dirname, chainName)
-  const files = await fse.readdir(basePath)
+  const {
+    chainName,
+    schema,
+    connection,
+  } = options
 
-  const object = (await Promise.all(files
-    .map(async (file) => {
-      const filePath = path.join(basePath, file)
-      const result = await require(filePath)()
-      return {file: file.replace(/\.js$/, ''), result}
-    })))
-    .reduce((result, item) => {
-      result[item.file] = item.result
-      return result
-    }, {})
 
-  const result = Object.assign(object, {timestamp: Date.now(), chainName})
-  log.info(object)
+  const Storage = connection.model(`${chainName}_storage`, schema)
+
+  setInterval(async () => {
+    const dataLine = new Storage(
+      await chainValueCollector({chainName: 'ethereum'})
+    )
+    dataLine.save((error, savedData) => {
+      if (error) {
+        log.info(error)
+        throw error
+      }
+      else {
+        log.info('Successfully stored public data: ', savedData)
+        return 0
+      }
+    })
+
+
+
+    const result = await connection.db.collection('ethereum_storages')
+
+    const data = await result
+      .find({})
+      .toArray()
+
+    log.info('My saved data is:', data)
+  }, 10000)
 }

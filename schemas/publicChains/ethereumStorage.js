@@ -9,7 +9,6 @@ module.exports = () => {
     numberOfMiners: {type: Number},
     avgHashrate: {type: Number},
     avgBlocktime: {type: Number},
-    blockTimeDifficulty: {type: Number},
     timeToNextEpoch: {type: Number},
   })
 }

@@ -1,8 +1,5 @@
-const mongoose = require('mongoose')
-
-
 module.exports = async (options = {}) => {
-  const {chainName} = options
+  const {chainName, connection} = options
 
   let dataLine = {
     id: 0,
@@ -16,7 +13,7 @@ module.exports = async (options = {}) => {
     avgDifficulty: 0,
   }
 
-  const result = await mongoose.connection.db
+  const result = await connection.db
     .collection(`${chainName}_storages`)
 
   const data = await result
@@ -28,4 +25,3 @@ module.exports = async (options = {}) => {
 
   return dataLine
 }
-

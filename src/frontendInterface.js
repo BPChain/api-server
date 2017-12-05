@@ -6,7 +6,13 @@ const config = require('./config')
 
 const activeChainName = config.ethereum.privateChain.name
 
-module.exports = () => {
+module.exports = (options = {}) => {
+
+  const {
+    privateConnection,
+    publicConnection,
+  } = options
+
   const ethereumPublic = require('../components/publicChains/aggregator.js')
   const ethereumPrivate = require('../components/privateChains/aggregator.js')
 
@@ -25,7 +31,10 @@ module.exports = () => {
       }
       else {
         log.info(`Cache access error: ${error}`)
-        const data = await ethereumPublic({chainName: activeChainName})
+        const data = await ethereumPublic({
+          chainName: activeChainName,
+          connection: publicConnection,
+        })
         response.send(data)
         cache.set('ethereumPublicStat', data, (cachingError, success) => {
           if (!cachingError && success) {
@@ -44,7 +53,10 @@ module.exports = () => {
       }
       else {
         log.info(`Cache access error: ${error}`)
-        const data = await ethereumPrivate({chainName: activeChainName})
+        const data = await ethereumPrivate({
+          chainName: activeChainName,
+          connection: privateConnection,
+        })
         response.send(data)
         cache.set('ethereumPrivateStat', data, (cachingError, success) => {
           if (!cachingError && success) {
