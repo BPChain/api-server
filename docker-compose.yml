@@ -5,6 +5,8 @@ services:
     container_name: api-server
     networks:
       - backendnet
+    ports:
+      - "2020:2020"
 networks:
   backendnet:
     external:
