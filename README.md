@@ -2,7 +2,7 @@
 
 A simple API-Server that provides a RESTful interface for the frontend, a Websocket for the simulated Blockchain and a Database for persisting the aggregated data.
 
-## Start the server
+## Start the Server
 
 To start the server open two seperate terminals. Then you run 
 ```shell
@@ -14,3 +14,24 @@ in the first terminal and
 ./initServer.sh
 ```
 in the second terminal. Both actions require root privileges and docker.io.
+
+
+## Run Docker Architecture
+
+Create a Docker network:
+
+```shell
+./initDockerNet.sh
+```
+
+Run database in first terminal:
+
+```shell
+sudo ./initDatabase.sh
+```
+
+Run api-server in the second terminal:
+
+```shell
+sudo ./initServer.sh
+```
