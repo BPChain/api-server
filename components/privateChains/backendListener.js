@@ -10,8 +10,10 @@ const log = console
 module.exports = async (options = {}) => {
   const {chainName, schema} = options
 
-  const StorageSchema = require(`../../schemas/${chainName}Storage`)()
-  const Schema = require(`../../schemas/${schema}`)()
+  const StorageSchema = require(
+    `../../schemas/privateChains/${chainName}Storage`
+  )()
+  const Schema = require(`../../schemas/privateChains/${schema}`)()
   const BufferA = mongoose.model(`${chainName}_buffer_a`, Schema)
   const BufferB = mongoose.model(`${chainName}_buffer_b`, Schema)
 
