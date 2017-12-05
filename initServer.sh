@@ -1,3 +1,1 @@
-npm install -g nodemon
-npm install
-npm start
+docker-compose up --build
