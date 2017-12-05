@@ -3,12 +3,12 @@ const axios = require('axios')
 const config = require('../../../src/config.js')
 const log = console
 
-async function getActiveWorkers () {
+async function getAvgHashrate () {
   try {
-    const activeWorkers =
-    (await axios.get(config.ethereum.publicChain.activeWorkers))
+    const avgHashrate =
+    (await axios.get(config.ethereum.publicChain.hashRate))
       .data.data
-    return activeWorkers
+    return avgHashrate
   }
   catch (error) {
     log.info(error)
@@ -16,4 +16,4 @@ async function getActiveWorkers () {
   }
 }
 
-module.exports = getActiveWorkers
+module.exports = getAvgHashrate

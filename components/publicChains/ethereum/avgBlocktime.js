@@ -3,12 +3,12 @@ const axios = require('axios')
 const config = require('../../../src/config.js')
 const log = console
 
-async function getHashrate () {
+async function getAvgBlocktime () {
   try {
-    const hashrate =
-    (await axios.get(config.ethereum.publicChain.hashRate))
+    const avgBlocktime =
+    (await axios.get(config.ethereum.publicChain.averageBlockTime))
       .data.data
-    return hashrate
+    return avgBlocktime
   }
   catch (error) {
     log.info(error)
@@ -16,4 +16,4 @@ async function getHashrate () {
   }
 }
 
-module.exports = getHashrate
+module.exports = getAvgBlocktime

@@ -3,12 +3,12 @@ const axios = require('axios')
 const config = require('../../../src/config.js')
 const log = console
 
-async function getAverageBlockTime () {
+async function getNumberOfMiners () {
   try {
-    const blocktime =
-    (await axios.get(config.ethereum.publicChain.averageBlockTime))
+    const numberOfMiners =
+    (await axios.get(config.ethereum.publicChain.activeMiners))
       .data.data
-    return blocktime
+    return numberOfMiners
   }
   catch (error) {
     log.info(error)
@@ -16,4 +16,4 @@ async function getAverageBlockTime () {
   }
 }
 
-module.exports = getAverageBlockTime
+module.exports = getNumberOfMiners
