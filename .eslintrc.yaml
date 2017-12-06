@@ -147,7 +147,6 @@ rules:
   quotes:
     - error
     - single
-  react/prop-types: 2
   semi:
     - error
     - never
