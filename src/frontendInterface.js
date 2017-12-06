@@ -1,9 +1,10 @@
+const path = require('path')
+
 const cors = require('cors')
 const express = require('express')
 const NodeCache = require('node-cache')
-const path = require('path')
-const config = require('./config')
 
+const config = require('./config')
 const activeChainName = config.ethereum.privateChain.name
 
 module.exports = (options = {}) => {
