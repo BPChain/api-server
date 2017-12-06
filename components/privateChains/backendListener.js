@@ -1,19 +1,20 @@
-const mongoose = require('mongoose')
 const ws = require('ws')
 
-const mongoConnector = require('../../src/mongoConnector')
 const bufferAggregator = require('./bufferAggregator')
 
 const log = console
 
 
 module.exports = async (options = {}) => {
-  const {chainName, schema} = options
+  const {chainName, schema, connection} = options
 
-  const StorageSchema = require(`../../schemas/${chainName}Storage`)()
-  const Schema = require(`../../schemas/${schema}`)()
-  const BufferA = mongoose.model(`${chainName}_buffer_a`, Schema)
-  const BufferB = mongoose.model(`${chainName}_buffer_b`, Schema)
+
+  const StorageSchema = require(
+    `../../schemas/privateChains/${chainName}Storage`
+  )()
+  const Schema = require(`../../schemas/privateChains/${schema}`)()
+  const BufferA = connection.model(`${chainName}_private_buffer_a`, Schema)
+  const BufferB = connection.model(`${chainName}_private_buffer_b`, Schema)
 
   let CurrentBuffer = BufferA
 
@@ -21,28 +22,29 @@ module.exports = async (options = {}) => {
   setInterval(() => {
     if (isBufferA) {
       CurrentBuffer = BufferB
-      log.info('Change Buffer to Buffer B')
+      log.info('~ Change Buffer to Buffer B')
       bufferAggregator({
         chainName,
         filledBuffer: '_buffer_a',
         Schema,
         StorageSchema,
+        connection,
       })
     }
     else {
       CurrentBuffer = BufferA
-      log.info('Change buffer to buffer b')
+      log.info('~ Change buffer to buffer b')
       bufferAggregator({
         chainName,
         filledBuffer: '_buffer_b',
         Schema,
         StorageSchema,
+        connection,
       })
     }
     isBufferA = !isBufferA
   }, 15000)
 
-  mongoConnector.connect('mongodb://mongodb/privateChains')
 
   const WebSocketServer = ws.Server
   const wsServer = new WebSocketServer({port: 3030})
@@ -58,7 +60,7 @@ module.exports = async (options = {}) => {
             throw error
           }
           else {
-            log.info('Successfully stored input with id: ', savedModel.hostId)
+            log.info('+ Stored private data from: ', savedModel.hostId)
             socket.send(200)
           }
         })
