@@ -1,18 +1,6 @@
 module.exports = async (options = {}) => {
   const {chainName, connection} = options
 
-  let dataLine = {
-    id: 0,
-    chain: chainName,
-    timeStamp: 0,
-    numberOfHosts: 0,
-    numberOfMiners: 0,
-    avgHashrate: 0,
-    avgBlocktime: 0,
-    avgGasPrice: 0,
-    avgDifficulty: 0,
-  }
-
   const result = await connection.db
     .collection(`${chainName}_private_storages`)
 
@@ -21,7 +9,6 @@ module.exports = async (options = {}) => {
     .toArray()
 
   const line = data[data.length - 1]
-  dataLine = Object.assign(dataLine, line)
-
+  const dataLine = Object.assign(line, {chain: chainName})
   return dataLine
 }

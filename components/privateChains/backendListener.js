@@ -1,3 +1,4 @@
+const md5 = require('js-md5')
 const ws = require('ws')
 
 const bufferAggregator = require('./bufferAggregator')
@@ -51,7 +52,6 @@ module.exports = async (options = {}) => {
   log.info('Backend socket running on port 3030')
   wsServer.on('connection', (socket) => {
     socket.on('message', (message) => {
-      log.info('received: %s', message)
       try {
         const privateData = JSON.parse(message)
         const dataset = new CurrentBuffer(privateData)
@@ -60,7 +60,9 @@ module.exports = async (options = {}) => {
             throw error
           }
           else {
-            log.info('+ Stored private data from: ', savedModel.hostId)
+            log.info(
+              '+ Stored private from (Hashed host ID): ',
+              md5(savedModel.hostId))
             socket.send(200)
           }
         })

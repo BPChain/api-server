@@ -11,7 +11,7 @@ module.exports = async (options) => {
 
   log.info('++ Aggregate files from', filledBuffer)
   const Buffer = connection
-    .model(`${chainName}${filledBuffer}`, Schema)
+    .model(`${chainName}_private${filledBuffer}`, Schema)
   const Storage = connection
     .model(`${chainName}_private_storage`, StorageSchema)
 
