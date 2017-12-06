@@ -4,24 +4,22 @@ const mongoConnector = require('./mongoConnector')
 const publicChainHandler = require('../components/publicChains/publicListener')
 const config = require('../src/config')
 
-const privateConnection = mongoConnector
-  .connect('mongodb://mongodb/privateChains')
-const publicConnection = mongoConnector
-  .connect('mongodb://mongodb/publicChains')
+const connection = mongoConnector
+  .connect('mongodb://mongodb/chainBoardDB')
 
 
 backendHandler({
   chainName: config.ethereum.privateChain.name,
   schema: config.ethereum.privateChain.schema,
-  connection: privateConnection,
+  connection,
 })
+
 publicChainHandler({
   chainName: 'ethereum',
   schema: require('../schemas/publicChains/ethereumStorage.js')(),
-  connection: publicConnection,
+  connection,
 })
 
 frontendHandler({
-  privateConnection,
-  publicConnection,
+  connection,
 })
