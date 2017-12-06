@@ -1,0 +1,36 @@
+{
+  "name": "api-server",
+  "version": "1.0.0",
+  "description": "api-server",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --exec node -- src/index.js",
+    "lint": "eslint .",
+    "test": "npm run lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BPChain/api-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BPChain/api-server/issues"
+  },
+  "homepage": "https://github.com/BPChain/api-server#readme",
+  "devDependencies": {
+    "babel-eslint": "^8.0.2",
+    "eslint": "^4.11.0"
+  },
+  "dependencies": {
+    "axios": "^0.17.1",
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
+    "fs-extra": "^4.0.2",
+    "js-md5": "^0.7.2",
+    "mongoose": "^4.13.5",
+    "node-cache": "^4.1.1",
+    "nodemon": "^1.12.1",
+    "ws": "^3.3.2"
+  }
+}
