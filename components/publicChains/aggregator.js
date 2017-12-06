@@ -1,37 +1,17 @@
-const path = require('path')
-
 module.exports = async (options = {}) => {
 
-  const {chainName} = options
+  const {
+    chainName,
+    connection,
+  } = options
 
-  const basePath = path.join(__dirname, chainName)
+  const result = await connection.db.collection(`${chainName}_public_storages`)
 
-  const activeMiners = require(
-    path.join(basePath, 'activeMiners.js')
-  )
-  const activeWorkers = require(
-    path.join(basePath, 'activeWorkers.js')
-  )
-  const averageBlockTime = require(
-    path.join(basePath, 'averageBlockTime.js')
-  )
-  const blockTimeDifficulty = require(
-    path.join(basePath, 'blockTimeDifficulty.js')
-  )
-  const hashRate = require(
-    path.join(basePath, 'hashRate.js')
-  )
-  const timeToNextEpoch = require(
-    path.join(basePath, 'timeToNextEpoch.js')
-  )
+  const data = await result
+    .find({})
+    .toArray()
 
-  return {
-    activeMiners: await activeMiners(),
-    activeWorkers: await activeWorkers(),
-    averageBlockTime: await averageBlockTime(),
-    blockTimeDifficulty: await blockTimeDifficulty(),
-    hashRate: await hashRate(),
-    timeToNextEpoch: await timeToNextEpoch(),
-  }
+  const dataLine = data[data.length - 1]
 
+  return dataLine
 }

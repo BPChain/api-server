@@ -11,31 +11,24 @@ module.exports = async (options = {}) => {
   } = options
 
 
-  const Storage = connection.model(`${chainName}_storage`, schema)
+  const Storage = connection.model(`${chainName}_public_storage`, schema)
 
   setInterval(async () => {
-    const dataLine = new Storage(
-      await chainValueCollector({chainName: 'ethereum'})
-    )
+    const line = await chainValueCollector({chainName: 'ethereum'})
+
+    const dataLine = new Storage(line)
     dataLine.save((error, savedData) => {
       if (error) {
         log.info(error)
         throw error
       }
       else {
-        log.info('Successfully stored public data: ', savedData)
+        log.info(
+          '+++ Stored aggregated public data with timestamp: ',
+          savedData.timeStamp
+        )
         return 0
       }
     })
-
-
-
-    const result = await connection.db.collection('ethereum_storages')
-
-    const data = await result
-      .find({})
-      .toArray()
-
-    log.info('My saved data is:', data)
-  }, 10000)
+  }, 30000)
 }

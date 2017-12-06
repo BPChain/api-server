@@ -9,9 +9,11 @@ module.exports = async (options) => {
     connection,
   } = options
 
-  log.info('Aggregate files from', filledBuffer)
-  const Buffer = connection.model(`${chainName}${filledBuffer}`, Schema)
-  const Storage = connection.model(`${chainName}_storage`, StorageSchema)
+  log.info('++ Aggregate files from', filledBuffer)
+  const Buffer = connection
+    .model(`${chainName}${filledBuffer}`, Schema)
+  const Storage = connection
+    .model(`${chainName}_private_storage`, StorageSchema)
 
   const aggregatedValues = {
     numberOfHosts: 0,
@@ -137,7 +139,10 @@ module.exports = async (options) => {
       throw error
     }
     else {
-      log.info('Successfully stored input: ', savedData)
+      log.info(
+        '+++ Stored aggregated private data with timestamp: ',
+        savedData.timeStamp
+      )
       return 0
     }
   })

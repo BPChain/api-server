@@ -14,7 +14,7 @@ module.exports = async (options = {}) => {
   }
 
   const result = await connection.db
-    .collection(`${chainName}_storages`)
+    .collection(`${chainName}_private_storages`)
 
   const data = await result
     .find({})

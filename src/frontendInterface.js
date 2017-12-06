@@ -25,11 +25,11 @@ module.exports = (options = {}) => {
   app.get('/api/ethereum/publicStat', async (request, response) => {
     cache.get(`${activeChainName}PublicStat`, async (error, value) => {
       if (!error) {
-        log.info('Access cache via key.')
+        log.info('# Access cache via key')
         response.send(value)
       }
       else {
-        log.info(`Cache access error: ${error}`)
+        log.info('# Cache access error: No public chain data cached')
         const data = await ethereumPublic({
           chainName: activeChainName,
           connection,
@@ -37,7 +37,7 @@ module.exports = (options = {}) => {
         response.send(data)
         cache.set('ethereumPublicStat', data, (cachingError, success) => {
           if (!cachingError && success) {
-            log.info(`New public ${activeChainName} data cached.`)
+            log.info(`# New public ${activeChainName} data cached.`)
           }
         })
       }
@@ -47,11 +47,11 @@ module.exports = (options = {}) => {
   app.get('/api/ethereum/privateStat', async (request, response) => {
     cache.get(`${activeChainName}PrivateStat`, async (error, value) => {
       if (!error) {
-        log.info('Access cache via key.')
+        log.info('# Access cache via key')
         response.send(value)
       }
       else {
-        log.info(`Cache access error: ${error}`)
+        log.info('# Cache access error: No private chain data cached')
         const data = await ethereumPrivate({
           chainName: activeChainName,
           connection,
@@ -59,7 +59,7 @@ module.exports = (options = {}) => {
         response.send(data)
         cache.set('ethereumPrivateStat', data, (cachingError, success) => {
           if (!cachingError && success) {
-            log.info(`New private ${activeChainName} data cached.`)
+            log.info(`# New private ${activeChainName} data cached.`)
           }
         })
       }

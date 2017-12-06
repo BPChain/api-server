@@ -1,7 +1,6 @@
 const path = require('path')
 const fse = require('fs-extra')
 
-const log = console
 
 module.exports = async (options = {}) => {
   const {chainName} = options
@@ -20,5 +19,5 @@ module.exports = async (options = {}) => {
       return result
     }, {})
 
-  return Object.assign(object, {timestamp: Date.now(), chainName})
+  return Object.assign(object, {timeStamp: Date.now(), chain: chainName})
 }
