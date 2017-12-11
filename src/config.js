@@ -21,6 +21,8 @@ const config = {
       'https://api.nanopool.org/v1/eth/network/timetonextepoch',
     },
   },
+  dataAggregatorPort: 3030,
+  frontendPort: 2020,
 }
 
 module.exports = config
