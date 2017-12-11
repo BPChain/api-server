@@ -2,6 +2,7 @@ const md5 = require('js-md5')
 const ws = require('ws')
 
 const bufferAggregator = require('./bufferAggregator')
+const config = require('../../src/config')
 
 const log = console
 
@@ -48,8 +49,8 @@ module.exports = async (options = {}) => {
 
 
   const WebSocketServer = ws.Server
-  const wsServer = new WebSocketServer({port: 3030})
-  log.info('Backend socket running on port 3030')
+  const wsServer = new WebSocketServer({port: config.dataAggregatorPort})
+  log.info(`Backend socket running on port ${config.dataAggregatorPort}`)
   wsServer.on('connection', (socket) => {
     socket.on('message', (message) => {
       try {
