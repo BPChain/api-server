@@ -72,7 +72,7 @@ module.exports = (options = {}) => {
   })
 
 
-  app.listen(2020, () => {
-    log.info('Frontend interface running on port 2020')
+  app.listen(config.frontendPort, () => {
+    log.info(`Frontend interface running on port ${config.frontendPort}`)
   })
 }
