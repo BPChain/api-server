@@ -5,7 +5,7 @@ const publicChainHandler = require('../components/publicChains/publicListener')
 const config = require('../src/config')
 
 const connection = mongoConnector
-  .connect('mongodb://mongodb/chainboarddb')
+  .connect('mongodb://mongodb/chainboarddb?authSource=admin')
 
 
 backendHandler({

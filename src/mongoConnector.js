@@ -8,6 +8,8 @@ module.exports.connect = mongoUri => {
   const mongoDB = mongoose.connect(mongoUri, {
     useMongoClient: true,
     promiseLibrary: global.Promise,
+    user: 'chainboarduser',
+    pass: 'password',
   })
 
   mongoDB
