@@ -1,7 +1,13 @@
 version: "3.3"
 services:
   mongodb:
-    image: mongo:3.6.0-rc6-jessie
+    image: mongo:3.6.0
+    env_file: .env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    volumes:
+      - "$PWD/mongo-entrypoint/:/docker-entrypoint-initdb.d/"
     container_name: mongodb
     networks:
       - backendnet
