@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon --exec node -- src/index.js",
     "lint": "eslint .",
-    "test": "npm run lint"
+    "test": "npm run lint && npm run unit-tests",
+    "unit-tests": "node tests/main.js"
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,7 @@
   },
   "homepage": "https://github.com/BPChain/api-server#readme",
   "devDependencies": {
+    "assert": "^1.4.1",
     "babel-eslint": "^8.0.2",
     "eslint": "^4.11.0"
   },
