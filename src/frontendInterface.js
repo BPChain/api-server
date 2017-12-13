@@ -24,47 +24,73 @@ module.exports = (options = {}) => {
 
   app.use(cors())
   app.get('/api/ethereum/publicStat', async (request, response) => {
-    cache.get(`${activeChainName}PublicStat`, async (error, value) => {
-      if (!error) {
-        log.info('# Access cache via key')
-        response.send(value)
-      }
-      else {
-        log.info('# Cache access error: No public chain data cached')
-        const data = await ethereumPublic({
-          chainName: activeChainName,
-          connection,
-        })
-        response.send(data)
-        cache.set('ethereumPublicStat', data, (cachingError, success) => {
-          if (!cachingError && success) {
-            log.info(`# New public ${activeChainName} data cached.`)
-          }
-        })
-      }
-    })
+    const numberOfItems = request.query.numberOfItems
+    if (numberOfItems) {
+      log.info(`? Access last ${numberOfItems} items without cache`)
+      const data = await ethereumPublic({
+        chainName: activeChainName,
+        connection,
+        numberOfItems,
+      })
+      response.send(data)
+    }
+    else {
+      cache.get(`${activeChainName}PublicStat`, async (error, value) => {
+        if (!error) {
+          log.info('# Access cache via key')
+          response.send(value)
+        }
+        else {
+          log.info('# Cache access error: No public chain data cached')
+          const data = await ethereumPublic({
+            chainName: activeChainName,
+            connection,
+            numberOfItems: 1,
+          })
+          response.send(data)
+          cache.set('ethereumPublicStat', data, (cachingError, success) => {
+            if (!cachingError && success) {
+              log.info(`# New public ${activeChainName} data cached.`)
+            }
+          })
+        }
+      })
+    }
   })
 
   app.get('/api/ethereum/privateStat', async (request, response) => {
-    cache.get(`${activeChainName}PrivateStat`, async (error, value) => {
-      if (!error) {
-        log.info('# Access cache via key')
-        response.send(value)
-      }
-      else {
-        log.info('# Cache access error: No private chain data cached')
-        const data = await ethereumPrivate({
-          chainName: activeChainName,
-          connection,
-        })
-        response.send(data)
-        cache.set('ethereumPrivateStat', data, (cachingError, success) => {
-          if (!cachingError && success) {
-            log.info(`# New private ${activeChainName} data cached.`)
-          }
-        })
-      }
-    })
+    const numberOfItems = request.query.numberOfItems
+    if (numberOfItems !== undefined) {
+      log.info(`? Access last ${numberOfItems} items without cache`)
+      const data = await ethereumPrivate({
+        chainName: activeChainName,
+        connection,
+        numberOfItems,
+      })
+      response.send(data)
+    }
+    else {
+      cache.get(`${activeChainName}PrivateStat`, async (error, value) => {
+        if (!error) {
+          log.info('# Access cache via key')
+          response.send(value)
+        }
+        else {
+          log.info('# Cache access error: No private chain data cached')
+          const data = await ethereumPrivate({
+            chainName: activeChainName,
+            connection,
+            numberOfItems: 1,
+          })
+          response.send(data)
+          cache.set('ethereumPrivateStat', data, (cachingError, success) => {
+            if (!cachingError && success) {
+              log.info(`# New private ${activeChainName} data cached.`)
+            }
+          })
+        }
+      })
+    }
   })
 
   app.get('/*', (request, response) => {

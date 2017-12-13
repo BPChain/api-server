@@ -3,6 +3,7 @@ module.exports = async (options = {}) => {
   const {
     chainName,
     connection,
+    numberOfItems,
   } = options
 
   const result = await connection.db.collection(`${chainName}_public_storages`)
@@ -11,7 +12,11 @@ module.exports = async (options = {}) => {
     .find({})
     .toArray()
 
-  const dataLine = data[data.length - 1]
+  const lines = data.slice(Math.max(data.length - numberOfItems, 1))
+
+  const dataLine = lines.map((line) => {
+    return Object.assign(line, {chain: chainName})
+  })
 
   return dataLine
 }

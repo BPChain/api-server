@@ -6,9 +6,6 @@ const log = console
 
 module.exports.connect = mongoUri => {
 
-  log.info(process.env.MONGO_ADD_CHAINBOARDDBUSER_USERNAME)
-  log.info(process.env.MONGO_ADD_CHAINBOARDDBUSER_PASSWORD)
-
   mongoose.Promise = global.Promise
   const mongoDB = mongoose.connect(mongoUri, {
     useMongoClient: true,
