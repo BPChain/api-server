@@ -11,8 +11,8 @@ async function getTimeToNextEpoch () {
     return timeToNextEpoch
   }
   catch (error) {
-    log.info(error)
-    return NaN
+    log.info('!!! Can not reach api.nanopool.org')
+    return 0
   }
 }
 
