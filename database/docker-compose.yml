@@ -9,6 +9,8 @@ services:
     container_name: mongodb
     networks:
       - backendnet
+    volumes:
+      - /data/mongodb:/data/db
 networks:
   backendnet:
     external:
