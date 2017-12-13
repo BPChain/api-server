@@ -6,8 +6,6 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-    volumes:
-      - "$PWD/mongo-entrypoint/:/docker-entrypoint-initdb.d/"
     container_name: mongodb
     networks:
       - backendnet
