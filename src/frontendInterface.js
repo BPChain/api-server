@@ -25,12 +25,16 @@ module.exports = (options = {}) => {
   app.use(cors())
   app.get('/api/ethereum/publicStat', async (request, response) => {
     const numberOfItems = request.query.numberOfItems
-    if (numberOfItems) {
-      log.info(`? Access last ${numberOfItems} items without cache`)
+    const startTime = request.query.startTime
+    const endTime = request.query.endTime
+
+    if (numberOfItems || (startTime && endTime)) {
       const data = await ethereumPublic({
         chainName: activeChainName,
         connection,
         numberOfItems,
+        startTime,
+        endTime,
       })
       response.send(data)
     }
@@ -60,12 +64,16 @@ module.exports = (options = {}) => {
 
   app.get('/api/ethereum/privateStat', async (request, response) => {
     const numberOfItems = request.query.numberOfItems
-    if (numberOfItems !== undefined) {
-      log.info(`? Access last ${numberOfItems} items without cache`)
+    const startTime = request.query.startTime
+    const endTime = request.query.endTime
+
+    if (numberOfItems || (startTime && endTime)) {
       const data = await ethereumPrivate({
         chainName: activeChainName,
         connection,
         numberOfItems,
+        startTime,
+        endTime,
       })
       response.send(data)
     }

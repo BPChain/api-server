@@ -124,7 +124,8 @@ module.exports = async (options) => {
 
   const dataLine = new Storage({
     chain: chainName,
-    timeStamp: Date.now(),
+    timeStamp: (new Date())
+      .toUTCString(),
     numberOfHosts: aggregatedValues.numberOfHosts,
     numberOfMiners: aggregatedValues.numberOfMiners,
     avgHashrate: aggregatedValues.avgHashrate,
