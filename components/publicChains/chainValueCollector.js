@@ -19,5 +19,9 @@ module.exports = async (options = {}) => {
       return result
     }, {})
 
-  return Object.assign(object, {timeStamp: Date.now(), chain: chainName})
+  return Object.assign(object, {
+    timeStamp: (new Date)
+      .toUTCString(),
+    chain: chainName,
+  })
 }
