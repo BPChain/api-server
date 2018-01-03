@@ -11,17 +11,15 @@ module.exports = (options = {}) => {
     const {chainName, accessibility} = request.params
     const {startTime, endTime} = request.query
     const numberOfItems = parseInt(request.query.numberOfItems)
-    let aggregator = privateAggregator
-
 
     if (accessibility !== 'public' && accessibility !== 'private') {
-      response.send(404)
+      response.sendStatus(400)
+      return
     }
 
-    if (accessibility === 'public') {
-      aggregator = publicAggregator
-    }
-
+    const aggregator = accessibility === 'public'
+      ? publicAggregator
+      : privateAggregator
 
     if (!(isNaN(Date.parse(startTime)) || isNaN(Date.parse(endTime)))) {
       log.info(
@@ -78,7 +76,8 @@ module.exports = (options = {}) => {
                 log.error(
                   `### ERROR ${accessibility} ${chainName} cannot be cached.`
                 )
-                response.send(404)
+                response.sendStatus(404)
+                return
               }
               if (success) {
                 log.info(`# New ${accessibility} ${chainName} data cached.`)
