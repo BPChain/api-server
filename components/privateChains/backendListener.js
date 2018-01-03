@@ -7,6 +7,39 @@ const config = require('../../src/config')
 const log = console
 
 
+function isNumeric (number) {
+  return !isNaN(parseFloat(number)) && isFinite(number)
+}
+
+function checkJsonContent (json) {
+  const expectedKeys = [
+    'hostId',
+    'isMining',
+    'hashrate',
+    'avgBlocktime',
+    'gasPrice',
+    'avgDifficulty',
+  ]
+
+  const hasAllKeys = expectedKeys.every((item) => {
+    const keyExists = json.hasOwnProperty(item)
+    if (!keyExists) {
+      log.error('!!! Missing key in backend:', item)
+    }
+    return keyExists
+  })
+
+  if (!hasAllKeys) {
+    return false
+  }
+
+  return (json.isMining === 1 || json.isMining === 0) &&
+    isNumeric(json.hashrate) &&
+    isNumeric(json.avgBlocktime) &&
+    isNumeric(json.gasPrice) &&
+    isNumeric(json.avgDifficulty)
+}
+
 module.exports = async (options = {}) => {
   const {chainName, schema, connection} = options
 
@@ -54,22 +87,35 @@ module.exports = async (options = {}) => {
   wsServer.on('connection', (socket) => {
     socket.on('message', (message) => {
       try {
-        const privateData = JSON.parse(message)
-        const dataset = new CurrentBuffer(privateData)
-        dataset.save((error, savedModel) => {
-          if (error) {
-            throw error
-          }
-          else {
-            log.info(
-              '+ Stored private from (Hashed host ID): ',
-              md5(savedModel.hostId))
-            socket.send(200)
-          }
-        })
+        let privateData = {}
+        try {
+          privateData = JSON.parse(message)
+        }
+        catch (error) {
+          log.error('!!! Received an invalid JSON')
+          socket.send(415)
+          return
+        }
+        if (checkJsonContent(privateData)) {
+          const dataset = new CurrentBuffer(privateData)
+          dataset.save((error, savedModel) => {
+            if (error) {
+              throw error
+            }
+            else {
+              log.info(
+                '+ Stored private from (Hashed host ID): ',
+                md5(savedModel.hostId))
+              socket.send(200)
+            }
+          })
+        }
+        else {
+          log.error('!!! Received a JSON with wrong content')
+        }
       }
       catch (error) {
-        log.info(error)
+        log.error(error)
         socket.send(415)
       }
     })
