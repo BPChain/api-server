@@ -18,8 +18,6 @@ module.exports = async (options = {}) => {
   let lines
 
   if (startTime && endTime) {
-    log.info(`? Access items from ${startTime} to ${endTime} without cache`)
-
     lines = await result
       .find({
         timeStamp: {
@@ -29,21 +27,12 @@ module.exports = async (options = {}) => {
       })
       .toArray()
   }
-  else if (numberOfItems) {
-    log.info(`? Access last ${numberOfItems} items without cache`)
-
-    data = await result
-      .find({})
-      .toArray()
-
-    lines = data.slice(Math.max(data.length - numberOfItems, 1))
-  }
   else {
     data = await result
       .find({})
       .toArray()
 
-    lines = data.slice(1)
+    lines = data.slice(Math.max(data.length - numberOfItems, 1))
   }
 
 
