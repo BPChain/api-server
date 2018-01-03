@@ -2,43 +2,11 @@ const md5 = require('js-md5')
 const ws = require('ws')
 
 const bufferAggregator = require('./bufferAggregator')
+const checkJsonContent = require('./checkJsonContent')
 const config = require('../../src/config')
 
 const log = console
 
-
-function isNumeric (number) {
-  return !isNaN(parseFloat(number)) && isFinite(number)
-}
-
-function checkJsonContent (json) {
-  const expectedKeys = [
-    'hostId',
-    'isMining',
-    'hashrate',
-    'avgBlocktime',
-    'gasPrice',
-    'avgDifficulty',
-  ]
-
-  const hasAllKeys = expectedKeys.every((item) => {
-    const keyExists = json.hasOwnProperty(item)
-    if (!keyExists) {
-      log.error('!!! Missing key in backend:', item)
-    }
-    return keyExists
-  })
-
-  if (!hasAllKeys) {
-    return false
-  }
-
-  return (json.isMining === 1 || json.isMining === 0) &&
-    isNumeric(json.hashrate) &&
-    isNumeric(json.avgBlocktime) &&
-    isNumeric(json.gasPrice) &&
-    isNumeric(json.avgDifficulty)
-}
 
 module.exports = async (options = {}) => {
   const {chainName, schema, connection} = options
@@ -96,7 +64,7 @@ module.exports = async (options = {}) => {
           socket.send(415)
           return
         }
-        if (checkJsonContent(privateData)) {
+        if (checkJsonContent({json: privateData, log})) {
           const dataset = new CurrentBuffer(privateData)
           dataset.save((error, savedModel) => {
             if (error) {
