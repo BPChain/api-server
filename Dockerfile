@@ -10,6 +10,7 @@ RUN npm install -g nodemon
 COPY src src
 COPY schemas schemas
 COPY components components
+COPY routes routes
 
 EXPOSE 2020
 ENTRYPOINT ["npm", "start", "--"]
