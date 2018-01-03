@@ -2,6 +2,7 @@ const md5 = require('js-md5')
 const ws = require('ws')
 
 const bufferAggregator = require('./bufferAggregator')
+const checkJsonContent = require('./checkJsonContent')
 const config = require('../../src/config')
 
 const log = console
@@ -54,22 +55,35 @@ module.exports = async (options = {}) => {
   wsServer.on('connection', (socket) => {
     socket.on('message', (message) => {
       try {
-        const privateData = JSON.parse(message)
-        const dataset = new CurrentBuffer(privateData)
-        dataset.save((error, savedModel) => {
-          if (error) {
-            throw error
-          }
-          else {
-            log.info(
-              '+ Stored private from (Hashed host ID): ',
-              md5(savedModel.hostId))
-            socket.send(200)
-          }
-        })
+        let privateData = {}
+        try {
+          privateData = JSON.parse(message)
+        }
+        catch (error) {
+          log.error('!!! Received an invalid JSON')
+          socket.send(415)
+          return
+        }
+        if (checkJsonContent({json: privateData, log})) {
+          const dataset = new CurrentBuffer(privateData)
+          dataset.save((error, savedModel) => {
+            if (error) {
+              throw error
+            }
+            else {
+              log.info(
+                '+ Stored private from (Hashed host ID): ',
+                md5(savedModel.hostId))
+              socket.send(200)
+            }
+          })
+        }
+        else {
+          log.error('!!! Received a JSON with wrong content')
+        }
       }
       catch (error) {
-        log.info(error)
+        log.error(error)
         socket.send(415)
       }
     })
