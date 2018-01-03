@@ -1,7 +1,5 @@
 const isodate = require('isodate')
 
-const log = console
-
 module.exports = async (options = {}) => {
   const {
     chainName,

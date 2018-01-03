@@ -36,6 +36,7 @@ module.exports = (options = {}) => {
       })
       response.send(data)
     }
+
     else if (Number.isInteger(numberOfItems) && numberOfItems > 0) {
       log.info(
         `? Access last ${numberOfItems} ${accessibility} items without cache`
@@ -50,6 +51,7 @@ module.exports = (options = {}) => {
       })
       response.send(data)
     }
+
     else {
       cache.get(`${chainName}${accessibility}Cache`, async (error, value) => {
         if (!error) {
