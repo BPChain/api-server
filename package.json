@@ -23,7 +23,9 @@
     "assert": "^1.4.1",
     "babel-eslint": "^8.0.2",
     "coveralls": "^3.0.0",
-    "eslint": "^4.11.0"
+    "eslint": "^4.11.0",
+    "jscoverage": "^0.6.0",
+    "nodeunit": "^0.11.2"
   },
   "dependencies": {
     "axios": "^0.17.1",
