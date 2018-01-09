@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 module.exports = () => {
   return new Schema({
     chain: {type: String},
-    timeStamp: {type: Number},
+    timeStamp: {type: Date},
     numberOfWorkers: {type: Number},
     numberOfMiners: {type: Number},
     avgHashrate: {type: Number},

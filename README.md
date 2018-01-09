@@ -24,10 +24,16 @@ And delete the corresponding network with the command:
 docker network rm networkname
 ```
 
-Then try to start the docker network again. As soon as the Docker network is running you can start the MongoDB Docker with the script:
+Then try to start the docker network again. As soon as the Docker network is running you can start the MongoDB Docker with the following script. Make sure that you have set up an .env-file in the database directory with the root username and password.
 
 ```shell
 ./initDatabase.sh
+```
+
+After that you can create new users with the script './createDbUsers.sh' provided in the database directory if neccessary. Usually you only have to do this once because the database is persistent.
+
+```shell
+./database/createDbUsers.sh
 ```
 
 And finally start the server with the script:
@@ -35,3 +41,5 @@ And finally start the server with the script:
 ```shell
 ./initServer.sh
 ```
+
+After the procedure you can delete the .env-file for security reasons.

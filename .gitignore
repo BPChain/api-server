@@ -3,3 +3,9 @@ node_modules/
 
 # npm debug
 npm-debug.log
+
+# environment variables
+.env
+
+# database data
+database/data
