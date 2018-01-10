@@ -31,7 +31,6 @@ module.exports = (options = {}) => {
 
   const app = express()
 
-
   app.use(cors())
   app.get('/api/:accessibility/:chainName', handleGetStatistics)
 
@@ -39,7 +38,9 @@ module.exports = (options = {}) => {
     response.sendFile(path.join(__dirname, 'index.html'))
   })
 
-  app.listen(config.frontendPort, () => {
+  return app.listen(config.frontendPort, () => {
     log.info(`Frontend interface running on port ${config.frontendPort}`)
   })
+
+
 }
