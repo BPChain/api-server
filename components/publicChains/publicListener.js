@@ -15,20 +15,21 @@ module.exports = async (options = {}) => {
 
   setInterval(async () => {
     const line = await chainValueCollector({chainName})
-
-    const dataLine = new Storage(line)
-    dataLine.save((error, savedData) => {
-      if (error) {
-        log.info(error)
-        throw error
-      }
-      else {
-        log.info(
-          '+++ Stored aggregated public data with timestamp: ',
-          savedData.timeStamp
-        )
-        return 0
-      }
-    })
+    if (line) {
+      const dataLine = new Storage(line)
+      dataLine.save((error, savedData) => {
+        if (error) {
+          log.info(error)
+          throw error
+        }
+        else {
+          log.info(
+            '+++ Stored aggregated public data with timestamp: ',
+            savedData.timeStamp
+          )
+          return 0
+        }
+      })
+    }
   }, 30000)
 }
