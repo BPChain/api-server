@@ -4,7 +4,7 @@ const it = require('mocha').it
 const after = require('mocha').after
 const assert = require('assert')
 const checkJsonContent = require(
-  '../../../components/privateChains/checkJsonContent'
+  '../../../../components/privateChains/checkJsonContent'
 )
 
 const log = console
