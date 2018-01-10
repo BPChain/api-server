@@ -3,8 +3,7 @@ module.exports = (options = {}) => {
     cache,
     connection,
     log,
-    privateAggregator,
-    publicAggregator,
+    aggregator,
   } = options
 
   return async (request, response) => {
@@ -17,16 +16,13 @@ module.exports = (options = {}) => {
       return
     }
 
-    const aggregator = accessibility === 'public'
-      ? publicAggregator
-      : privateAggregator
-
     if (!(isNaN(Date.parse(startTime)) || isNaN(Date.parse(endTime)))) {
       log.info(
         `? Access ${accessibility} items ${startTime}||${endTime} without cache`
       )
       const data = await aggregator({
         chainName,
+        accessibility,
         connection,
         numberOfItems,
         startTime,
@@ -42,6 +38,7 @@ module.exports = (options = {}) => {
 
       const data = await aggregator({
         chainName,
+        accessibility,
         connection,
         numberOfItems,
         startTime: false,
@@ -62,6 +59,7 @@ module.exports = (options = {}) => {
           )
           const data = await aggregator({
             chainName,
+            accessibility,
             connection,
             numberOfItems: 1,
             startTime: false,
@@ -88,5 +86,3 @@ module.exports = (options = {}) => {
     }
   }
 }
-
-
