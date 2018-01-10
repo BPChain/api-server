@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon --exec node -- src/index.js",
     "lint": "eslint .",
-    "test": "istanbul cover _mocha test --include-all-sources true -- --report lcovonly",
+    "cover": "istanbul cover _mocha test --include-all-sources true -- --report lcovonly",
+    "test": "npm run lint && npm run cover",
     "coveralls": "cat ./coverage/lcov.info | coveralls  && rm -rf ./coverage"
   },
   "repository": {
