@@ -41,6 +41,4 @@ module.exports = (options = {}) => {
   return app.listen(config.frontendPort, () => {
     log.info(`Frontend interface running on port ${config.frontendPort}`)
   })
-
-
 }
