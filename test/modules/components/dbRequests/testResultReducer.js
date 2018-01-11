@@ -43,6 +43,15 @@ describe('dbRequests', () => {
         10,
       )
     })
+    it('should return less than 10k items if numberOfItems > 10k', async () => {
+      assert.equal(
+        (await resultReducer({
+          lines: mockArray,
+          numberOfItems: 15000,
+        })).length <= 10000,
+        true,
+      )
+    })
   })
   after(() => {
     log.info('End testing database requests')
