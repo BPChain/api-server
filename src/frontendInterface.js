@@ -12,8 +12,7 @@ module.exports = (options = {}) => {
     connection,
   } = options
 
-  const privateAggregator = require('../components/privateChains/aggregator')
-  const publicAggregator = require('../components/publicChains/aggregator')
+  const aggregator = require('../components/dbRequests/aggregator')
   const createHandleGetStatistics = require('../routes/handleGetStatistics')
 
 
@@ -25,8 +24,7 @@ module.exports = (options = {}) => {
     cache,
     connection,
     log,
-    privateAggregator,
-    publicAggregator,
+    aggregator,
   })
 
   const app = express()
