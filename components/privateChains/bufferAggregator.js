@@ -8,7 +8,7 @@ module.exports = async (options) => {
     log,
   } = options
 
-  log.info('++ Aggregate files from', filledBuffer)
+  log.debug('++ Aggregate files from', filledBuffer)
   const Buffer = connection
     .model(`${chainName}_private${filledBuffer}`, Schema)
   const Storage = connection
@@ -135,7 +135,7 @@ module.exports = async (options) => {
 
   dataLine.save((error, savedData) => {
     if (error) {
-      log.info(error)
+      log.error(error)
       throw error
     }
     else {

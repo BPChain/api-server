@@ -28,7 +28,7 @@ module.exports = async (options = {}) => {
   setInterval(() => {
     if (isBufferA) {
       CurrentBuffer = BufferB
-      log.info('~ Change Buffer to Buffer B')
+      log.trace('~ Change Buffer to Buffer B')
       bufferAggregator({
         chainName,
         filledBuffer: '_buffer_a',
@@ -40,7 +40,7 @@ module.exports = async (options = {}) => {
     }
     else {
       CurrentBuffer = BufferA
-      log.info('~ Change buffer to buffer b')
+      log.trace('~ Change buffer to buffer b')
       bufferAggregator({
         chainName,
         filledBuffer: '_buffer_b',
@@ -76,7 +76,7 @@ module.exports = async (options = {}) => {
               throw error
             }
             else {
-              log.info(
+              log.debug(
                 '+ Stored private from (Hashed host ID): ',
                 md5(savedModel.hostId))
               socket.send(200)

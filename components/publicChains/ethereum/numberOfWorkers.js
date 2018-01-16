@@ -13,7 +13,7 @@ async function getNumberOfWorkers (options = {}) {
     return numberOfWorkers
   }
   catch (error) {
-    log.info('!!! Can not reach api.nanopool.org')
+    log.warn('!!! Can not reach api.nanopool.org')
     return 0
   }
 }

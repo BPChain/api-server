@@ -19,7 +19,7 @@ module.exports = async (options = {}) => {
       const dataLine = new Storage(line)
       dataLine.save((error, savedData) => {
         if (error) {
-          log.info(error)
+          log.error(error)
           throw error
         }
         else {

@@ -1,5 +1,7 @@
 const isodate = require('isodate')
 
+const logHTMLGenerator = require('../src/logHTMLGenerator')
+
 module.exports = (options = {}) => {
   const {connection} = options
 
@@ -39,9 +41,10 @@ module.exports = (options = {}) => {
     const data = await collection
       .find(query)
       .limit(numberOfItems)
+      .sort({timeStamp: -1})
       .toArray()
 
 
-    response.send(data)
+    response.send(await logHTMLGenerator({data}))
   }
 }
