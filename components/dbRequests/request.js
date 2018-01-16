@@ -19,7 +19,8 @@ module.exports = async (options = {}) => {
   const data = await result
     .find({})
     .limit(numberOfItems)
+    .sort({timeStamp: -1})
     .toArray()
 
-  return data
+  return data.reverse()
 }
