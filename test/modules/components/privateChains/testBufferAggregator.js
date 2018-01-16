@@ -40,6 +40,9 @@ const optionsA = {
       }
     },
   },
+  log: {
+    info: () => {},
+  },
 }
 const optionsB = {
   chainName: 'ethereum',
@@ -71,6 +74,9 @@ const optionsB = {
         }
       }
     },
+  },
+  log: {
+    info: () => {},
   },
 }
 describe('publicChains', () => {
