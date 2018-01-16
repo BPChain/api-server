@@ -1,14 +1,15 @@
 const config = require('../src/config')
+const logger = require('./createLogger')
 const createServer = require('./createServer')
 const mongoConnector = require('./mongoConnector')
 
-const log = console
-
+const connection = mongoConnector
+  .connect('mongodb://mongodb/chainboarddb?authSource=admin')
+const log = logger({connection})
 
 async function start () {
   return await createServer({
-    connection: mongoConnector
-      .connect('mongodb://mongodb/chainboarddb?authSource=admin'),
+    connection,
     config,
     log,
   })

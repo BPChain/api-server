@@ -5,11 +5,14 @@ const bufferAggregator = require('./bufferAggregator')
 const checkJsonContent = require('./checkJsonContent')
 const config = require('../../src/config')
 
-const log = console
-
 
 module.exports = async (options = {}) => {
-  const {chainName, schema, connection} = options
+  const {
+    chainName,
+    schema,
+    connection,
+    log,
+  } = options
 
 
   const StorageSchema = require(
@@ -32,6 +35,7 @@ module.exports = async (options = {}) => {
         Schema,
         StorageSchema,
         connection,
+        log,
       })
     }
     else {
@@ -43,6 +47,7 @@ module.exports = async (options = {}) => {
         Schema,
         StorageSchema,
         connection,
+        log,
       })
     }
     isBufferA = !isBufferA

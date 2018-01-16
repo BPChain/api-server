@@ -1,18 +1,20 @@
-const bunyan = require('bunyan')
+const logSchema = require('../schemas/log')()
 
-const logSchema = require('../../schemas/log')()
+const stdoutLog = console
 
 module.exports = (options = {}) => {
   const {connection} = options
 
   const LogModel = connection.model('log', logSchema)
-  const logger = bunyan.createLogger({name: 'api-server'})
 
 
   function store (logOptions = {}) {
-    const {log} = logOptions
+    const {log, logLevel} = logOptions
+
+    stdoutLog.info(log)
     const logEntry = new LogModel({
       log,
+      logLevel,
       timeStamp: (new Date())
         .toUTCString(),
     })
@@ -24,23 +26,23 @@ module.exports = (options = {}) => {
   }
 
   return {
-    trace: (message) => {
-      store({log: logger.trace(message)})
+    trace: (log) => {
+      store({log, logLevel: 'trace'})
     },
-    debug: (message) => {
-      store({log: logger.debug(message)})
+    debug: (log) => {
+      store({log, logLevel: 'debug'})
     },
-    info: (message) => {
-      store({log: logger.info(message)})
+    info: (log) => {
+      store({log, logLevel: 'info'})
     },
-    time: (message) => {
-      store({log: logger.time(message)})
+    warn: (log) => {
+      store({log, logLevel: 'warn'})
     },
-    warn: (message) => {
-      store({log: logger.warn(message)})
+    error: (log) => {
+      store({log, logLevel: 'error'})
     },
-    error: (message) => {
-      store({log: logger.error(message)})
+    fatal: (log) => {
+      store({log, logLevel: 'fatal'})
     },
   }
 }

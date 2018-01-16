@@ -1,5 +1,3 @@
-const log = console
-
 module.exports = async (options) => {
   const {
     chainName,
@@ -7,6 +5,7 @@ module.exports = async (options) => {
     Schema,
     StorageSchema,
     connection,
+    log,
   } = options
 
   log.info('++ Aggregate files from', filledBuffer)

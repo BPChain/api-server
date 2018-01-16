@@ -1,9 +1,11 @@
 const axios = require('axios')
 
 const config = require('../../../src/config.js')
-const log = console
 
-async function getNumberOfWorkers () {
+async function getNumberOfWorkers (options = {}) {
+
+  const {log} = options
+
   try {
     const numberOfWorkers =
     (await axios.get(config.ethereum.publicChain.activeWorkers))

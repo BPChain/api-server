@@ -1,9 +1,11 @@
 const axios = require('axios')
 
 const config = require('../../../src/config.js')
-const log = console
 
-async function getTimeToNextEpoch () {
+async function getTimeToNextEpoch (options = {}) {
+
+  const {log} = options
+
   try {
     const timeToNextEpoch =
     (await axios.get(config.ethereum.publicChain.timeToNextEpoch))
