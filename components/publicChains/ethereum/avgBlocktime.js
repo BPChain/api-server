@@ -1,9 +1,11 @@
 const axios = require('axios')
 
 const config = require('../../../src/config.js')
-const log = console
 
-async function getAvgBlocktime () {
+async function getAvgBlocktime (options = {}) {
+
+  const {log} = options
+
   try {
     const avgBlocktime =
     (await axios.get(config.ethereum.publicChain.averageBlockTime))
@@ -11,7 +13,7 @@ async function getAvgBlocktime () {
     return avgBlocktime
   }
   catch (error) {
-    log.info('!!! Can not reach api.nanopool.org')
+    log.warn('!!! Can not reach api.nanopool.org')
     return 0
   }
 }

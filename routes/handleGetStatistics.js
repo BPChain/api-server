@@ -50,11 +50,11 @@ module.exports = (options = {}) => {
     else {
       cache.get(`${chainName}${accessibility}Cache`, async (error, value) => {
         if (!error) {
-          log.info('# Access cache via key')
+          log.debug('# Access cache via key')
           response.send(value)
         }
         else {
-          log.info(
+          log.debug(
             `# Cache access error: No ${accessibility} chain data cached`
           )
           const data = await aggregator({
@@ -78,7 +78,7 @@ module.exports = (options = {}) => {
                 return
               }
               if (success) {
-                log.info(`# New ${accessibility} ${chainName} data cached.`)
+                log.debug(`# New ${accessibility} ${chainName} data cached.`)
               }
             })
         }

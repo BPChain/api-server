@@ -1,6 +1,5 @@
 const chainValueCollector = require('./chainValueCollector')
 
-const log = console
 
 module.exports = async (options = {}) => {
 
@@ -8,18 +7,19 @@ module.exports = async (options = {}) => {
     chainName,
     schema,
     connection,
+    log,
   } = options
 
 
   const Storage = connection.model(`${chainName}_public_storage`, schema)
 
   setInterval(async () => {
-    const line = await chainValueCollector({chainName})
+    const line = await chainValueCollector({chainName, log})
     if (line) {
       const dataLine = new Storage(line)
       dataLine.save((error, savedData) => {
         if (error) {
-          log.info(error)
+          log.error(error)
           throw error
         }
         else {

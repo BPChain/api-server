@@ -1,9 +1,11 @@
 const axios = require('axios')
 
 const config = require('../../../src/config.js')
-const log = console
 
-async function getNumberOfMiners () {
+async function getNumberOfMiners (options = {}) {
+
+  const {log} = options
+
   try {
     const numberOfMiners =
     (await axios.get(config.ethereum.publicChain.activeMiners))
@@ -11,7 +13,7 @@ async function getNumberOfMiners () {
     return numberOfMiners
   }
   catch (error) {
-    log.info('!!! Can not reach api.nanopool.org')
+    log.warn('!!! Can not reach api.nanopool.org')
     return 0
   }
 }

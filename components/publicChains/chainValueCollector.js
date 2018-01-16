@@ -1,10 +1,9 @@
 const path = require('path')
 const fse = require('fs-extra')
 
-const log = console
 
 module.exports = async (options = {}) => {
-  const {chainName} = options
+  const {chainName, log} = options
 
   const basePath = path.join(__dirname, chainName)
   const files = await fse.readdir(basePath)
@@ -12,7 +11,7 @@ module.exports = async (options = {}) => {
   let object = (await Promise.all(files
     .map(async (file) => {
       const filePath = path.join(basePath, file)
-      const result = await require(filePath)()
+      const result = await require(filePath)({log})
       return {file: file.replace(/\.js$/, ''), result}
     })))
     .reduce((result, item) => {

@@ -1,9 +1,11 @@
 const axios = require('axios')
 
 const config = require('../../../src/config.js')
-const log = console
 
-async function getAvgHashrate () {
+async function getAvgHashrate (options = {}) {
+
+  const {log} = options
+
   try {
     const avgHashrate =
     (await axios.get(config.ethereum.publicChain.hashRate))
@@ -11,7 +13,7 @@ async function getAvgHashrate () {
     return avgHashrate
   }
   catch (error) {
-    log.info('!!! Can not reach api.nanopool.org')
+    log.warn('!!! Can not reach api.nanopool.org')
     return 0
   }
 }

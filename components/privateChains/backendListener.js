@@ -5,11 +5,14 @@ const bufferAggregator = require('./bufferAggregator')
 const checkJsonContent = require('./checkJsonContent')
 const config = require('../../src/config')
 
-const log = console
-
 
 module.exports = async (options = {}) => {
-  const {chainName, schema, connection} = options
+  const {
+    chainName,
+    schema,
+    connection,
+    log,
+  } = options
 
 
   const StorageSchema = require(
@@ -25,24 +28,26 @@ module.exports = async (options = {}) => {
   setInterval(() => {
     if (isBufferA) {
       CurrentBuffer = BufferB
-      log.info('~ Change Buffer to Buffer B')
+      log.trace('~ Change Buffer to Buffer B')
       bufferAggregator({
         chainName,
         filledBuffer: '_buffer_a',
         Schema,
         StorageSchema,
         connection,
+        log,
       })
     }
     else {
       CurrentBuffer = BufferA
-      log.info('~ Change buffer to buffer b')
+      log.trace('~ Change buffer to buffer b')
       bufferAggregator({
         chainName,
         filledBuffer: '_buffer_b',
         Schema,
         StorageSchema,
         connection,
+        log,
       })
     }
     isBufferA = !isBufferA
@@ -71,7 +76,7 @@ module.exports = async (options = {}) => {
               throw error
             }
             else {
-              log.info(
+              log.debug(
                 '+ Stored private from (Hashed host ID): ',
                 md5(savedModel.hostId))
               socket.send(200)

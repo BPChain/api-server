@@ -10,15 +10,15 @@ module.exports = (options = {}) => {
 
   const {
     connection,
+    log,
   } = options
 
   const aggregator = require('../components/dbRequests/aggregator')
   const createHandleGetStatistics = require('../routes/handleGetStatistics')
+  const createDisplayLogs = require('../routes/displayLogs')
 
 
   const cache = new NodeCache({stdTTL: 5, errorOnMissing: true})
-  const log = console
-
 
   const handleGetStatistics = createHandleGetStatistics({
     cache,
@@ -27,10 +27,14 @@ module.exports = (options = {}) => {
     aggregator,
   })
 
+  const displayLogs = createDisplayLogs({connection})
+
   const app = express()
 
   app.use(cors())
   app.get('/api/:accessibility/:chainName', handleGetStatistics)
+
+  app.get('/log', displayLogs)
 
   app.get('/*', (request, response) => {
     response.sendFile(path.join(__dirname, 'index.html'))
