@@ -17,6 +17,13 @@ const connection = {
             limit: () => {
               return {
                 toArray: () => {},
+                sort: () => {
+                  return {
+                    toArray: () => {
+                      return []
+                    },
+                  }
+                },
               }
             },
           }

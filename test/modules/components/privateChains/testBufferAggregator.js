@@ -27,6 +27,15 @@ const optionsA = {
           },
           collection: {
             remove: () => {},
+            find: () => {
+              return {
+                limit: () => {
+                  return {
+                    sort: () => {},
+                  }
+                },
+              }
+            },
           },
         }
       }
@@ -42,6 +51,7 @@ const optionsA = {
   },
   log: {
     info: () => {},
+    debug: () => {},
   },
 }
 const optionsB = {
@@ -77,6 +87,7 @@ const optionsB = {
   },
   log: {
     info: () => {},
+    debug: () => {},
   },
 }
 describe('publicChains', () => {
