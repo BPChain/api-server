@@ -36,8 +36,6 @@ module.exports = (options = {}) => {
       )
     }
 
-    console.info(query)
-
     const data = await collection
       .find(query)
       .limit(numberOfItems)
