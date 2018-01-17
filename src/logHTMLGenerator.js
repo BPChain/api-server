@@ -12,34 +12,37 @@ module.exports = async (options = {}) => {
       <BODY style='font-family:verdana;'>
         <table>
     `
-  let color = '000000'
+  let logLevelLine = '<td style="color:#0066ff";>trace</td>'
 
   data.forEach(log => {
     switch (log.logLevel) {
-    case 'trace': {
-      color = '0066ff'
+    case 10: {
+      logLevelLine = '<td style="color:#0066ff";>trace</td>'
     } break
-    case 'debug': {
-      color = '009933'
+    case 20: {
+      logLevelLine = '<td style="color:#009933";>debug</td>'
     } break
-    case 'info': {
-      color = '000000'
+    case 30: {
+      logLevelLine = '<td style="color:#756647";>info</td>'
     } break
-    case 'warn': {
-      color = 'ff9900'
+    case 40: {
+      logLevelLine = '<td style="color:#ff9900";>warn</td>'
     } break
-    case 'error': {
-      color = 'ff0000'
+    case 50: {
+      logLevelLine = '<td style="color:#ff0000";>error</td>'
     } break
-    case 'fatal': {
-      color = '800000'
+    case 60: {
+      logLevelLine = '<td style="color:#800000";>fatal</td>'
     } break
-    default: {color = '000000'}
+    default: {
+      logLevelLine = '<td style="color:#0066ff";>trace</td>'
+      break
+    }
     }
 
     html += `<tr>
         <td>${log.timeStamp}</td>
-        <td style='color:#${color};'>${log.logLevel}</td>
+        ${logLevelLine}
         <td>${log.log}</td>
       </tr>`
 

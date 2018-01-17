@@ -27,22 +27,22 @@ module.exports = (options = {}) => {
 
   return {
     trace: (log) => {
-      store({log, logLevel: 'trace'})
+      store({log, logLevel: 10})
     },
     debug: (log) => {
-      store({log, logLevel: 'debug'})
+      store({log, logLevel: 20})
     },
     info: (log) => {
-      store({log, logLevel: 'info'})
+      store({log, logLevel: 30})
     },
     warn: (log) => {
-      store({log, logLevel: 'warn'})
+      store({log, logLevel: 40})
     },
     error: (log) => {
-      store({log, logLevel: 'error'})
+      store({log, logLevel: 50})
     },
     fatal: (log) => {
-      store({log, logLevel: 'fatal'})
+      store({log, logLevel: 60})
     },
   }
 }

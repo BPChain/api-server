@@ -18,7 +18,7 @@ module.exports = (options = {}) => {
 
     if (!(isNaN(Date.parse(startTime)) || isNaN(Date.parse(endTime)))) {
       log.trace(
-        `? Access ${accessibility} items ${startTime}||${endTime} without cache`
+        `Access ${accessibility} items ${startTime}||${endTime} without cache`
       )
       const data = await aggregator({
         chainName,
@@ -33,7 +33,7 @@ module.exports = (options = {}) => {
 
     else if (Number.isInteger(numberOfItems) && numberOfItems > 0) {
       log.trace(
-        `? Access last ${numberOfItems} ${accessibility} items without cache`
+        `Access last ${numberOfItems} ${accessibility} items without cache`
       )
 
       const data = await aggregator({
@@ -50,12 +50,12 @@ module.exports = (options = {}) => {
     else {
       cache.get(`${chainName}${accessibility}Cache`, async (error, value) => {
         if (!error) {
-          log.trace('# Access cache via key')
+          log.trace('Access cache via key')
           response.send(value)
         }
         else {
           log.trace(
-            `# Cache access error: No ${accessibility} chain data cached`
+            `Cache access error: No ${accessibility} chain data cached`
           )
           const data = await aggregator({
             chainName,
@@ -72,14 +72,14 @@ module.exports = (options = {}) => {
             (cachingError, success) => {
               if (cachingError) {
                 log.error(
-                  `### ERROR ${accessibility} ${chainName} cannot be cached:
+                  `Error occured: ${accessibility} ${chainName} cannot be cached:
                   ${cachingError}`
                 )
                 response.sendStatus(404)
                 return
               }
               if (success) {
-                log.trace(`# New ${accessibility} ${chainName} data cached.`)
+                log.trace(`New ${accessibility} ${chainName} data cached.`)
               }
             })
         }

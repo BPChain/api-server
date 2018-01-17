@@ -27,7 +27,7 @@ module.exports = async (options = {}) => {
   setInterval(() => {
     if (isBufferA) {
       CurrentBuffer = BufferB
-      log.trace('~ Change Buffer to Buffer B')
+      log.trace('Change Buffer to Buffer B')
       bufferAggregator({
         chainName,
         filledBuffer: '_buffer_a',
@@ -39,7 +39,7 @@ module.exports = async (options = {}) => {
     }
     else {
       CurrentBuffer = BufferA
-      log.trace('~ Change buffer to Buffer A')
+      log.trace('Change buffer to Buffer A')
       bufferAggregator({
         chainName,
         filledBuffer: '_buffer_b',
@@ -64,7 +64,7 @@ module.exports = async (options = {}) => {
           privateData = JSON.parse(message)
         }
         catch (error) {
-          log.error(`!!! Received an invalid JSON:
+          log.error(`Received an invalid JSON:
             ${message}`)
           socket.send(415)
           return
@@ -76,19 +76,19 @@ module.exports = async (options = {}) => {
               throw error
             }
             else {
-              log.debug(`+ Stored private data:
+              log.debug(`Stored private data:
                 ${savedModel}`)
               socket.send(200)
             }
           })
         }
         else {
-          log.error(`!!! Received a JSON with wrong content:
+          log.error(`Received a JSON with wrong content:
             ${privateData}`)
         }
       }
       catch (error) {
-        log.error(`!!! Error occured while receiving private data:
+        log.error(`Error occured while receiving private data:
           ${error}`)
         socket.send(415)
       }

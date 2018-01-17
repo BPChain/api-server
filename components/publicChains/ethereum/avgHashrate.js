@@ -13,7 +13,7 @@ async function getAvgHashrate (options = {}) {
     return avgHashrate
   }
   catch (error) {
-    log.warn('!!! Can not reach api.nanopool.org (AvgHashrate)')
+    log.warn(`Can not reach ${config.ethereum.publicChain.hashRate}`)
     return 0
   }
 }

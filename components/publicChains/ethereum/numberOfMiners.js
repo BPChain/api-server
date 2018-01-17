@@ -13,7 +13,7 @@ async function getNumberOfMiners (options = {}) {
     return numberOfMiners
   }
   catch (error) {
-    log.warn('!!! Can not reach api.nanopool.org (NumberOfMiners)')
+    log.warn(`Can not reach ${config.ethereum.publicChain.activeMiners}`)
     return 0
   }
 }

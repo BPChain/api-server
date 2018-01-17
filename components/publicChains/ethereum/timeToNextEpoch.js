@@ -13,7 +13,7 @@ async function getTimeToNextEpoch (options = {}) {
     return timeToNextEpoch
   }
   catch (error) {
-    log.warn('!!! Can not reach api.nanopool.org (TimeToNextEpoch')
+    log.warn(`Can not reach ${config.ethereum.publicChain.timeToNextEpoch}`)
     return 0
   }
 }

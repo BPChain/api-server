@@ -13,6 +13,18 @@ module.exports = (options = {}) => {
     } = request.query
     let numberOfItems = parseInt(request.query.numberOfItems)
 
+    let logNumber = 10
+
+    switch (logLevel) {
+    case 'trace': {logNumber = 10} break
+    case 'debug': {logNumber = 20} break
+    case 'info': {logNumber = 30} break
+    case 'warn': {logNumber = 40} break
+    case 'error': {logNumber = 50} break
+    case 'fatal': {logNumber = 60} break
+    default: {logNumber = 10} break
+    }
+
     const collection = await connection.db
       .collection('logs')
 
@@ -23,7 +35,7 @@ module.exports = (options = {}) => {
     let query = {}
 
     if (logLevel) {
-      query = Object.assign(query, {logLevel})
+      query = Object.assign(query, {logLevel: {$gte: logNumber}})
     }
 
     if (startTime && endTime) {
