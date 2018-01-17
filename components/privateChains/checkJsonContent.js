@@ -16,7 +16,7 @@ module.exports = function checkJsonContent (options = {}) {
   const hasAllKeys = expectedKeys.every((item) => {
     const keyExists = json.hasOwnProperty(item)
     if (!keyExists) {
-      log.error('!!! Missing key in backend:', item)
+      log.error(`!!! Missing key in backend JSON: ${item}`)
     }
     return keyExists
   })
@@ -30,4 +30,4 @@ module.exports = function checkJsonContent (options = {}) {
     isNumeric(json.avgBlocktime) &&
     isNumeric(json.gasPrice) &&
     isNumeric(json.avgDifficulty)
-} 
+}

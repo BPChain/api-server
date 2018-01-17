@@ -13,7 +13,7 @@ async function getNumberOfMiners (options = {}) {
     return numberOfMiners
   }
   catch (error) {
-    log.warn('!!! Can not reach api.nanopool.org')
+    log.warn('!!! Can not reach api.nanopool.org (NumberOfMiners)')
     return 0
   }
 }

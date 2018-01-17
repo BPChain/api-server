@@ -13,7 +13,7 @@ async function getAvgBlocktime (options = {}) {
     return avgBlocktime
   }
   catch (error) {
-    log.warn('!!! Can not reach api.nanopool.org')
+    log.warn('!!! Can not reach api.nanopool.org (AvgBlocktime)')
     return 0
   }
 }

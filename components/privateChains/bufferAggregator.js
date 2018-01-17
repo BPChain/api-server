@@ -8,7 +8,7 @@ module.exports = async (options) => {
     log,
   } = options
 
-  log.debug('++ Aggregate files from', filledBuffer)
+  log.trace(`++ Aggregate files from ${filledBuffer}`)
   const Buffer = connection
     .model(`${chainName}_private${filledBuffer}`, Schema)
   const Storage = connection
@@ -135,14 +135,16 @@ module.exports = async (options) => {
 
   dataLine.save((error, savedData) => {
     if (error) {
-      log.error(error)
+      log.error(`!!! Error occured while storing aggregated private data:
+        ${error}`)
       throw error
     }
     else {
       log.info(
-        '+++ Stored aggregated private data with timestamp: ',
-        savedData.timeStamp
+        `+++ Stored aggregated private data with TS: ${savedData.timeStamp}`
       )
+      log.debug(`+++ Stored aggregated private data:
+        ${savedData}`)
       return 0
     }
   })

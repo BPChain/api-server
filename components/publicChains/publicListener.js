@@ -24,9 +24,10 @@ module.exports = async (options = {}) => {
         }
         else {
           log.info(
-            '+++ Stored aggregated public data with timestamp: ',
-            savedData.timeStamp
+            `+++ Stored aggregated public data with TS: ${savedData.timeStamp}`
           )
+          log.debug(`+++ Stored aggregated private data:
+            ${savedData}`)
           return 0
         }
       })

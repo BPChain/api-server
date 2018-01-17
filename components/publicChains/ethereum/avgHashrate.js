@@ -13,7 +13,7 @@ async function getAvgHashrate (options = {}) {
     return avgHashrate
   }
   catch (error) {
-    log.warn('!!! Can not reach api.nanopool.org')
+    log.warn('!!! Can not reach api.nanopool.org (AvgHashrate)')
     return 0
   }
 }
