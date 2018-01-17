@@ -17,8 +17,8 @@ module.exports = (options = {}) => {
     }
 
     if (!(isNaN(Date.parse(startTime)) || isNaN(Date.parse(endTime)))) {
-      log.info(
-        `? Access ${accessibility} items ${startTime}||${endTime} without cache`
+      log.trace(
+        `Access ${accessibility} items ${startTime}||${endTime} without cache`
       )
       const data = await aggregator({
         chainName,
@@ -32,8 +32,8 @@ module.exports = (options = {}) => {
     }
 
     else if (Number.isInteger(numberOfItems) && numberOfItems > 0) {
-      log.info(
-        `? Access last ${numberOfItems} ${accessibility} items without cache`
+      log.trace(
+        `Access last ${numberOfItems} ${accessibility} items without cache`
       )
 
       const data = await aggregator({
@@ -50,12 +50,12 @@ module.exports = (options = {}) => {
     else {
       cache.get(`${chainName}${accessibility}Cache`, async (error, value) => {
         if (!error) {
-          log.debug('# Access cache via key')
+          log.trace('Access cache via key')
           response.send(value)
         }
         else {
-          log.debug(
-            `# Cache access error: No ${accessibility} chain data cached`
+          log.trace(
+            `Cache access error: No ${accessibility} chain data cached`
           )
           const data = await aggregator({
             chainName,
@@ -72,13 +72,14 @@ module.exports = (options = {}) => {
             (cachingError, success) => {
               if (cachingError) {
                 log.error(
-                  `### ERROR ${accessibility} ${chainName} cannot be cached.`
+                  `Error: ${accessibility} ${chainName} can't be cached:
+                  ${cachingError}`
                 )
                 response.sendStatus(404)
                 return
               }
               if (success) {
-                log.debug(`# New ${accessibility} ${chainName} data cached.`)
+                log.trace(`New ${accessibility} ${chainName} data cached.`)
               }
             })
         }

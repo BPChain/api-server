@@ -13,7 +13,7 @@ async function getNumberOfWorkers (options = {}) {
     return numberOfWorkers
   }
   catch (error) {
-    log.warn('!!! Can not reach api.nanopool.org')
+    log.warn(`Can not reach ${config.ethereum.publicChain.activeWorkers}`)
     return 0
   }
 }

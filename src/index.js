@@ -15,6 +15,7 @@ async function start () {
   })
 }
 
+log.info('Starting API-Server...')
 start()
 
 module.exports = start

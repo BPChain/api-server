@@ -29,7 +29,8 @@ module.exports = async (options = {}) => {
     const hasAllKeys = object.expectedKeys.every((item) => {
       const keyExists = object.hasOwnProperty(item)
       if (!keyExists) {
-        log.error('!!! Missing public key:', item)
+        log.error(`Missing key in public JSON:
+          ${item}`)
       }
       return keyExists
     })
@@ -41,7 +42,8 @@ module.exports = async (options = {}) => {
     return object
   }
   catch (error) {
-    log.error(error)
+    log.error(`Error occured while collecting public data
+      ${error}`)
     return null
   }
 }
