@@ -72,7 +72,7 @@ module.exports = (options = {}) => {
             (cachingError, success) => {
               if (cachingError) {
                 log.error(
-                  `Error occured: ${accessibility} ${chainName} cannot be cached:
+                  `Error: ${accessibility} ${chainName} can't be cached:
                   ${cachingError}`
                 )
                 response.sendStatus(404)
