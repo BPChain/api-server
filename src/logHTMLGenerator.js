@@ -1,4 +1,4 @@
-module.exports = async (options = {}) => {
+module.exports = (options = {}) => {
   const {data} = options
   const logLevels = {
     10: '<td style="color:#0066ff;">trace</td>',
