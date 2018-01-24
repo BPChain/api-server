@@ -37,5 +37,6 @@ module.exports = (options = {}) => {
         ${logLines}
         </table>
         </BODY>
-    </HTML>`
+    </HTML>
+`
 }
