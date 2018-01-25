@@ -20,7 +20,7 @@ module.exports.connect = mongoUri => {
       await execa(path.join(__dirname, 'unsetEnvVariables.sh'))
     })
     .catch(async (error) => {
-      log.info('Error while trying to connect with mongodb')
+      log.error('Error while trying to connect with mongodb')
       await execa(path.join(__dirname, 'unsetEnvVariables.sh'))
       throw error
     })

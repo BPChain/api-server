@@ -1,9 +1,11 @@
 const axios = require('axios')
 
 const config = require('../../../src/config.js')
-const log = console
 
-async function getNumberOfWorkers () {
+async function getNumberOfWorkers (options = {}) {
+
+  const {log} = options
+
   try {
     const numberOfWorkers =
     (await axios.get(config.ethereum.publicChain.activeWorkers))
@@ -11,7 +13,7 @@ async function getNumberOfWorkers () {
     return numberOfWorkers
   }
   catch (error) {
-    log.info('!!! Can not reach api.nanopool.org')
+    log.warn(`Can not reach ${config.ethereum.publicChain.activeWorkers}`)
     return 0
   }
 }

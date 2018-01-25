@@ -9,3 +9,6 @@ npm-debug.log
 
 # database data
 database/data
+
+# coverage data
+coverage/

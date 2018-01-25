@@ -1,25 +1,21 @@
-const frontendHandler = require('./frontendInterface')
-const backendHandler = require('../components/privateChains/backendListener')
-const mongoConnector = require('./mongoConnector')
-const publicChainHandler = require('../components/publicChains/publicListener')
 const config = require('../src/config')
+const logger = require('./createLogger')
+const createServer = require('./createServer')
+const mongoConnector = require('./mongoConnector')
 
 const connection = mongoConnector
   .connect('mongodb://mongodb/chainboarddb?authSource=admin')
+const log = logger({connection})
 
+async function start () {
+  return await createServer({
+    connection,
+    config,
+    log,
+  })
+}
 
-backendHandler({
-  chainName: config.ethereum.privateChain.name,
-  schema: config.ethereum.privateChain.schema,
-  connection,
-})
+log.info('Starting API-Server...')
+start()
 
-publicChainHandler({
-  chainName: 'ethereum',
-  schema: require('../schemas/publicChains/ethereumStorage.js')(),
-  connection,
-})
-
-frontendHandler({
-  connection,
-})
+module.exports = start
