@@ -26,13 +26,13 @@ module.exports = {
 
     io.on('connection', client => {
       logger.info('Client connected')
-      client.emit('messages', 'API-Server ping')
       activeClient = client
     })
   },
   sendMessage: (options = {}) => {
-    const {message} = options
+    let {message} = options
 
+    message = JSON.stringify(message)
     logger.info(`Send message: ${message}`)
 
     if (activeClient) {
