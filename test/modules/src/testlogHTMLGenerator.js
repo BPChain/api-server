@@ -56,6 +56,8 @@ describe('publicChains', () => {
   describe('logHTMLGenerator', () => {
     it('should generate correct logs for all logLevels', (done) => {
       const html = htmlGenerator({data: logObjects})
+      // log.info(html)
+      // assert(testHTMLOutput)
       assert.equal(html, testHTMLOutput)
       done()
     })
