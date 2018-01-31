@@ -4,6 +4,7 @@ const server = require('http')
   .createServer(app)
 const io = require('socket.io')(server)
 
+
 let logger = console
 let activeClient = null
 
@@ -32,14 +33,22 @@ module.exports = {
   sendMessage: (options = {}) => {
     let {message} = options
 
-    message = JSON.stringify(message)
-    logger.info(`Send message: ${message}`)
+    try {
+      message = JSON.stringify(message)
+      logger.info(`Send message: ${message}`)
 
-    if (activeClient) {
-      activeClient.emit('messages', message)
+      if (activeClient) {
+        activeClient.emit('messages', message)
+        return true
+      }
+      else {
+        logger.warn('No client connected')
+        return false
+      }
     }
-    else {
-      logger.warn('No client connected')
+    catch (error) {
+      logger.error(`Can not send message ${message}`)
+      return false
     }
   },
 }

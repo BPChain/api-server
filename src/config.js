@@ -23,6 +23,7 @@ const config = {
   },
   dataAggregatorPort: 3030,
   frontendPort: 2020,
+  controllerPort: 4040,
 }
 
 module.exports = config
