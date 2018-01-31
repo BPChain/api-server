@@ -2,7 +2,7 @@ const frontendHandler = require('./frontendInterface')
 const privateChainHandler =
   require('../components/privateChains/backendListener')
 const publicChainHandler = require('../components/publicChains/publicListener')
-const backendController = require('../interface/backendController')
+const backendController = require('../interface/backend/backendController')
 
 module.exports = async (options = {}) => {
   const {connection, config, log} = options
