@@ -16,6 +16,7 @@ module.exports = (options = {}) => {
         parameter,
         value,
       },
+      log,
     })) {
       log.info('Successfully sent a change request')
       response.sendStatus(200)
