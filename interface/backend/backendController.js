@@ -15,10 +15,7 @@ module.exports = {
   },
   sendMessage: (options = {}) => {
     const {log = console, message = {}} = options
-
-    log.info('Komm schon')
     try {
-      log.info('try block')
       if (activeClient) {
         log.info('Found active client')
         activeClient.send(JSON.stringify(message))
