@@ -1,5 +1,5 @@
 module.exports = (options = {}) => {
-  const {backendControllerServer, log} = options
+  const {backendController, log} = options
 
   return async (request, response) => {
     const {
@@ -10,7 +10,7 @@ module.exports = (options = {}) => {
 
     log.debug(`Trying to send a change request ${chain} ${parameter} ${value}`)
 
-    if (backendControllerServer.sendMessage({
+    if (backendController.sendMessage({
       message: {
         chain,
         parameter,

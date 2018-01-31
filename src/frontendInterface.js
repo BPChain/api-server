@@ -10,7 +10,7 @@ const config = require('./config')
 module.exports = (options = {}) => {
 
   const {
-    backendControllerServer,
+    backendController,
     connection,
     log,
   } = options
@@ -19,7 +19,7 @@ module.exports = (options = {}) => {
   const createHandleGetStatistics = require('../routes/handleGetStatistics')
   const createDisplayLogs = require('../routes/displayLogs')
   const changeParameter = require('../routes/changeParameters')({
-    backendControllerServer,
+    backendController,
     log,
   })
 

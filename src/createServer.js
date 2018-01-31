@@ -7,7 +7,7 @@ const backendController = require('../interface/backend/backendController')
 module.exports = async (options = {}) => {
   const {connection, config, log} = options
 
-  const backendControllerServer = backendController.startServer({
+  backendController.startServer({
     log,
     port: config.controllerPort,
   })
@@ -27,7 +27,7 @@ module.exports = async (options = {}) => {
     }),
 
     startFrontendHandler: frontendHandler({
-      backendControllerServer,
+      backendController,
       connection,
       log,
     }),

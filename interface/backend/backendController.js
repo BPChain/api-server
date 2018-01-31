@@ -9,13 +9,7 @@ let activeClient = null
 
 module.exports = {
   startServer: async (options = {}) => {
-    const {log = console} = options
-    let {port} = options
-
-
-    if (!port) {
-      port = 4040
-    }
+    const {log = console, port = 4040} = options
 
     server.listen(port, () => {
       log.info(`Backend Server waiting for connections on port ${port}`)
@@ -28,18 +22,14 @@ module.exports = {
   },
   sendMessage: (options = {}) => {
     const {log, message} = options
-
-    log.info(`This is the message: ${message}`)
     try {
-      log.info('In the try block')
-      log.info(`Send message: ${message}`)
       if (activeClient) {
-        log.info(`Active client = ${activeClient}`)
+        log.debug('Found active client')
         activeClient.emit(
           'messages',
           JSON.stringify(message),
         )
-        log.info('Emitted')
+        log.info('Message sent')
         return true
       }
       else {

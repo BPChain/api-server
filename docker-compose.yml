@@ -11,6 +11,7 @@ services:
       - backendnet
     ports:
       - "2020:2020"
+      - "4040:4040"
 networks:
   backendnet:
     external:
