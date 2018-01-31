@@ -1,5 +1,5 @@
 module.exports = (options = {}) => {
-  const {backendControllerServer} = options
+  const {backendControllerServer, log} = options
 
   return async (request, response) => {
     const {
@@ -8,6 +8,8 @@ module.exports = (options = {}) => {
       value,
     } = request.body
 
+    log.debug(`Trying to send a change request ${chain} ${parameter} ${value}`)
+
     if (backendControllerServer.sendMessage({
       message: {
         chain,
@@ -15,8 +17,12 @@ module.exports = (options = {}) => {
         value,
       },
     })) {
+      log.info('Successfully sent a change request')
       response.sendStatus(200)
     }
-    response.sendStatus(400)
+    else {
+      log.warn('Error occured trying to send a change request')
+      response.sendStatus(400)
+    }
   }
 }

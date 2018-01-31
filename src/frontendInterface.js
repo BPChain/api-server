@@ -20,6 +20,7 @@ module.exports = (options = {}) => {
   const createDisplayLogs = require('../routes/displayLogs')
   const changeParameter = require('../routes/changeParameters')({
     backendControllerServer,
+    log,
   })
 
 
