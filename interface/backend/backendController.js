@@ -27,15 +27,19 @@ module.exports = {
     })
   },
   sendMessage: (options = {}) => {
-    const {log} = options
-    let {message} = options
+    const {log, message} = options
 
+    log.info(`This is the message: ${message}`)
     try {
-      message = JSON.stringify(message)
+      log.info('In the try block')
       log.info(`Send message: ${message}`)
-
       if (activeClient) {
-        activeClient.emit('messages', message)
+        log.info(`Active client = ${activeClient}`)
+        activeClient.emit(
+          'messages',
+          JSON.stringify(message),
+        )
+        log.info('Emitted')
         return true
       }
       else {
