@@ -11,6 +11,7 @@ COPY src src
 COPY schemas schemas
 COPY components components
 COPY routes routes
+COPY interface interface
 
 EXPOSE 2020
 ENTRYPOINT ["npm", "start", "--"]
