@@ -1,34 +1,27 @@
-const express = require('express')
-const app = express()
-const server = require('http')
-  .createServer(app)
-const io = require('socket.io')(server)
+const ws = require('ws')
 
-
+const WebSocketServer = ws.Server
 let activeClient = null
 
 module.exports = {
   startServer: async (options = {}) => {
     const {log = console, port = 4040} = options
-
-    server.listen(port, () => {
-      log.info(`Backend Server waiting for connections on port ${port}`)
-    })
-
-    io.on('connection', client => {
+    const wsServer = new WebSocketServer({port})
+    log.info(`Backend Server waiting for connections on port ${port}`)
+    wsServer.on('connection', client => {
       log.info('Client connected')
       activeClient = client
     })
   },
   sendMessage: (options = {}) => {
-    const {log, message} = options
+    const {log = console, message = {}} = options
+
+    log.info('Komm schon')
     try {
+      log.info('try block')
       if (activeClient) {
-        log.debug('Found active client')
-        activeClient.emit(
-          'messages',
-          JSON.stringify(message),
-        )
+        log.info('Found active client')
+        activeClient.send(JSON.stringify(message))
         log.info('Message sent')
         return true
       }
