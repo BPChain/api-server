@@ -1,5 +1,5 @@
 const chainValueCollector = require('./chainValueCollector')
-
+const config = require('../../src/config')
 
 module.exports = async (options = {}) => {
 
@@ -30,5 +30,5 @@ module.exports = async (options = {}) => {
         }
       })
     }
-  }, 30000)
+  }, config.publicPollTime)
 }

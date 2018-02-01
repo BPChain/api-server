@@ -24,6 +24,8 @@ const config = {
   dataAggregatorPort: 3030,
   frontendPort: 2020,
   controllerPort: 4040,
+  bufferSwitchTime: 15000,
+  publicPollTime: 30000,
 }
 
 module.exports = config
