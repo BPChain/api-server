@@ -50,7 +50,7 @@ module.exports = async (options = {}) => {
       })
     }
     isBufferA = !isBufferA
-  }, 15000)
+  }, config.bufferSwitchTime)
 
 
   const WebSocketServer = ws.Server
