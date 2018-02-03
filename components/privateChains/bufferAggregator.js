@@ -30,7 +30,10 @@ module.exports = async (options) => {
     } = aggregationOptions
 
     const result = await Buffer
-      .aggregate([
+      .aggregate(
+        [{
+          $match: {chain: chainName.toLowerCase()},
+        },
         {
           $group: {
             _id: '$hostId',
@@ -54,6 +57,9 @@ module.exports = async (options) => {
     const result = await Buffer
       .aggregate(
         [{
+          $match: {chain: chainName.toLowerCase()},
+        },
+        {
           $group: {
             _id: '$hostId',
           },
@@ -75,6 +81,9 @@ module.exports = async (options) => {
     const result = await Buffer
       .aggregate(
         [{
+          $match: {chain: chainName.toLowerCase()},
+        },
+        {
           $match: {isMining: 1},
         },
         {

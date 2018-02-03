@@ -5,6 +5,7 @@ function isNumeric (number) {
 module.exports = function checkJsonContent (options = {}) {
   const {json, log} = options
   const expectedKeys = [
+    'chain',
     'hostId',
     'isMining',
     'hashrate',

@@ -6,9 +6,14 @@ const backendController = require('../interface/backend/backendController')
 const activeChain = require('../components/privateChains/activeChain')
 
 module.exports = async (options = {}) => {
-  const {connection, config, log} = options
+  const {
+    connection,
+    activeChainName,
+    config,
+    log,
+  } = options
 
-  activeChain.set(config.activePrivateChains[0])
+  activeChain.set(activeChainName)
 
   backendController.startServer({
     log,
@@ -18,8 +23,8 @@ module.exports = async (options = {}) => {
 
   return {
     startPrivateChainHandler: privateChainHandler({
-      chainName: config.ethereum.privateChain.name,
       schema: config.ethereum.privateChain.schema,
+      activeChain,
       connection,
       log,
     }),

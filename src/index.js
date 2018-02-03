@@ -7,8 +7,10 @@ const connection = mongoConnector
   .connect('mongodb://mongodb/chainboarddb?authSource=admin')
 const log = logger({connection})
 
-async function start () {
+async function start (options = {}) {
+  const {activeChainName} = options
   return await createServer({
+    activeChainName,
     connection,
     config,
     log,
@@ -16,6 +18,6 @@ async function start () {
 }
 
 log.info('Starting API-Server...')
-start()
+start({activeChainName: 'Ethereum'})
 
 module.exports = start

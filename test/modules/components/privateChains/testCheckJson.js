@@ -39,6 +39,7 @@ describe('privateChains', () => {
       assert.equal(
         checkJsonContent({
           json: {
+            'chain': 'ethereum',
             'hostId': 'abc',
             'isMining': 'false',
             'hashrate': '45',
@@ -54,6 +55,7 @@ describe('privateChains', () => {
       assert.equal(
         checkJsonContent({
           json: {
+            'chain': 'ethereum',
             'hostId': 'abc',
             'isMining': 1,
             'hashrate': 45,

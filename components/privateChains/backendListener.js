@@ -7,7 +7,7 @@ const config = require('../../config')
 
 module.exports = async (options = {}) => {
   const {
-    chainName,
+    activeChain,
     schema,
     connection,
     log,
@@ -15,11 +15,17 @@ module.exports = async (options = {}) => {
 
 
   const StorageSchema = require(
-    `../../schemas/privateChains/${chainName}Storage`
+    `../../schemas/privateChains/${activeChain.get()}Storage`
   )()
   const Schema = require(`../../schemas/privateChains/${schema}`)()
-  const BufferA = connection.model(`${chainName}_private_buffer_a`, Schema)
-  const BufferB = connection.model(`${chainName}_private_buffer_b`, Schema)
+  const BufferA = connection.model(
+    `${activeChain.get()}_private_buffer_a`,
+    Schema,
+  )
+  const BufferB = connection.model(
+    `${activeChain.get()}_private_buffer_b`,
+    Schema,
+  )
 
   let CurrentBuffer = BufferA
 
@@ -29,7 +35,7 @@ module.exports = async (options = {}) => {
       CurrentBuffer = BufferB
       log.trace('Change Buffer to Buffer B')
       bufferAggregator({
-        chainName,
+        chainName: activeChain.get(),
         filledBuffer: '_buffer_a',
         Schema,
         StorageSchema,
@@ -41,7 +47,7 @@ module.exports = async (options = {}) => {
       CurrentBuffer = BufferA
       log.trace('Change buffer to Buffer A')
       bufferAggregator({
-        chainName,
+        chainName: activeChain.get(),
         filledBuffer: '_buffer_b',
         Schema,
         StorageSchema,
