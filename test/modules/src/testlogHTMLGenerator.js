@@ -7,7 +7,7 @@ const path = require('path')
 
 const fse = require('fs-extra')
 const htmlGenerator = require(
-  '../../../src/logHTMLGenerator'
+  '../../../logger/logHTMLGenerator'
 )
 
 const log = console
