@@ -5,21 +5,23 @@ const cors = require('cors')
 const express = require('express')
 const NodeCache = require('node-cache')
 
-const config = require('./config')
+const config = require('../../config')
 
 module.exports = (options = {}) => {
 
   const {
     backendController,
+    activeChain,
     connection,
     log,
   } = options
 
-  const aggregator = require('../components/dbRequests/aggregator')
-  const createHandleGetStatistics = require('../routes/handleGetStatistics')
-  const createDisplayLogs = require('../routes/displayLogs')
-  const changeParameter = require('../routes/changeParameters')({
+  const aggregator = require('../../components/dbRequests/aggregator')
+  const createHandleGetStatistics = require('../../routes/handleGetStatistics')
+  const createDisplayLogs = require('../../routes/displayLogs')
+  const changeParameter = require('../../routes/changeParameters')({
     backendController,
+    activeChain,
     log,
   })
 

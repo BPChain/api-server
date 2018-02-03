@@ -2,7 +2,7 @@ const ws = require('ws')
 
 const bufferAggregator = require('./bufferAggregator')
 const checkJsonContent = require('./checkJsonContent')
-const config = require('../../src/config')
+const config = require('../../config')
 
 
 module.exports = async (options = {}) => {

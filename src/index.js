@@ -1,5 +1,5 @@
-const config = require('../src/config')
-const logger = require('./createLogger')
+const config = require('../config')
+const logger = require('../logger/createLogger')
 const createServer = require('./createServer')
 const mongoConnector = require('./mongoConnector')
 

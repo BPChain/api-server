@@ -1,5 +1,5 @@
 const chainValueCollector = require('./chainValueCollector')
-const config = require('../../src/config')
+const config = require('../../config')
 
 module.exports = async (options = {}) => {
 

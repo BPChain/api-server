@@ -12,6 +12,8 @@ COPY schemas schemas
 COPY components components
 COPY routes routes
 COPY interface interface
+COPY logger logger
+COPY config.js config.js
 
 EXPOSE 2020
 ENTRYPOINT ["npm", "start", "--"]
