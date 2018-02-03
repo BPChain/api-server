@@ -1,15 +1,19 @@
-const frontendHandler = require('./frontendInterface')
+const frontendHandler = require('../interface/frontend/frontendInterface')
 const privateChainHandler =
   require('../components/privateChains/backendListener')
 const publicChainHandler = require('../components/publicChains/publicListener')
 const backendController = require('../interface/backend/backendController')
+const activeChain = require('../components/privateChains/activeChain')
 
 module.exports = async (options = {}) => {
   const {connection, config, log} = options
 
+  activeChain.set(config.activePrivateChains[0])
+
   backendController.startServer({
     log,
     port: config.controllerPort,
+    activeChain,
   })
 
   return {
@@ -25,9 +29,9 @@ module.exports = async (options = {}) => {
       connection,
       log,
     }),
-
     startFrontendHandler: frontendHandler({
       backendController,
+      activeChain,
       connection,
       log,
     }),

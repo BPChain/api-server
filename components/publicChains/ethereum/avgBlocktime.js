@@ -1,6 +1,6 @@
 const axios = require('axios')
 
-const config = require('../../../src/config.js')
+const config = require('../../../config.js')
 
 async function getAvgBlocktime (options = {}) {
 
