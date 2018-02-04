@@ -11,26 +11,19 @@ module.exports = (options = {}) => {
       startTime,
       endTime,
     } = request.query
-    let numberOfItems = parseInt(request.query.numberOfItems)
+    const numberOfItems = parseInt(request.query.numberOfItems) || 1000
 
-    let logNumber = 10
-
-    switch (logLevel) {
-    case 'trace': {logNumber = 10} break
-    case 'debug': {logNumber = 20} break
-    case 'info': {logNumber = 30} break
-    case 'warn': {logNumber = 40} break
-    case 'error': {logNumber = 50} break
-    case 'fatal': {logNumber = 60} break
-    default: {logNumber = 10} break
+    const logTranslation = {
+      'trace': 10,
+      'debug': 20,
+      'info': 30,
+      'warn': 40,
+      'error': 50,
+      'fatal': 60,
     }
-
+    const logNumber = logTranslation[logLevel] || 10
     const collection = await connection.db
       .collection('logs')
-
-    if (!numberOfItems) {
-      numberOfItems = 1000
-    }
 
     let query = {}
 
