@@ -1,4 +1,3 @@
-
 const Handlebars = require('handlebars')
 const logLevels = {
   10: '<td style="color:#0066ff;">trace</td>',
@@ -43,7 +42,7 @@ module.exports = (options = {}) => {
       const htmlLine = lineTemplate({
         timeStamp: logEntry.timeStamp,
         logLevelLine,
-        message: logEntry.log,
+        message: Handlebars.Utils.escapeExpression(logEntry.log),
       })
       return `${html}${htmlLine}`
     }, '')
