@@ -19,7 +19,7 @@ module.exports = (options = {}) => {
       },
       log,
     })) {
-      if (parameter === 'switchChain' && activeChain.set(value)) {
+      if ((parameter === 'switchChain' && activeChain.set(value)) || (parameter === 'startChain')) {
         log.info('Successfully sent a change request')
         response.sendStatus(200)
       }
