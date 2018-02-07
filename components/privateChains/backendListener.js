@@ -15,7 +15,8 @@ module.exports = async (options = {}) => {
 
 
   const StorageSchema = require(
-    `../../schemas/privateChains/${activeChain.get()}Storage`
+    `../../schemas/privateChains/${activeChain.get()
+      .toLowerCase()}Storage`
   )()
   const Schema = require(`../../schemas/privateChains/${schema}`)()
   const BufferA = connection.model(
