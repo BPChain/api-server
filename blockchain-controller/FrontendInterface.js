@@ -17,12 +17,16 @@ class FrontendInterface {
       this.log.info(`Frontend connected on port ${this.port}`)
       client.on('message', data => {
         this.log.info(`Redirecting message ${data}`)
-        this.blockchainController.sendMessage(JSON.parse(data))
+        const result = this.blockchainController.sendMessage(JSON.parse(data))
+        if (result) {
+          client.send(200)
+        }
+        else {
+          client.send(405)
+        }
       })
     })
   }
-
-
 }
 
 module.exports = FrontendInterface
