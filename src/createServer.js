@@ -21,24 +21,28 @@ module.exports = async (options = {}) => {
     activeChain,
   })
 
+  const startPrivateChainHandler = privateChainHandler({
+    schema: config.ethereum.privateChain.schema,
+    activeChain,
+    connection,
+    log,
+  })
+  const startPublicChainHandler = publicChainHandler({
+    chainName: 'ethereum',
+    schema: require('../schemas/publicChains/ethereumStorage.js')(),
+    connection,
+    log,
+  })
+  const startFrontendHandler = frontendHandler({
+    backendController,
+    activeChain,
+    connection,
+    log,
+  })
+
   return {
-    startPrivateChainHandler: privateChainHandler({
-      schema: config.ethereum.privateChain.schema,
-      activeChain,
-      connection,
-      log,
-    }),
-    startPublicChainHandler: publicChainHandler({
-      chainName: 'ethereum',
-      schema: require('../schemas/publicChains/ethereumStorage.js')(),
-      connection,
-      log,
-    }),
-    startFrontendHandler: frontendHandler({
-      backendController,
-      activeChain,
-      connection,
-      log,
-    }),
+    startPrivateChainHandler,
+    startPublicChainHandler,
+    startFrontendHandler,
   }
 }
