@@ -2,7 +2,7 @@ module.exports = (options = {}) => {
   const {
     backendController,
     log,
-    activeChain
+    activeChain,
   } = options
 
   return async (request, response) => {
@@ -16,13 +16,13 @@ module.exports = (options = {}) => {
     )
 
     if (backendController.sendMessage({
-        message: {
-          chain: activeChain.get(),
-          parameter,
-          value,
-        },
-        log,
-      })) {
+      message: {
+        chain: activeChain.get(),
+        parameter,
+        value,
+      },
+      log,
+    })) {
       if (
         (parameter === 'switchChain' && activeChain.set(value)) ||
         (parameter === 'startChain')
