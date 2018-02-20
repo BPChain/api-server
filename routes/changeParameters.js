@@ -1,5 +1,9 @@
 module.exports = (options = {}) => {
-  const {backendController, log, activeChain} = options
+  const {
+    backendController,
+    log,
+    activeChain
+  } = options
 
   return async (request, response) => {
     const {
@@ -12,14 +16,17 @@ module.exports = (options = {}) => {
     )
 
     if (backendController.sendMessage({
-      message: {
-        chain: activeChain.get(),
-        parameter,
-        value,
-      },
-      log,
-    })) {
-      if ((parameter === 'switchChain' && activeChain.set(value)) || (parameter === 'startChain')) {
+        message: {
+          chain: activeChain.get(),
+          parameter,
+          value,
+        },
+        log,
+      })) {
+      if (
+        (parameter === 'switchChain' && activeChain.set(value)) ||
+        (parameter === 'startChain')
+      ) {
         log.info('Successfully sent a change request')
         response.sendStatus(200)
       }
