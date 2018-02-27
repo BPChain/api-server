@@ -1,3 +1,7 @@
+/*
+  Defines and starts api server
+*/
+
 const config = require('../config')
 const logger = require('../logger/createLogger')
 const createServer = require('./createServer')
@@ -18,6 +22,6 @@ async function start (options = {}) {
 }
 
 log.info('Starting API-Server...')
-start({activeChainName: 'Ethereum'})
+start({activeChainName: 'ethereum'})
 
 module.exports = start

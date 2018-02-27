@@ -1,3 +1,7 @@
+/*
+  Establish and return database connection
+*/
+
 const mongoose = require('mongoose')
 
 const log = console

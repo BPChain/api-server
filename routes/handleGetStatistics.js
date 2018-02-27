@@ -1,3 +1,6 @@
+/*
+  Factory method for route function for statistics api
+*/
 module.exports = (options = {}) => {
   const {
     cache,

@@ -1,3 +1,7 @@
+/*
+  Holds state of active chain and checks if valid chain is selected
+*/
+
 const config = require('../../config')
 let activeChain = null
 

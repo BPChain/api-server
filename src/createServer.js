@@ -1,3 +1,7 @@
+/*
+  Create privateChain, publicChain and frontend components
+*/
+
 const frontendHandler = require('../interface/frontend/frontendInterface')
 const privateChainHandler =
   require('../components/privateChains/backendListener')

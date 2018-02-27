@@ -1,8 +1,8 @@
 const config = {
   activePrivateChains: [
-    'Ethereum',
-    'Xain',
-    'Multichain',
+    'ethereum',
+    'xain',
+    'multichain',
   ],
   ethereum: {
     privateChain: {

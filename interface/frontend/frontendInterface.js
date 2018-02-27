@@ -1,3 +1,7 @@
+/*
+  Defines web interface for frontend
+*/
+
 const path = require('path')
 
 const bodyParser = require('body-parser')
@@ -17,8 +21,8 @@ module.exports = (options = {}) => {
   } = options
 
   const aggregator = require('../../components/dbRequests/aggregator')
-  const createHandleGetStatistics = require('../../routes/handleGetStatistics')
-  const createDisplayLogs = require('../../routes/displayLogs')
+  const handleGetStatisticsFactory = require('../../routes/handleGetStatistics')
+  const displayLogsFactory = require('../../routes/displayLogs')
   const changeParameter = require('../../routes/changeParameters')({
     backendController,
     activeChain,
@@ -28,14 +32,14 @@ module.exports = (options = {}) => {
 
   const cache = new NodeCache({stdTTL: 5, errorOnMissing: true})
 
-  const handleGetStatistics = createHandleGetStatistics({
+  const handleGetStatistics = handleGetStatisticsFactory({
     cache,
     connection,
     log,
     aggregator,
   })
 
-  const displayLogs = createDisplayLogs({connection})
+  const displayLogs = displayLogsFactory({connection})
 
   const app = express()
 
