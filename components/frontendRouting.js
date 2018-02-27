@@ -50,7 +50,7 @@ module.exports = (options = {}) => {
   app.use(bodyParser.urlencoded({ extended: true }))
   app.use(cors())
 
-  app.get('/api/:accessibility/:chainName', handleGetStatistics)
+  app.get('/api/:accessibility(private|public)/:chainName', handleGetStatistics)
 
   app.get('/log', displayLogs)
 
