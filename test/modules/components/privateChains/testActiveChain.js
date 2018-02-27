@@ -23,18 +23,18 @@ describe('privateChains', () => {
         )
       })
     it(
-      'should return true when trying to set to a chain is implementedy',
+      'should return true when trying to set to a chain is implemented',
       () => {
         assert.equal(
-          activeChain.set('Ethereum'),
+          activeChain.set('ethereum'),
           true,
         )
       })
     it('Should return the valid chain once it has been set', () => {
-      activeChain.set('Ethereum')
+      activeChain.set('ethereum')
       assert.equal(
         activeChain.get(),
-        'Ethereum',
+        'ethereum',
       )
     })
   })
