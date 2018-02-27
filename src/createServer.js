@@ -3,7 +3,7 @@
 */
 
 const frontendHandler = require('../components/frontendRouting')
-const privateChainHandler =
+const privateChainCollector =
   require('../components/privateChainDataCollector/controller/listener')
 const publicChainCollector =
   require('../components/publicChainDataCollector/controller/nanopoolCaller')
@@ -27,7 +27,7 @@ module.exports = async (options = {}) => {
     port: config.controllerPort,
     activeChain,
   })
-  const privateChainHandlerInstance = privateChainHandler({
+  const privateChainHandlerInstance = privateChainCollector({
     schema: config.ethereum.privateChain.schema,
     activeChain,
     connection,
@@ -43,7 +43,7 @@ module.exports = async (options = {}) => {
     log,
   })
   const frontendHandlerInstance = frontendHandler({
-    privateChainHandler,
+    privateChainHandler: privateChainCollector,
     activeChain,
     connection,
     log,
