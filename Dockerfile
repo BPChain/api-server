@@ -12,5 +12,4 @@ COPY component component
 COPY logger logger
 COPY config.js config.js
 
-EXPOSE 2020
 ENTRYPOINT ["npm", "start", "--"]
