@@ -1,5 +1,5 @@
-const request = require('./request')
-const timeRequest = require('./timeRequest')
+const entriesRequest = require('./entriesRequest')
+const timespanRequest = require('./timespanRequest')
 const resultReducer = require('./resultReducer')
 
 module.exports = async (options = {}) => {
@@ -16,7 +16,7 @@ module.exports = async (options = {}) => {
 
   if (startTime && endTime) {
     lines = await resultReducer({
-      lines: await timeRequest({
+      lines: await timespanRequest({
         chainName,
         accessibility,
         connection,
@@ -27,7 +27,7 @@ module.exports = async (options = {}) => {
     })
   }
   else {
-    lines = await request({
+    lines = await entriesRequest({
       chainName,
       accessibility,
       connection,
@@ -35,9 +35,6 @@ module.exports = async (options = {}) => {
     })
   }
 
-  const dataLine = lines.map((line) => {
-    return Object.assign(line, {chain: chainName})
-  })
-
+  const dataLine = lines.map((line) => Object.assign(line, {chain: chainName}))
   return dataLine
 }

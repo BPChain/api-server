@@ -2,12 +2,11 @@
   Create privateChain, publicChain and frontend components
 */
 
-const frontendHandler = require('../interface/frontend/frontendInterface')
-const privateChainHandler =
-  require('../components/privateChains/backendListener')
-const publicChainHandler = require('../components/publicChains/publicListener')
-const backendController = require('../interface/backend/backendController')
-const activeChain = require('../components/privateChains/activeChain')
+const frontendHandler = require('../component/frontendRouting')
+const privateChainHandler = require('../component/privateChainDataCollector/controller/listener')
+const publicChainCollector = require('../component/publicChainDataCollector/controller/nanopoolCaller')
+const privateChainConfigurator = require('../component/privateChainConfigurator/controller/listener')
+const activeChain = require('../component/privateChainDataCollector/model/activeChain')
 
 module.exports = async (options = {}) => {
   const {
@@ -19,34 +18,34 @@ module.exports = async (options = {}) => {
 
   activeChain.set(activeChainName)
 
-  backendController.startServer({
+  privateChainConfigurator.startServer({
     log,
     port: config.controllerPort,
     activeChain,
   })
-
-  const startPrivateChainHandler = privateChainHandler({
+  const privateChainHandlerInstance = privateChainHandler({
     schema: config.ethereum.privateChain.schema,
     activeChain,
     connection,
     log,
   })
-  const startPublicChainHandler = publicChainHandler({
+  const publicChainCollectorInstance = publicChainCollector({
     chainName: 'ethereum',
-    schema: require('../schemas/publicChains/ethereumStorage.js')(),
+    schema: require('../component/publicChainDataCollector/model/ethereumStorage.js'),
     connection,
     log,
   })
-  const startFrontendHandler = frontendHandler({
-    backendController,
+  const frontendHandlerInstance = frontendHandler({
+    privateChainHandler,
     activeChain,
     connection,
     log,
   })
 
   return {
-    startPrivateChainHandler,
-    startPublicChainHandler,
-    startFrontendHandler,
+    privateChainConfigurator,
+    privateChainHandlerInstance,
+    publicChainCollectorInstance,
+    frontendHandlerInstance,
   }
 }
