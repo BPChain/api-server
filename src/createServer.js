@@ -35,7 +35,10 @@ module.exports = async (options = {}) => {
   })
   const publicChainCollectorInstance = publicChainCollector({
     chainName: 'ethereum',
-    schema: require('../component/publicChainDataCollector/model/ethereumStorage.js'),
+    schema:
+      require(
+        '../component/publicChainDataCollector/model/ethereumStorage.js'
+      ),
     connection,
     log,
   })
