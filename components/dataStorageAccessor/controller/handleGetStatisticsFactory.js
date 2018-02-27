@@ -14,11 +14,6 @@ module.exports = (options = {}) => {
     const {startTime, endTime} = request.query
     const numberOfItems = parseInt(request.query.numberOfItems)
 
-    if (accessibility !== 'public' && accessibility !== 'private') {
-      response.sendStatus(400)
-      return
-    }
-
     if (!(isNaN(Date.parse(startTime)) || isNaN(Date.parse(endTime)))) {
       log.trace(
         `Access ${accessibility} items ${startTime}||${endTime} without cache`
