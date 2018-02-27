@@ -1,8 +1,8 @@
 const ws = require('ws')
 
-const bufferAggregator = require('./bufferAggregator')
-const checkJsonContent = require('./checkJsonContent')
-const config = require('../../config')
+const bufferAggregator = require('../model/bufferAggregator')
+const checkJsonContent = require('../model/checkJsonContent')
+const config = require('../../../config')
 
 
 module.exports = async (options = {}) => {
@@ -15,10 +15,10 @@ module.exports = async (options = {}) => {
 
 
   const StorageSchema = require(
-    `../../schemas/privateChains/${activeChain.get()
+    `../model/${activeChain.get()
       .toLowerCase()}Storage`
-  )()
-  const Schema = require(`../../schemas/privateChains/${schema}`)()
+  )
+  const Schema = require(`../model/${schema}`)
   const BufferA = connection.model(
     `${activeChain.get()}_private_buffer_a`,
     Schema,

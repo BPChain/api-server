@@ -1,6 +1,6 @@
 const axios = require('axios')
 
-const config = require('../../../config.js')
+const config = require('../../../../config')
 
 async function getNumberOfWorkers (options = {}) {
 

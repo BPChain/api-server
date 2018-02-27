@@ -12,6 +12,7 @@ module.exports = {
       log.info('Client connected')
       activeClient = client
     })
+    return wsServer
   },
   sendMessage: (options = {}) => {
     const {log = console, message = {}} = options

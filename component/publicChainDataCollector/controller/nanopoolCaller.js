@@ -1,15 +1,13 @@
-const chainValueCollector = require('./chainValueCollector')
-const config = require('../../config')
+const chainValueCollector = require('../model/chainValueCollector')
+const config = require('../../../config')
 
 module.exports = async (options = {}) => {
-
   const {
     chainName,
     schema,
     connection,
     log,
   } = options
-
 
   const Storage = connection.model(`${chainName}_public_storage`, schema)
 
