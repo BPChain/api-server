@@ -24,9 +24,12 @@ module.exports = (options = {}) => {
 
   const aggregator = require('./dataStorageAccessor/model/aggregator')
 
-  const handleGetStatisticsFactory = require('./dataStorageAccessor/controller/handleGetStatisticsFactory')
-  const displayLogsFactory = require('./loggerHandler/controller/displayLogsFactory')
-  const changeParametersFactory = require('./privateChainConfigurator/controller/changeParametersFactory')
+  const handleGetStatisticsFactory =
+    require('./dataStorageAccessor/controller/handleGetStatisticsFactory')
+  const displayLogsFactory =
+    require('./loggerHandler/controller/displayLogsFactory')
+  const changeParametersFactory =
+    require('./privateChainConfigurator/controller/changeParametersFactory')
 
   const handleGetStatistics = handleGetStatisticsFactory({
     cache,
@@ -35,7 +38,7 @@ module.exports = (options = {}) => {
     aggregator,
   })
   const displayLogs = displayLogsFactory({connection})
-  const changeParameter = changeParametersFactory ({
+  const changeParameter = changeParametersFactory({
     backendController,
     activeChain,
     log,
@@ -54,7 +57,9 @@ module.exports = (options = {}) => {
   app.post('/change', changeParameter)
 
   app.get('/*', (request, response) => {
-    response.sendFile(path.join(__dirname, 'dataStorageAccessor/view/index.html'))
+    response.sendFile(
+      path.join(__dirname, 'dataStorageAccessor/view/index.html')
+    )
   })
 
   app.listen(config.frontendPort, () => {
