@@ -11,9 +11,7 @@ sudo: enabled
 notifications:
   email: false
 before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
+  - npm install -g codeclimate-test-reporter
 after_success:
   - npm run coveralls
-  - ./cc-test-reporter after-build -t lcov --exit-code $TRAVIS_TEST_RESULT
+  - codeclimate < ./coverage/lcov.info
