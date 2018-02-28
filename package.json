@@ -8,7 +8,7 @@
     "lint": "eslint .",
     "cover": "istanbul cover _mocha test --include-all-sources true --report lcovonly --default-excludes --",
     "test": "rm -rf coverage && npm run lint && npm run cover",
-    "coveralls": "cat ./coverage/lcov.info | coveralls  && rm -rf ./coverage"
+    "coveralls": "cat ./coverage/lcov.info | coveralls && cat ./coverage/lcov.info | codeclimate && rm -rf ./coverage"
   },
   "repository": {
     "type": "git",
@@ -32,6 +32,7 @@
     "body-parser": "^1.18.2",
     "bunyan": "^1.8.12",
     "chai": "^4.1.2",
+    "codeclimate-test-reporter": "^0.5.0",
     "cors": "^2.8.4",
     "crypto": "^1.0.1",
     "execa": "^0.8.0",

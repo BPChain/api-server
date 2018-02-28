@@ -10,8 +10,5 @@ cache:
 sudo: enabled
 notifications:
   email: false
-before_script:
-  - npm install -g codeclimate-test-reporter
 after_success:
   - npm run coveralls
-  - codeclimate < /home/travis/build/BPChain/api-server/coverage/lcov.info
