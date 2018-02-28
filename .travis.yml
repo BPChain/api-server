@@ -16,4 +16,4 @@ before_script:
   - ./cc-test-reporter before-build
 after_success:
   - npm run coveralls
-  - ./cc-test-reporter after-build -t lcov --exit-code $TRAVIS_TEST_RESULT -p "/home/travis/build/BPChain/api-server/coverage"
+  - ./cc-test-reporter after-build -t lcov --exit-code $TRAVIS_TEST_RESULT
