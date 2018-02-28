@@ -1,3 +1,5 @@
+const helper = require('./bufferAggregatorHelper')
+
 module.exports = async (options) => {
   const {
     chainName,
@@ -14,133 +16,23 @@ module.exports = async (options) => {
   const Storage = connection
     .model(`${chainName}_private_storage`, StorageSchema)
 
-  const aggregatedValues = {
-    numberOfHosts: 0,
-    numberOfMiners: 0,
-    avgHashrate: 0,
-    avgBlocktime: 0,
-    avgGasPrice: 0,
-    avgDifficulty: 0,
-  }
-
-  async function aggregateAverage (aggregationOptions) {
-    const {
-      field,
-      target,
-    } = aggregationOptions
-
-    const result = await Buffer
-      .aggregate(
-        [{
-          $match: {chain: chainName.toLowerCase()},
-        },
-        {
-          $group: {
-            _id: '$hostId',
-            avgHostValue: {$avg: `$${field}`},
-          },
-        },
-        {
-          $group: {
-            _id: 1,
-            avgValue: {$avg: '$avgHostValue'},
-          },
-        }])
-      .exec()
-    if (result.length) {
-      aggregatedValues[target] = result[0].avgValue
-    }
-  }
-
-  async function aggregateNumberOfHosts () {
-
-    const result = await Buffer
-      .aggregate(
-        [{
-          $match: {chain: chainName.toLowerCase()},
-        },
-        {
-          $group: {
-            _id: '$hostId',
-          },
-        },
-        {
-          $group: {
-            _id: 1,
-            count: { $sum: 1 },
-          },
-        }])
-      .exec()
-    if (result.length) {
-      aggregatedValues.numberOfHosts = result[0].count
-    }
-  }
-
-  async function aggregateNumberOfMiners () {
-
-    const result = await Buffer
-      .aggregate(
-        [{
-          $match: {chain: chainName.toLowerCase()},
-        },
-        {
-          $match: {isMining: 1},
-        },
-        {
-          $group: {
-            _id: '$hostId',
-          },
-        },
-        {
-          $group: {
-            _id: 1,
-            count: { $sum: 1 },
-          },
-        }])
-      .exec()
-    if (result.length) {
-      aggregatedValues.numberOfMiners = result[0].count
-    }
-  }
-
+  const aggregatedValues = helper.getAggregatedValues()
 
   await Promise
     .all([
-      aggregateNumberOfHosts(),
-      aggregateNumberOfMiners(),
-      aggregateAverage({
-        field: 'hashrate',
-        target: 'avgHashrate',
-      }),
-      aggregateAverage({
-        field: 'avgBlocktime',
-        target: 'avgBlocktime',
-      }),
-      aggregateAverage({
-        field: 'gasPrice',
-        target: 'avgGasPrice',
-      }),
-      aggregateAverage({
-        field: 'avgDifficulty',
-        target: 'avgDifficulty',
-      }),
+      helper.aggregateNumberOfHosts(Buffer, chainName, aggregatedValues),
+      helper.aggregateNumberOfMiners(Buffer, chainName, aggregatedValues),
+      helper.aggregateAverageHashRate(Buffer, chainName, aggregatedValues),
+      helper.aggregateAverageBlockTime(Buffer, chainName, aggregatedValues),
+      helper.aggregateAverageGasPrice(Buffer, chainName, aggregatedValues),
+      helper.aggregateAverageDifficulty(Buffer, chainName, aggregatedValues),
     ])
     .catch(log.error)
 
   await  Buffer.collection.remove({})
 
 
-  const dataLine = new Storage({
-    chain: chainName,
-    timeStamp: (new Date())
-      .toUTCString(),
-    numberOfHosts: aggregatedValues.numberOfHosts,
-    numberOfMiners: aggregatedValues.numberOfMiners,
-    avgHashrate: aggregatedValues.avgHashrate,
-    avgBlocktime: aggregatedValues.avgBlocktime,
-    avgGasPrice: aggregatedValues.avgGasPrice,
-    avgDifficulty: aggregatedValues.avgDifficulty,
-  })
+  const dataLine = helper.createStorage(Storage, chainName, aggregatedValues)
 
   dataLine.save((error, savedData) => {
     if (error) {
