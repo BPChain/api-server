@@ -14,4 +14,4 @@ before_script:
   - npm install -g codeclimate-test-reporter
 after_success:
   - npm run coveralls
-  - codeclimate < ./coverage/lcov.info
+  - codeclimate < /home/travis/build/BPChain/api-server/coverage/lcov.info
