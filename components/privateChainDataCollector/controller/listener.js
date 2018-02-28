@@ -25,6 +25,8 @@ module.exports = async (options = {}) => {
   const BufferB = helper.createBuffer(connection, activeChain, Schema, 'B')
 
   helper.setCurrentBuffer(BufferA)
+  helper.setBufferAActive(true)
+
   setInterval(() => {
     if (helper.isBufferAActive()) {
       helper.setCurrentBuffer(BufferB)
