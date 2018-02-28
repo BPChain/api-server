@@ -1,4 +1,4 @@
-const logSchema = require('../schemas/log')()
+const logSchema = require('./schema')
 
 const stdoutLog = console
 

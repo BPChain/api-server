@@ -3,7 +3,7 @@ env:
   node: true
   es6: true
 extends:
-    - eslint:recommended
+  - eslint:recommended
 parser: babel-eslint
 parserOptions:
   ecmaFeartures:
