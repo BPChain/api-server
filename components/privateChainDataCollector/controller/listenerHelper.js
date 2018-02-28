@@ -1,5 +1,5 @@
 /*
-  a helper that contains some logic from the listener to make things easier to read
+  A helper that contains some logic from the listener to make things easier to read
 */
 
 

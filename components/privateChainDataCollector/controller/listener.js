@@ -5,6 +5,11 @@ const isValidJson = require('../model/checkJsonContent')
 const config = require('../../../config')
 const helper = require('./listenerHelper')
 
+/*
+  Creates a websocket listening for private chain data and two buffers
+  that alternatively store the data and get aggregated into the database
+*/
+
 
 module.exports = async (options = {}) => {
   const {

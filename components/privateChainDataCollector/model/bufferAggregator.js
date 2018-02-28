@@ -1,5 +1,9 @@
 const helper = require('./bufferAggregatorHelper')
 
+/*
+  Aggregates the provided buffer and stores it in the database
+*/
+
 module.exports = async (options) => {
   const {
     chainName,
