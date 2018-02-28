@@ -1,3 +1,8 @@
+/*
+ A helper that contains all aggregation methods for private chain data
+ so that the bufferAggregator does not need to contain the logic itself
+*/
+
 exports.getAggregatedValues = function () {
   return {
     numberOfHosts: 0,
