@@ -4,9 +4,8 @@ const it = require('mocha').it
 const after = require('mocha').after
 const expect = require('chai').expect
 const chainValueCollector = require(
-  '../../../../components/publicChains/chainValueCollector'
+  '../../../../components/publicChainDataCollector/model/chainValueCollector'
 )
-
 const log = console
 
 describe('publicChains', () => {

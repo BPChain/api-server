@@ -5,7 +5,7 @@ const it = require('mocha').it
 const after = require('mocha').after
 
 const frontendInterface = require(
-  '../../../interface/frontend/frontendInterface'
+  '../../components/frontendRouting.js'
 )
 
 const log = console

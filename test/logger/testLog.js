@@ -5,7 +5,7 @@ const it = require('mocha').it
 const after = require('mocha').after
 
 const logSchema = require(
-  '../../../schemas/log'
+  '../../logger/schema'
 )
 
 const log = console
@@ -16,7 +16,7 @@ describe('schemas', () => {
   })
   describe('log', () => {
     it('should be created with no error', (done) => {
-      const result = logSchema()
+      const result = logSchema
       assert(result.obj.log)
       assert(result.obj.logLevel)
       assert(result.obj.timeStamp)

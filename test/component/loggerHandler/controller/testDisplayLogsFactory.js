@@ -5,7 +5,7 @@ const it = require('mocha').it
 const after = require('mocha').after
 
 const displayLogs = require(
-  '../../../routes/displayLogs'
+  '../../../../components/loggerHandler/controller/displayLogsFactory'
 )
 
 const connection = {

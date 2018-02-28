@@ -6,7 +6,7 @@ const expect = require('chai').expect
 const Schema = require('mongoose').Schema
 
 const ethereumStorage = require(
-  '../../../../schemas/publicChains/ethereumStorage'
+  '../../../../components/publicChainDataCollector/model/ethereumStorage'
 )
 const compareEthereumStorage = new Schema({
   chain: {type: String},
@@ -26,7 +26,7 @@ describe('publicChains', () => {
   })
   describe('ethereumStorage', () => {
     it('should return valid ethereum storage', (done) => {
-      expect(ethereumStorage()).to.deep.equal(compareEthereumStorage)
+      expect(ethereumStorage).to.deep.equal(compareEthereumStorage)
       done()
     })
   })

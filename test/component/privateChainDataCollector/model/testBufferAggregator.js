@@ -5,7 +5,7 @@ const it = require('mocha').it
 const after = require('mocha').after
 
 const bufferAggregator = require(
-  '../../../../components/privateChains/bufferAggregator'
+  '../../../../components/privateChainDataCollector/model/bufferAggregator'
 )
 
 const log = console

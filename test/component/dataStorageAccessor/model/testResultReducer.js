@@ -4,7 +4,7 @@ const it = require('mocha').it
 const after = require('mocha').after
 const assert = require('assert')
 const resultReducer = require(
-  '../../../../components/dbRequests/resultReducer'
+  '../../../../components/dataStorageAccessor/model/resultReducer'
 )
 
 const log = console

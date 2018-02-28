@@ -4,7 +4,7 @@ const it = require('mocha').it
 const after = require('mocha').after
 const assert = require('assert')
 const activeChain = require(
-  '../../../../components/privateChains/activeChain'
+  '../../../../components/privateChainDataCollector/model/activeChain'
 )
 
 const log = console
