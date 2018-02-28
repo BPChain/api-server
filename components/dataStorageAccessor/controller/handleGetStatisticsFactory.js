@@ -3,7 +3,6 @@
 */
 module.exports = (options = {}) => {
   const {
-    cache,
     connection,
     log,
     aggregator,
@@ -16,7 +15,7 @@ module.exports = (options = {}) => {
 
     if (!(isNaN(Date.parse(startTime)) || isNaN(Date.parse(endTime)))) {
       log.trace(
-        `Access ${accessibility} items ${startTime}||${endTime} without cache`
+        `Access ${accessibility} items ${startTime}||${endTime}`
       )
       const data = await aggregator({
         chainName,
@@ -31,7 +30,7 @@ module.exports = (options = {}) => {
 
     else if (Number.isInteger(numberOfItems) && numberOfItems > 0) {
       log.trace(
-        `Access last ${numberOfItems} ${accessibility} items without cache`
+        `Access last ${numberOfItems} ${accessibility} items`
       )
 
       const data = await aggregator({
@@ -46,42 +45,15 @@ module.exports = (options = {}) => {
     }
 
     else {
-      cache.get(`${chainName}${accessibility}Cache`, async (error, value) => {
-        if (!error) {
-          log.trace('Access cache via key')
-          response.send(value)
-        }
-        else {
-          log.trace(
-            `Cache access error: No ${accessibility} chain data cached`
-          )
-          const data = await aggregator({
-            chainName,
-            accessibility,
-            connection,
-            numberOfItems: 1,
-            startTime: false,
-            endTime: false,
-          })
-          response.send(data)
-          cache.set(
-            `${chainName}${accessibility}Cache`,
-            data,
-            (cachingError, success) => {
-              if (cachingError) {
-                log.error(
-                  `Error: ${accessibility} ${chainName} can't be cached:
-                  ${cachingError}`
-                )
-                response.sendStatus(404)
-                return
-              }
-              if (success) {
-                log.trace(`New ${accessibility} ${chainName} data cached.`)
-              }
-            })
-        }
+      const data = await aggregator({
+        chainName,
+        accessibility,
+        connection,
+        numberOfItems: 1,
+        startTime: false,
+        endTime: false,
       })
+      response.send(data)
     }
   }
 }
