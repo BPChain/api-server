@@ -14,7 +14,7 @@ module.exports = async (options) => {
     log,
   } = options
 
-  log.trace(`Aggregate files from ${filledBuffer}`)
+  log.debug(`Aggregate files from ${filledBuffer}`)
   const Buffer = helper.initializeBuffer(connection, chainName, filledBuffer, Schema)
   const Storage = helper.inintializeStorage(connection, chainName, StorageSchema)
 
