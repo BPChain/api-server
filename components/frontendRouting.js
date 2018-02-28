@@ -7,7 +7,6 @@ const path = require('path')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const express = require('express')
-const NodeCache = require('node-cache')
 
 const config = require('../config')
 
@@ -20,7 +19,6 @@ module.exports = (options = {}) => {
     log,
   } = options
 
-  const cache = new NodeCache({stdTTL: 5, errorOnMissing: true})
 
   const aggregator = require('./dataStorageAccessor/model/aggregator')
 
@@ -32,7 +30,6 @@ module.exports = (options = {}) => {
     require('./privateChainConfigurator/controller/changeParametersFactory')
 
   const handleGetStatistics = handleGetStatisticsFactory({
-    cache,
     connection,
     log,
     aggregator,
@@ -54,7 +51,7 @@ module.exports = (options = {}) => {
 
   app.get('/log', displayLogs)
 
-  app.post('/change', changeParameter)
+  app.post('/api/change', changeParameter)
 
   app.get('/*', (request, response) => {
     response.sendFile(

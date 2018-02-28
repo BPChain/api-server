@@ -43,7 +43,6 @@
     "istanbul": "^1.0.0-alpha.2",
     "mocha": "^4.1.0",
     "mongoose": "^4.13.5",
-    "node-cache": "^4.1.1",
     "nodemon": "^1.12.1",
     "socket.io": "^2.0.4",
     "ws": "^3.3.2"
