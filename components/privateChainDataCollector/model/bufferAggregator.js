@@ -15,10 +15,8 @@ module.exports = async (options) => {
   } = options
 
   log.trace(`Aggregate files from ${filledBuffer}`)
-  const Buffer = connection
-    .model(`${chainName}_private${filledBuffer}`, Schema)
-  const Storage = connection
-    .model(`${chainName}_private_storage`, StorageSchema)
+  const Buffer = helper.initializeBuffer(connection, chainName, filledBuffer, Schema)
+  const Storage = helper.inintializeStorage(connection, chainName, StorageSchema)
 
   const aggregatedValues = helper.getAggregatedValues()
 

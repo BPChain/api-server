@@ -3,6 +3,16 @@
  so that the bufferAggregator does not need to contain the logic itself
 */
 
+exports.initializeBuffer = function (connection, chainName, filledBuffer, Schema) {
+  return connection
+    .model(`${chainName}_private${filledBuffer}`, Schema)
+}
+
+exports.inintializeStorage = function (connection, chainName, StorageSchema) {
+  return connection
+    .model(`${chainName}_private_storage`, StorageSchema)
+}
+
 exports.getAggregatedValues = function () {
   return {
     numberOfHosts: 0,
