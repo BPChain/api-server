@@ -3,30 +3,23 @@
  so that the bufferAggregator does not need to contain the logic itself
 */
 
-exports.initializeBuffer = function (connection, chainName, filledBuffer, Schema) {
-  return connection
-    .model(`${chainName}_private${filledBuffer}`, Schema)
+exports.initializeBuffer = (connection, chainName, filledBuffer, Schema) =>
+  connection.model(`${chainName}_private${filledBuffer}`, Schema)
+
+exports.inintializeStorage = (connection, chainName, StorageSchema) =>
+  connection.model(`${chainName}_private_storage`, StorageSchema)
+
+exports.createStorage = (Storage, chainName, aggregatedValues) => {
+  return new Storage(
+    Object.assign({
+      chain: chainName,
+      timeStamp: Date.now(),
+    },
+    aggregatedValues,
+    ))
 }
 
-exports.inintializeStorage = function (connection, chainName, StorageSchema) {
-  return connection
-    .model(`${chainName}_private_storage`, StorageSchema)
-}
-
-exports.createStorage = function (Storage, chainName, aggregatedValues) {
-  return new Storage({
-    chain: chainName,
-    timeStamp: Date.now(),
-    numberOfHosts: aggregatedValues.numberOfHosts,
-    numberOfMiners: aggregatedValues.numberOfMiners,
-    avgHashrate: aggregatedValues.avgHashrate,
-    avgBlocktime: aggregatedValues.avgBlocktime,
-    avgGasPrice: aggregatedValues.avgGasPrice,
-    avgDifficulty: aggregatedValues.avgDifficulty,
-  })
-}
-
-exports.aggregateNumberOfMiners =   async function  (Buffer, chainName) {
+exports.aggregateNumberOfMiners = async (Buffer, chainName) => {
   const result = await Buffer
     .aggregate(
       [{
@@ -50,7 +43,7 @@ exports.aggregateNumberOfMiners =   async function  (Buffer, chainName) {
   return result.length ? result[0].count : 0
 }
 
-exports.aggregateNumberOfHosts = async function (Buffer, chainName) {
+exports.aggregateNumberOfHosts = async (Buffer, chainName) => {
 
   const result = await Buffer
     .aggregate(
@@ -72,10 +65,7 @@ exports.aggregateNumberOfHosts = async function (Buffer, chainName) {
   return result.length ? result[0].count : 0
 }
 
-async function aggregateAverage (Buffer, chainName, aggregationOptions) {
-  const {
-    field,
-  } = aggregationOptions
+async function aggregateAverage (Buffer, chainName, field) {
 
   const result = await Buffer
     .aggregate(
@@ -98,26 +88,18 @@ async function aggregateAverage (Buffer, chainName, aggregationOptions) {
   return result.length ? result[0].avgValue : 0
 }
 
-exports.aggregateAverageHashRate = async function (Buffer, chainName) {
-  return await aggregateAverage(Buffer, chainName, {
-    field: 'hashrate',
-  })
+exports.aggregateAverageHashRate = async (Buffer, chainName) => {
+  return await aggregateAverage(Buffer, chainName, 'hashrate')
 }
 
-exports.aggregateAverageBlockTime = async function (Buffer, chainName) {
-  return await aggregateAverage(Buffer, chainName, {
-    field: 'avgBlocktime',
-  })
+exports.aggregateAverageBlockTime = async (Buffer, chainName) => {
+  return await aggregateAverage(Buffer, chainName, 'avgBlocktime')
 }
 
-exports.aggregateAverageGasPrice = async function (Buffer, chainName) {
-  return await aggregateAverage(Buffer, chainName, {
-    field: 'gasPrice',
-  })
+exports.aggregateAverageGasPrice = async (Buffer, chainName) => {
+  return await aggregateAverage(Buffer, chainName, 'gasPrice')
 }
 
-exports.aggregateAverageDifficulty = async function (Buffer, chainName) {
-  return await aggregateAverage(Buffer, chainName, {
-    field: 'avgDifficulty',
-  })
+exports.aggregateAverageDifficulty = async (Buffer, chainName) => {
+  return await aggregateAverage(Buffer, chainName, 'avgDifficulty')
 }
