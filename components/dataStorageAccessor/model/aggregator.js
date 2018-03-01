@@ -3,13 +3,13 @@ const timespanRequest = require('./timespanRequest')
 const resultReducer = require('./resultReducer')
 
 module.exports = async (options = {}) => {
-  const {numberOfItems} = options
   const {
     chainName,
     accessibility,
     connection,
     startTime,
     endTime,
+    numberOfItems,
   } = options
 
   let lines = []
@@ -35,6 +35,7 @@ module.exports = async (options = {}) => {
     })
   }
 
+  // noinspection UnnecessaryLocalVariableJS
   const dataLine = lines.map((line) => Object.assign(line, {chain: chainName}))
   return dataLine
 }

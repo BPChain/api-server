@@ -2,7 +2,7 @@
   Create privateChain, publicChain and frontend components
 */
 
-const frontendHandler = require('../components/frontendRouting')
+const frontendRouting = require('../components/frontendRouting')
 const privateChainCollector =
   require('../components/privateChainDataCollector/controller/listener')
 const publicChainCollector =
@@ -27,13 +27,13 @@ module.exports = async (options = {}) => {
     port: config.controllerPort,
     activeChain,
   })
-  const privateChainHandlerInstance = privateChainCollector({
+  privateChainCollector({
     schema: config.ethereum.privateChain.schema,
     activeChain,
     connection,
     log,
   })
-  const publicChainCollectorInstance = publicChainCollector({
+  publicChainCollector({
     chainName: 'ethereum',
     schema:
       require(
@@ -42,17 +42,10 @@ module.exports = async (options = {}) => {
     connection,
     log,
   })
-  const frontendHandlerInstance = frontendHandler({
+  frontendRouting({
     privateChainHandler: privateChainCollector,
     activeChain,
     connection,
     log,
   })
-
-  return {
-    privateChainConfigurator,
-    privateChainHandlerInstance,
-    publicChainCollectorInstance,
-    frontendHandlerInstance,
-  }
 }

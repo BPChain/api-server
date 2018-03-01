@@ -16,25 +16,29 @@ module.exports = async (options) => {
 
   log.debug(`Aggregate files from ${filledBuffer}`)
   const Buffer = helper.initializeBuffer(connection, chainName, filledBuffer, Schema)
-  const Storage = helper.inintializeStorage(connection, chainName, StorageSchema)
 
-  const aggregatedValues = helper.getAggregatedValues()
+  const result = {}
 
   await Promise
     .all([
-      helper.aggregateNumberOfHosts(Buffer, chainName, aggregatedValues),
-      helper.aggregateNumberOfMiners(Buffer, chainName, aggregatedValues),
-      helper.aggregateAverageHashRate(Buffer, chainName, aggregatedValues),
-      helper.aggregateAverageBlockTime(Buffer, chainName, aggregatedValues),
-      helper.aggregateAverageGasPrice(Buffer, chainName, aggregatedValues),
-      helper.aggregateAverageDifficulty(Buffer, chainName, aggregatedValues),
+      result.numberOfHosts = helper.aggregateNumberOfHosts(Buffer, chainName),
+      result.numberOfMiners = helper.aggregateNumberOfMiners(Buffer, chainName),
+      result.avgHashrate = helper.aggregateAverageHashRate(Buffer, chainName),
+      result.avgBlocktime = helper.aggregateAverageBlockTime(Buffer, chainName),
+      result.avgGasPrice = helper.aggregateAverageGasPrice(Buffer, chainName),
+      result.avgDifficulty = helper.aggregateAverageDifficulty(Buffer, chainName),
     ])
     .catch(log.error)
 
-  await  Buffer.collection.remove({})
+  await Buffer.collection.remove({})
 
+  storeData(connection, chainName, StorageSchema, result, log)
 
-  const dataLine = helper.createStorage(Storage, chainName, aggregatedValues)
+}
+
+function storeData (connection, chainName, StorageSchema, result, log) {
+  const Storage = helper.inintializeStorage(connection, chainName, StorageSchema)
+  const dataLine = helper.createStorage(Storage, chainName, result)
 
   dataLine.save((error, savedData) => {
     if (error) {
@@ -51,5 +55,4 @@ module.exports = async (options) => {
       return 0
     }
   })
-
 }
