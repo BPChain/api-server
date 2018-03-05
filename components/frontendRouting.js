@@ -7,20 +7,15 @@ const path = require('path')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const express = require('express')
-const NodeCache = require('node-cache')
 
 const config = require('../config')
 
-module.exports = (options = {}) => {
-
-  const {
-    backendController,
-    activeChain,
-    connection,
-    log,
-  } = options
-
-  const cache = new NodeCache({stdTTL: 5, errorOnMissing: true})
+module.exports = ({
+  backendController,
+  activeChain,
+  connection,
+  log,
+}) => {
 
   const aggregator = require('./dataStorageAccessor/model/aggregator')
 
@@ -32,12 +27,13 @@ module.exports = (options = {}) => {
     require('./privateChainConfigurator/controller/changeParametersFactory')
 
   const handleGetStatistics = handleGetStatisticsFactory({
-    cache,
     connection,
     log,
     aggregator,
   })
-  const displayLogs = displayLogsFactory({connection})
+  const displayLogs = displayLogsFactory({
+    connection,
+  })
   const changeParameter = changeParametersFactory({
     backendController,
     activeChain,
@@ -47,14 +43,16 @@ module.exports = (options = {}) => {
   const app = express()
 
   app.use(bodyParser.json())
-  app.use(bodyParser.urlencoded({ extended: true }))
+  app.use(bodyParser.urlencoded({
+    extended: true,
+  }))
   app.use(cors())
 
   app.get('/api/:accessibility(private|public)/:chainName', handleGetStatistics)
 
   app.get('/log', displayLogs)
 
-  app.post('/change', changeParameter)
+  app.post('/api/change', changeParameter)
 
   app.get('/*', (request, response) => {
     response.sendFile(
@@ -65,5 +63,4 @@ module.exports = (options = {}) => {
   return app.listen(config.frontendPort, () => {
     log.info(`Frontend interface running on port ${config.frontendPort}`)
   })
-
 }

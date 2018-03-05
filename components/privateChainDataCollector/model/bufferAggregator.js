@@ -1,3 +1,9 @@
+const helper = require('./bufferAggregatorHelper')
+
+/*
+  Aggregates the provided buffer and stores it in the database
+*/
+
 module.exports = async (options) => {
   const {
     chainName,
@@ -8,139 +14,31 @@ module.exports = async (options) => {
     log,
   } = options
 
-  log.trace(`Aggregate files from ${filledBuffer}`)
-  const Buffer = connection
-    .model(`${chainName}_private${filledBuffer}`, Schema)
-  const Storage = connection
-    .model(`${chainName}_private_storage`, StorageSchema)
+  log.debug(`Aggregate files from ${filledBuffer}`)
+  const Buffer = helper.initializeBuffer(connection, chainName, filledBuffer, Schema)
 
-  const aggregatedValues = {
-    numberOfHosts: 0,
-    numberOfMiners: 0,
-    avgHashrate: 0,
-    avgBlocktime: 0,
-    avgGasPrice: 0,
-    avgDifficulty: 0,
-  }
-
-  async function aggregateAverage (aggregationOptions) {
-    const {
-      field,
-      target,
-    } = aggregationOptions
-
-    const result = await Buffer
-      .aggregate(
-        [{
-          $match: {chain: chainName.toLowerCase()},
-        },
-        {
-          $group: {
-            _id: '$hostId',
-            avgHostValue: {$avg: `$${field}`},
-          },
-        },
-        {
-          $group: {
-            _id: 1,
-            avgValue: {$avg: '$avgHostValue'},
-          },
-        }])
-      .exec()
-    if (result.length) {
-      aggregatedValues[target] = result[0].avgValue
-    }
-  }
-
-  async function aggregateNumberOfHosts () {
-
-    const result = await Buffer
-      .aggregate(
-        [{
-          $match: {chain: chainName.toLowerCase()},
-        },
-        {
-          $group: {
-            _id: '$hostId',
-          },
-        },
-        {
-          $group: {
-            _id: 1,
-            count: { $sum: 1 },
-          },
-        }])
-      .exec()
-    if (result.length) {
-      aggregatedValues.numberOfHosts = result[0].count
-    }
-  }
-
-  async function aggregateNumberOfMiners () {
-
-    const result = await Buffer
-      .aggregate(
-        [{
-          $match: {chain: chainName.toLowerCase()},
-        },
-        {
-          $match: {isMining: 1},
-        },
-        {
-          $group: {
-            _id: '$hostId',
-          },
-        },
-        {
-          $group: {
-            _id: 1,
-            count: { $sum: 1 },
-          },
-        }])
-      .exec()
-    if (result.length) {
-      aggregatedValues.numberOfMiners = result[0].count
-    }
-  }
-
+  const result = {}
 
   await Promise
     .all([
-      aggregateNumberOfHosts(),
-      aggregateNumberOfMiners(),
-      aggregateAverage({
-        field: 'hashrate',
-        target: 'avgHashrate',
-      }),
-      aggregateAverage({
-        field: 'avgBlocktime',
-        target: 'avgBlocktime',
-      }),
-      aggregateAverage({
-        field: 'gasPrice',
-        target: 'avgGasPrice',
-      }),
-      aggregateAverage({
-        field: 'avgDifficulty',
-        target: 'avgDifficulty',
-      }),
+      result.numberOfHosts = await helper.aggregateNumberOfHosts(Buffer, chainName),
+      result.numberOfMiners = await helper.aggregateNumberOfMiners(Buffer, chainName),
+      result.avgHashrate = await helper.aggregateAverageHashRate(Buffer, chainName),
+      result.avgBlocktime = await helper.aggregateAverageBlockTime(Buffer, chainName),
+      result.avgGasPrice = await helper.aggregateAverageGasPrice(Buffer, chainName),
+      result.avgDifficulty = await helper.aggregateAverageDifficulty(Buffer, chainName),
     ])
     .catch(log.error)
 
-  await  Buffer.collection.remove({})
+  await Buffer.collection.remove({})
 
+  storeData(connection, chainName, StorageSchema, result, log)
 
-  const dataLine = new Storage({
-    chain: chainName,
-    timeStamp: (new Date())
-      .toUTCString(),
-    numberOfHosts: aggregatedValues.numberOfHosts,
-    numberOfMiners: aggregatedValues.numberOfMiners,
-    avgHashrate: aggregatedValues.avgHashrate,
-    avgBlocktime: aggregatedValues.avgBlocktime,
-    avgGasPrice: aggregatedValues.avgGasPrice,
-    avgDifficulty: aggregatedValues.avgDifficulty,
-  })
+}
+
+function storeData (connection, chainName, StorageSchema, result, log) {
+  const Storage = helper.inintializeStorage(connection, chainName, StorageSchema)
+  const dataLine = helper.createStorage(Storage, chainName, result)
 
   dataLine.save((error, savedData) => {
     if (error) {
@@ -157,5 +55,4 @@ module.exports = async (options) => {
       return 0
     }
   })
-
 }

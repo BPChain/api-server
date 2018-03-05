@@ -2,7 +2,11 @@ function isNumeric (number) {
   return !isNaN(parseFloat(number)) && isFinite(number)
 }
 
-module.exports = function checkJsonContent (options = {}) {
+/*
+  Checks whether JSON provided by private nodes has all expected keys
+*/
+
+module.exports = function isValidJson (options = {}) {
   const {json, log} = options
   const expectedKeys = [
     'chain',

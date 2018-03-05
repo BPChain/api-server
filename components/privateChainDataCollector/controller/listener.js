@@ -1,8 +1,14 @@
 const ws = require('ws')
 
 const bufferAggregator = require('../model/bufferAggregator')
-const checkJsonContent = require('../model/checkJsonContent')
+const isValidJson = require('../model/checkJsonContent')
 const config = require('../../../config')
+const helper = require('./listenerHelper')
+
+/*
+  Creates a websocket listening for private chain data and two buffers
+  that alternatively store the data and get aggregated into the database
+*/
 
 
 module.exports = async (options = {}) => {
@@ -19,44 +25,27 @@ module.exports = async (options = {}) => {
       .toLowerCase()}Storage`
   )
   const Schema = require(`../model/${schema}`)
-  const BufferA = connection.model(
-    `${activeChain.get()}_private_buffer_a`,
-    Schema,
-  )
-  const BufferB = connection.model(
-    `${activeChain.get()}_private_buffer_b`,
-    Schema,
-  )
 
-  let CurrentBuffer = BufferA
+  const BufferA = helper.createBuffer(connection, activeChain, Schema, 'A')
+  const BufferB = helper.createBuffer(connection, activeChain, Schema, 'B')
 
-  let isBufferA = true
+  helper.setCurrentBuffer(BufferA)
+  helper.setBufferAActive(true)
+
   setInterval(() => {
-    if (isBufferA) {
-      CurrentBuffer = BufferB
+    if (helper.isBufferAActive()) {
+      helper.setCurrentBuffer(BufferB)
       log.trace('Change Buffer to Buffer B')
-      bufferAggregator({
-        chainName: activeChain.get(),
-        filledBuffer: '_buffer_a',
-        Schema,
-        StorageSchema,
-        connection,
-        log,
-      })
+      helper.aggregateBuffer('A', bufferAggregator,
+        activeChain, Schema, StorageSchema, connection, log)
     }
     else {
-      CurrentBuffer = BufferA
+      helper.setCurrentBuffer(BufferA)
       log.trace('Change buffer to Buffer A')
-      bufferAggregator({
-        chainName: activeChain.get(),
-        filledBuffer: '_buffer_b',
-        Schema,
-        StorageSchema,
-        connection,
-        log,
-      })
+      helper.aggregateBuffer('B', bufferAggregator,
+        activeChain, Schema, StorageSchema, connection, log)
     }
-    isBufferA = !isBufferA
+    helper.setBufferAActive(!helper.isBufferAActive())
   }, config.bufferSwitchTime)
 
 
@@ -76,8 +65,9 @@ module.exports = async (options = {}) => {
           socket.send(415)
           return
         }
-        if (checkJsonContent({json: privateData, log})) {
-          const dataset = new CurrentBuffer(privateData)
+        if (isValidJson({json: privateData, log})) {
+          const BufferToStore = helper.getCurrentBuffer()
+          const dataset = new BufferToStore(privateData)
           dataset.save((error, savedModel) => {
             if (error) {
               throw error

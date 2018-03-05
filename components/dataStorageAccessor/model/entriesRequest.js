@@ -21,7 +21,6 @@ module.exports = async (options = {}) => {
     .limit(numberOfItems)
     .sort({timeStamp: -1})
     .toArray()
-    .reverse()
 
-  return data
+  return data.reverse()
 }

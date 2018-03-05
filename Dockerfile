@@ -8,7 +8,7 @@ RUN npm install --production
 RUN npm install -g nodemon
 
 COPY src src
-COPY component component
+COPY components components
 COPY logger logger
 COPY config.js config.js
 

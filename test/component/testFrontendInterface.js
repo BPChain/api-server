@@ -1,8 +1,12 @@
 const assert = require('assert')
-const describe = require('mocha').describe
-const before = require('mocha').before
-const it = require('mocha').it
-const after = require('mocha').after
+const describe = require('mocha')
+  .describe
+const before = require('mocha')
+  .before
+const it = require('mocha')
+  .it
+const after = require('mocha')
+  .after
 
 const frontendInterface = require(
   '../../components/frontendRouting.js'
@@ -17,7 +21,7 @@ describe('publicChains', () => {
   })
   describe('frontendInterface', () => {
     it('should not throw an error', (done) => {
-      app = frontendInterface()
+      app = frontendInterface({})
       assert.ok(app)
       done()
     })
