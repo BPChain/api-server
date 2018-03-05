@@ -7,15 +7,15 @@ const helper = require('./bufferAggregatorHelper')
 module.exports = async (options) => {
   const {
     chainName,
-    filledBuffer,
+    filledBufferName,
     Schema,
     StorageSchema,
     connection,
     log,
   } = options
 
-  log.debug(`Aggregate files from ${filledBuffer}`)
-  const Buffer = helper.initializeBuffer(connection, chainName, filledBuffer, Schema)
+  log.debug(`Aggregate files from ${filledBufferName}`)
+  const Buffer = helper.initializeBuffer(connection, chainName, filledBufferName, Schema)
 
   const result = {}
 
