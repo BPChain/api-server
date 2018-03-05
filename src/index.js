@@ -13,7 +13,7 @@ const log = logger({connection})
 
 async function start (options = {}) {
   const {activeChainName} = options
-  return await createServer({
+  createServer({
     activeChainName,
     connection,
     config,
