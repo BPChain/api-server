@@ -39,11 +39,11 @@ module.exports = class DoubleBuffer {
   toggleActiveBuffer () {
     if (this.isBufferA) {
       this.isBufferA = false
-      this.activeBuffer = this.BufferB
+      this.activeBuffer = this.bufferB
     }
     else {
       this.isBufferA = true
-      this.activeBuffer = this.BufferA
+      this.activeBuffer = this.bufferA
     }
     this.log.trace(`Changed Buffer to Buffer ${this.getActiveBufferLabel()}`)
   }
