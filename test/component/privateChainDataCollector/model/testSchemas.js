@@ -33,7 +33,7 @@ const compareStorageSchema = new Schema({
 })
 const log = console
 
-describe('publicChains', () => {
+describe('privateChains', () => {
   before(() => {
     log.info('Start testing private chain schemas')
   })

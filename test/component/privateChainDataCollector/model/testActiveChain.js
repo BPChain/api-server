@@ -39,6 +39,6 @@ describe('privateChains', () => {
     })
   })
   after(() => {
-    log.info('End testing public chains')
+    log.info('End testing private chains')
   })
 })

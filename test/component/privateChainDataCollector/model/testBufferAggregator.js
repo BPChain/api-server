@@ -90,7 +90,7 @@ const optionsB = {
     debug: () => {},
   },
 }
-describe('publicChains', () => {
+describe('privateChains', () => {
   before(() => {
     log.info('Start testing bufferAggregator')
   })
