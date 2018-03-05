@@ -10,6 +10,7 @@ const ethereumSchema = require(
 )
 const compareEthereumSchema = new Schema({
   hostId: {type: String},
+  chainName: {type: String},
   isMining: {type: Number},
   hashrate: {type: Number},
   avgBlocktime: {type: Number},
@@ -21,7 +22,7 @@ const ethereumStorage = require(
   '../../../../components/privateChainDataCollector/model/ethereumStorage'
 )
 const compareStorageSchema = new Schema({
-  chain: {type: String},
+  chainName: {type: String},
   timeStamp: {type: Date},
   numberOfHosts: {type: Number},
   numberOfMiners: {type: Number},
