@@ -14,7 +14,8 @@ module.exports = ({
   backendController,
   activeChain,
   connection,
-  log}) => {
+  log,
+}) => {
 
   const aggregator = require('./dataStorageAccessor/model/aggregator')
 
@@ -30,7 +31,9 @@ module.exports = ({
     log,
     aggregator,
   })
-  const displayLogs = displayLogsFactory({connection})
+  const displayLogs = displayLogsFactory({
+    connection,
+  })
   const changeParameter = changeParametersFactory({
     backendController,
     activeChain,
@@ -40,7 +43,9 @@ module.exports = ({
   const app = express()
 
   app.use(bodyParser.json())
-  app.use(bodyParser.urlencoded({ extended: true }))
+  app.use(bodyParser.urlencoded({
+    extended: true,
+  }))
   app.use(cors())
 
   app.get('/api/:accessibility(private|public)/:chainName', handleGetStatistics)
@@ -58,5 +63,4 @@ module.exports = ({
   return app.listen(config.frontendPort, () => {
     log.info(`Frontend interface running on port ${config.frontendPort}`)
   })
-
 }
