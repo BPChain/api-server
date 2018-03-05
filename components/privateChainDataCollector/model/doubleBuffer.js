@@ -17,20 +17,26 @@ module.exports = class DoubleBuffer {
     this.isBufferA = true
   }
 
-  createBuffer = (bufferName) => {
+  createBuffer (bufferName) {
     return this.connection.model(
       `${this.activeChain.get()}_private_buffer_${bufferName.toLowerCase()}`,
       this.Schema,
     )
   }
 
-  getActiveBuffer = () => this.activeBuffer
+  getActiveBuffer () {
+    return this.activeBuffer
+  }
 
-  getActiveBufferLabel = () => this.isBufferA ? 'a' : 'b'
+  getActiveBufferLabel () {
+    return this.isBufferA ? 'a' : 'b'
+  }
 
-  getInactiveBufferLabel = () => this.isBufferA ? 'b' : 'a'
+  getInactiveBufferLabel () {
+    return  this.isBufferA ? 'b' : 'a'
+  }
 
-  toggleActiveBuffer = () => {
+  toggleActiveBuffer () {
     if (this.isBufferA) {
       this.isBufferA = false
       this.activeBuffer = this.BufferB
@@ -42,7 +48,7 @@ module.exports = class DoubleBuffer {
     this.log.trace(`Changed Buffer to Buffer ${this.getActiveBufferLabel()}`)
   }
 
-  aggregateBuffer = (bufferAggregator) => {
+  aggregateBuffer (bufferAggregator) {
     bufferAggregator({
       filledBufferName: `_buffer_${this.getInactiveBufferLabel()}`,
       chainName: this.activeChain.get(),
