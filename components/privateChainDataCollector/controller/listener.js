@@ -51,33 +51,20 @@ module.exports = async (options = {}) => {
           privateData = JSON.parse(message)
         }
         catch (error) {
-          log.error(`Received an invalid JSON:
-            ${message}`)
+          log.error(`Received an invalid JSON: ${message}`)
           socket.send(415)
           return
         }
         if (isValidJson({json: privateData, log})) {
-          const BufferToStore = doubleBuffer.getActiveBuffer()
-          const dataset = new BufferToStore(privateData)
-          dataset.save((error, savedModel) => {
-            if (error) {
-              throw error
-            }
-            else {
-              log.debug(`Stored private data:
-                ${savedModel}`)
-              socket.send(200)
-            }
-          })
+          doubleBuffer.storeTempPrivateData(privateData)
+          socket.send(200)
         }
         else {
-          log.error(`Received a JSON with wrong content:
-            ${privateData}`)
+          log.error(`Received a JSON with wrong content: ${privateData}`)
         }
       }
       catch (error) {
-        log.error(`Error occured while receiving private data:
-          ${error}`)
+        log.error(`Error occured while receiving private data: ${error}`)
         socket.send(415)
       }
     })

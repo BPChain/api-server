@@ -58,4 +58,15 @@ module.exports = class DoubleBuffer {
       log: this.log,
     })
   }
+
+  storeTempPrivateData (privateData) {
+    const BufferToStore = this.getActiveBuffer()
+    const dataset = new BufferToStore(privateData)
+    dataset.save((error, savedModel) => {
+      if (error) {
+        throw error
+      }
+      this.log.debug(`Stored private data: ${savedModel}`)
+    })
+  }
 }
