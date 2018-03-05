@@ -10,15 +10,11 @@ const express = require('express')
 
 const config = require('../config')
 
-module.exports = (options = {}) => {
-
-  const {
-    backendController,
-    activeChain,
-    connection,
-    log,
-  } = options
-
+module.exports = ({
+  backendController,
+  activeChain,
+  connection,
+  log}) => {
 
   const aggregator = require('./dataStorageAccessor/model/aggregator')
 

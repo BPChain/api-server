@@ -43,7 +43,7 @@ module.exports = async (options = {}) => {
     log,
   })
   frontendRouting({
-    privateChainHandler: privateChainCollector,
+    backendController: privateChainConfigurator,
     activeChain,
     connection,
     log,
