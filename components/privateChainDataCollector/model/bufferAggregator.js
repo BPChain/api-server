@@ -21,12 +21,12 @@ module.exports = async (options) => {
 
   await Promise
     .all([
-      result.numberOfHosts = helper.aggregateNumberOfHosts(Buffer, chainName),
-      result.numberOfMiners = helper.aggregateNumberOfMiners(Buffer, chainName),
-      result.avgHashrate = helper.aggregateAverageHashRate(Buffer, chainName),
-      result.avgBlocktime = helper.aggregateAverageBlockTime(Buffer, chainName),
-      result.avgGasPrice = helper.aggregateAverageGasPrice(Buffer, chainName),
-      result.avgDifficulty = helper.aggregateAverageDifficulty(Buffer, chainName),
+      result.numberOfHosts = await helper.aggregateNumberOfHosts(Buffer, chainName),
+      result.numberOfMiners = await helper.aggregateNumberOfMiners(Buffer, chainName),
+      result.avgHashrate = await helper.aggregateAverageHashRate(Buffer, chainName),
+      result.avgBlocktime = await helper.aggregateAverageBlockTime(Buffer, chainName),
+      result.avgGasPrice = await helper.aggregateAverageGasPrice(Buffer, chainName),
+      result.avgDifficulty = await helper.aggregateAverageDifficulty(Buffer, chainName),
     ])
     .catch(log.error)
 
