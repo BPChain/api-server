@@ -1,15 +1,15 @@
 const ws = require('ws')
 
+
+const config = require('../../../config')
 const bufferAggregator = require('../model/bufferAggregator')
 const isValidJson = require('../model/checkJsonContent')
-const config = require('../../../config')
-const helper = require('./listenerHelper')
+const DoubleBuffer = require('../model/doubleBuffer')
 
 /*
   Creates a websocket listening for private chain data and two buffers
   that alternatively store the data and get aggregated into the database
 */
-
 
 module.exports = async (options = {}) => {
   const {
@@ -26,26 +26,17 @@ module.exports = async (options = {}) => {
   )
   const Schema = require(`../model/${schema}`)
 
-  const BufferA = helper.createBuffer(connection, activeChain, Schema, 'A')
-  const BufferB = helper.createBuffer(connection, activeChain, Schema, 'B')
-
-  helper.setCurrentBuffer(BufferA)
-  helper.setBufferAActive(true)
+  const doubleBuffer = new DoubleBuffer({
+    activeChain,
+    connection,
+    log,
+    Schema,
+    StorageSchema,
+  })
 
   setInterval(() => {
-    if (helper.isBufferAActive()) {
-      helper.setCurrentBuffer(BufferB)
-      log.trace('Change Buffer to Buffer B')
-      helper.aggregateBuffer('A', bufferAggregator,
-        activeChain, Schema, StorageSchema, connection, log)
-    }
-    else {
-      helper.setCurrentBuffer(BufferA)
-      log.trace('Change buffer to Buffer A')
-      helper.aggregateBuffer('B', bufferAggregator,
-        activeChain, Schema, StorageSchema, connection, log)
-    }
-    helper.setBufferAActive(!helper.isBufferAActive())
+    doubleBuffer.toggleActiveBuffer()
+    doubleBuffer.aggregateBuffer(bufferAggregator)
   }, config.bufferSwitchTime)
 
 
@@ -66,7 +57,7 @@ module.exports = async (options = {}) => {
           return
         }
         if (isValidJson({json: privateData, log})) {
-          const BufferToStore = helper.getCurrentBuffer()
+          const BufferToStore = doubleBuffer.getActiveBuffer()
           const dataset = new BufferToStore(privateData)
           dataset.save((error, savedModel) => {
             if (error) {
