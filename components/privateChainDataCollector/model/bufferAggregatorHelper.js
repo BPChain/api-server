@@ -12,7 +12,7 @@ exports.inintializeStorage = (connection, chainName, StorageSchema) =>
 exports.createStorage = (Storage, chainName, aggregatedValues) => {
   return new Storage(
     Object.assign({
-      chain: chainName,
+      chainName: chainName,
       timeStamp: Date.now(),
     },
     aggregatedValues,
@@ -23,7 +23,7 @@ exports.aggregateNumberOfMiners = async (Buffer, chainName) => {
   const result = await Buffer
     .aggregate(
       [{
-        $match: {chain: chainName.toLowerCase()},
+        $match: {chainName: chainName.toLowerCase()},
       },
       {
         $match: {isMining: 1},
@@ -48,7 +48,7 @@ exports.aggregateNumberOfHosts = async (Buffer, chainName) => {
   const result = await Buffer
     .aggregate(
       [{
-        $match: {chain: chainName.toLowerCase()},
+        $match: {chainName: chainName.toLowerCase()},
       },
       {
         $group: {
@@ -70,7 +70,7 @@ async function aggregateAverage (Buffer, chainName, field) {
   const result = await Buffer
     .aggregate(
       [{
-        $match: {chain: chainName.toLowerCase()},
+        $match: {chainName: chainName.toLowerCase()},
       },
       {
         $group: {

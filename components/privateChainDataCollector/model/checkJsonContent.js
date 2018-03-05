@@ -9,7 +9,7 @@ function isNumeric (number) {
 module.exports = function isValidJson (options = {}) {
   const {json, log} = options
   const expectedKeys = [
-    'chain',
+    'chainName',
     'hostId',
     'isMining',
     'hashrate',

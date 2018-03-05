@@ -17,7 +17,7 @@ module.exports = (options = {}) => {
 
     if (backendController.sendMessage({
       message: {
-        chain: activeChain.get(),
+        chainName: activeChain.get(),
         parameter,
         value,
       },

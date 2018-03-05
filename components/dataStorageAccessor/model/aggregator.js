@@ -36,6 +36,6 @@ module.exports = async (options = {}) => {
   }
 
   // noinspection UnnecessaryLocalVariableJS
-  const dataLine = lines.map((line) => Object.assign(line, {chain: chainName}))
+  const dataLine = lines.map((line) => Object.assign(line, {chainName}))
   return dataLine
 }
