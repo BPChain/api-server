@@ -78,7 +78,9 @@ describe('privateChains', () => {
           activeChain: {get: () => {}},
           log: {debug: () => {}},
         })
-        doubleBuffer.storeTempPrivateData()
+        assert.doesNotThrow(() => {
+          doubleBuffer.storeTempPrivateData()
+        })
       }
     )
     it(
