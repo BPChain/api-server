@@ -1,6 +1,6 @@
 module.exports = (options = {}) => {
   const {
-    privateChainHandler,
+    backendController,
     log,
     activeChain,
   } = options
@@ -15,7 +15,7 @@ module.exports = (options = {}) => {
       `Trying to send a change request ${activeChain} ${parameter} ${value}`
     )
 
-    if (privateChainHandler.sendMessage({
+    if (backendController.sendMessage({
       message: {
         chain: activeChain.get(),
         parameter,
