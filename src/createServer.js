@@ -41,6 +41,7 @@ module.exports = async (options = {}) => {
         '../components/publicChainDataCollector/model/ethereumStorage.js'
       ),
     connection,
+    config,
     log,
   })
   frontendRouting({
