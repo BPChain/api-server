@@ -11,7 +11,7 @@ module.exports = async (options = {}) => {
 
   const Storage = connection.model(`${chainName}_public_storage`, schema)
 
-  setInterval(async () => {
+  return setInterval(async () => {
     const line = await chainValueCollector({chainName, log})
     if (line) {
       const dataLine = new Storage(line)
