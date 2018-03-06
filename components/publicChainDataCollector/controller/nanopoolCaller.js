@@ -1,16 +1,4 @@
 const chainValueCollector = require('../model/chainValueCollector')
-<<<<<<< HEAD
-=======
-
-module.exports = async (options = {}) => {
-  const {
-    chainName,
-    schema,
-    connection,
-    config,
-    log,
-  } = options
->>>>>>> Use config from parameters instead of opening file
 
 module.exports = ({chainName, schema, connection, config, log}) => {
   const Storage = connection.model(`${chainName}_public_storage`, schema)
