@@ -19,9 +19,10 @@ describe('privateChains', () => {
       () => {
         assert.doesNotThrow(() => {
           const doubleBuffer = new DoubleBuffer({
-            connection: {model: () => 'model'},
-            activeChain: {get: () => {}}
+            connection: { model: () => 'model' },
+            activeChain: { get: () => { } },
           })
+          assert.ok(doubleBuffer)
         })
       }
     )
@@ -29,54 +30,58 @@ describe('privateChains', () => {
       'should return correct activeBuffer',
       () => {
         const doubleBuffer = new DoubleBuffer({
-          connection: {model: () => 'testModel'},
-          activeChain: {get: () => {}}
+          connection: { model: () => 'testModel' },
+          activeChain: { get: () => { } },
         })
-        assert.equal(doubleBuffer.getActiveBuffer(),'testModel')
+        assert.equal(doubleBuffer.getActiveBuffer(), 'testModel')
       }
     )
     it(
       'should return correct buffer labels',
       () => {
         const doubleBuffer = new DoubleBuffer({
-          connection: {model: () => 'testModel'},
-          activeChain: {get: () => {}}
+          connection: { model: () => 'testModel' },
+          activeChain: { get: () => { } },
         })
-        assert.equal(doubleBuffer.getActiveBufferLabel(),'a')
-        assert.equal(doubleBuffer.getInactiveBufferLabel(),'b')
+        assert.equal(doubleBuffer.getActiveBufferLabel(), 'a')
+        assert.equal(doubleBuffer.getInactiveBufferLabel(), 'b')
       }
     )
     it(
       'should toggle buffers correctly',
       () => {
         const doubleBuffer = new DoubleBuffer({
-          connection: {model: (name) => name},
-          activeChain: {get: () => 'test'},
-          log: {trace: () => {}},
+          connection: { model: (name) => name },
+          activeChain: { get: () => 'test' },
+          log: { trace: () => { } },
         })
-        assert.equal(doubleBuffer.getActiveBufferLabel(),'a')
-        assert.equal(doubleBuffer.getInactiveBufferLabel(),'b')
-        assert.equal(doubleBuffer.getActiveBuffer(),'test_private_buffer_a')
+        assert.equal(doubleBuffer.getActiveBufferLabel(), 'a')
+        assert.equal(doubleBuffer.getInactiveBufferLabel(), 'b')
+        assert.equal(doubleBuffer.getActiveBuffer(), 'test_private_buffer_a')
         doubleBuffer.toggleActiveBuffer()
-        assert.equal(doubleBuffer.getActiveBufferLabel(),'b')
-        assert.equal(doubleBuffer.getInactiveBufferLabel(),'a')
-        assert.equal(doubleBuffer.getActiveBuffer(),'test_private_buffer_b')
+        assert.equal(doubleBuffer.getActiveBufferLabel(), 'b')
+        assert.equal(doubleBuffer.getInactiveBufferLabel(), 'a')
+        assert.equal(doubleBuffer.getActiveBuffer(), 'test_private_buffer_b')
       }
     )
     it(
       'should call storeTempPrivateData correctly',
       () => {
         const doubleBuffer = new DoubleBuffer({
-          connection: {model: () => {return class MockClass {
-            constructor () {
-              this.privateData
-            }
-            save (callback) {
-              callback(false, true)
-            }
-          }}},
-          activeChain: {get: () => {}},
-          log: {debug: () => {}},
+          connection: {
+            model: () => {
+              return class MockClass {
+                constructor () {
+                  this.privateData
+                }
+                save (response) {
+                  response(false, true)
+                }
+              }
+            },
+          },
+          activeChain: { get: () => { } },
+          log: { debug: () => { } },
         })
         assert.doesNotThrow(() => {
           doubleBuffer.storeTempPrivateData()
@@ -87,16 +92,20 @@ describe('privateChains', () => {
       'should throw error when saving fails',
       () => {
         const doubleBuffer = new DoubleBuffer({
-          connection: {model: () => {return class MockClass {
-            constructor () {
-              this.privateData
-            }
-            save (callback) {
-              callback(true, false)
-            }
-          }}},
-          activeChain: {get: () => {}},
-          log: {debug: () => {}},
+          connection: {
+            model: () => {
+              return class MockClass {
+                constructor () {
+                  this.privateData
+                }
+                save (response) {
+                  response(true, false)
+                }
+              }
+            },
+          },
+          activeChain: { get: () => { } },
+          log: { debug: () => { } },
         })
         assert.throws(() => doubleBuffer.storeTempPrivateData())
       }
