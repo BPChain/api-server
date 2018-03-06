@@ -31,6 +31,7 @@ class BlockchainController {
         this.log.info(`Open connections: ${this.clientArray}`)
       })
     })
+    return wsServer
   }
 
   sendMessage (options = {}) {
