@@ -1,11 +1,11 @@
 const chainValueCollector = require('../model/chainValueCollector')
-const config = require('../../../config')
 
 module.exports = async (options = {}) => {
   const {
     chainName,
     schema,
     connection,
+    config,
     log,
   } = options
 
