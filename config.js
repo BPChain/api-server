@@ -12,15 +12,15 @@ const config = {
         'ethereumSchema',
     },
     publicChain: {
-      activeMiners:
+      numberOfMiners:
       'https://api.nanopool.org/v1/eth/pool/activeminers',
-      activeWorkers:
+      numberOfWorkers:
       'https://api.nanopool.org/v1/eth/pool/activeworkers',
-      averageBlockTime:
+      avgBlocktime:
       'https://api.nanopool.org/v1/eth/network/avgblocktime',
       blockTimeDifficulty:
       'https://api.nanopool.org/v1/eth/block_stats/0/5',
-      hashRate:
+      avgHashrate:
       'https://api.nanopool.org/v1/eth/pool/hashrate',
       timeToNextEpoch:
       'https://api.nanopool.org/v1/eth/network/timetonextepoch',
