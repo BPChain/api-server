@@ -9,6 +9,7 @@ module.exports = (options = {}) => {
     const {
       parameter,
       value,
+      target,
     } = request.body
 
     log.debug(
@@ -21,7 +22,7 @@ module.exports = (options = {}) => {
         parameter,
         value,
       },
-      log,
+      target,
     })) {
       if (
         (parameter === 'switchChain' && activeChain.set(value)) ||

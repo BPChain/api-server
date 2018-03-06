@@ -7,8 +7,8 @@ const privateChainCollector =
   require('../components/privateChainDataCollector/controller/listener')
 const publicChainCollector =
   require('../components/publicChainDataCollector/controller/nanopoolCaller')
-const privateChainConfigurator =
-  require('../components/privateChainConfigurator/controller/listener')
+const BlockchainController =
+  require('../components/privateChainConfigurator/controller/BlockchainController')
 const activeChain =
   require('../components/privateChainDataCollector/model/activeChain')
 
@@ -22,11 +22,12 @@ module.exports = async (options = {}) => {
 
   activeChain.set(activeChainName)
 
-  privateChainConfigurator.startServer({
+  const privateChainConfigurator = new BlockchainController({
     log,
     port: config.controllerPort,
-    activeChain,
   })
+  privateChainConfigurator.start()
+
   privateChainCollector({
     schema: config.ethereum.privateChain.schema,
     activeChain,
