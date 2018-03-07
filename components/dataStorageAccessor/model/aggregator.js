@@ -1,3 +1,4 @@
+/* eslint no-unused-vars: 0 */
 const entriesRequest = require('./entriesRequest')
 const timespanRequest = require('./timespanRequest')
 const resultReducer = require('./resultReducer')
@@ -16,26 +17,13 @@ module.exports = async (options = {}) => {
 
   if (startTime && endTime) {
     lines = await resultReducer({
-      lines: await timespanRequest({
-        chainName,
-        accessibility,
-        connection,
-        startTime,
-        endTime,
-      }),
+      lines: await timespanRequest(options),
       numberOfItems,
     })
   }
   else {
-    lines = await entriesRequest({
-      chainName,
-      accessibility,
-      connection,
-      numberOfItems,
-    })
+    lines = await entriesRequest(options)
   }
 
-  // noinspection UnnecessaryLocalVariableJS
-  const dataLine = lines.map((line) => Object.assign(line, {chainName}))
-  return dataLine
+  return lines.map((line) => Object.assign(line, {chainName}))
 }
