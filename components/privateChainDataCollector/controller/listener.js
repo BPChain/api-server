@@ -18,17 +18,13 @@ module.exports = async ({activeChain, log, config, connection, schema}) => {
 
   const doubleBuffer = new DoubleBuffer({
     activeChain,
-    connection,
+    bufferAggregator,
     log,
+    config,
+    connection,
     Schema,
     StorageSchema,
   })
-
-  setInterval(() => {
-    doubleBuffer.toggleActiveBuffer()
-    doubleBuffer.aggregateBuffer(bufferAggregator)
-  }, config.bufferSwitchTime)
-
 
   const WebSocketServer = ws.Server
   const wsServer = new WebSocketServer({port: config.dataAggregatorPort})
