@@ -16,12 +16,17 @@ module.exports = async (options = {}) => {
     return false
   }
 
-  return await User.findOne({ 'username': username }, 'password salt', (error, data ) => {
-    if (error) return false
-    if (!data) return false
-    return data.password === passwordEncryption({
-      password,
-      salt: data.salt,
+  const promise = new Promise((resolve) => {
+    User.findOne({ 'username': username }, 'password salt', (error, data ) => {
+      if (error || !data) {
+        resolve(false)
+      }
+      const result =  data.password === passwordEncryption({
+        password,
+        salt: data.salt,
+      })
+      resolve(result)
     })
   })
+  return await promise
 }
