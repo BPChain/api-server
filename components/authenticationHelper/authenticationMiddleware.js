@@ -1,9 +1,9 @@
 function authenticationMiddleware () {
-  return (request, result, next) => {
-    if (request.isAuthenticated()) {
+  return function (request, response, next) {
+    if (request.isAuthenticated) {
       return next()
     }
-    result.redirect('/')
+    response.sendStatus(401)
   }
 }
 

@@ -9,7 +9,7 @@ module.exports = async (options = {}) => {
     connection,
   } = options
 
-  const User = await connection.model('usertable', userSchema)
+  const User = await connection.model('usertables', userSchema)
 
 
   if (!username || !password) {
@@ -18,6 +18,7 @@ module.exports = async (options = {}) => {
 
   return await User.findOne({ 'username': username }, 'password salt', (error, data ) => {
     if (error) return false
+    if (!data.password) return false
     return data.password === passwordEncryption({
       password,
       salt: data.salt,

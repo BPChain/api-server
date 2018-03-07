@@ -9,13 +9,13 @@ const cors = require('cors')
 const express = require('express')
 const NodeCache = require('node-cache')
 const session = require('express-session')
+const passport = require('passport')
 
 const config = require('../config')
 
 const createUser = require('./authenticationHelper/createUser')
 const authMiddleware = require('./authenticationHelper/authenticationMiddleware')
 const validateUser = require('./authenticationHelper/validateUser')
-const passport = require('passport')
 
 module.exports = ({
   backendController,
@@ -51,7 +51,7 @@ module.exports = ({
 
   app.use(session({
     secret: 'workworkworkworkwork', // change!
-    resave: false,
+    resave: true,
     saveUninitialized: true,
     cookie: { maxAge: 300000 },
   }))
@@ -80,6 +80,11 @@ module.exports = ({
     })
   })
 
+  // Init passport authentication
+  // app.use(passport.initialize())
+  // persistent login sessions
+  // app.use(passport.session())
+
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({
     extended: true,
@@ -92,8 +97,8 @@ module.exports = ({
 
   app.post('/login', async (request, response) => {
     if (await validateUser({
-      username: request.body.Username,
-      password: request.body.Password,
+      username: request.body.username,
+      password: request.body.password,
       connection,
     })) {
       sessionCache.set(request.sessionID, true, (error, success) => {
@@ -113,13 +118,12 @@ module.exports = ({
     }
   })
 
-  app.post('/api/change', passport.authMiddleware(), async (request, response) => {
+  app.post('/api/change', authMiddleware(), async (request, response) => {
     const status = await changeParameter(request, response)
     response.sendStatus(status)
   })
 
-  app.post('/api/createUser', passport.authMiddleware(), async (request, response) => {
-
+  app.post('/api/createUser', authMiddleware(), async (request, response) => {
     const success = await createUser({
       connection,
       log,

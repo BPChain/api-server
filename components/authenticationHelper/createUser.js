@@ -19,12 +19,45 @@ module.exports = async (options = {}) => {
     salt: secret.salt,
   })
 
-  return await user.save((error) => {
+
+  const query = { username: user.username }
+
+  const isAlreadyPresent = await User.findOne(query, (error, result) => {
     if (error) {
-      log.error(error)
+      log.debug(error)
+      return true
+    }
+    if (result) {
+      log.info('Username is already taken.')
+      return true
+    }
+    else {
+      log.info('Username is free.')
       return false
     }
-    log.info('Successfully saved user.')
-    return true
   })
+  // const update = { expire: new Date() }
+  const opts = { upsert: true, new: true, setDefaultsOnInsert: true }
+
+  // Find the document
+  if (!isAlreadyPresent) {
+    return await User.findOneAndUpdate(query, user, opts, (error, result) => {
+      if (error) {
+        log.error(error)
+        return false
+      }
+      else if (result) {
+        log.info('Successfully saved user.')
+        return true
+      }
+      else {
+        log.info('No new user was created.')
+        return false
+      }
+    })
+  }
+  else {
+    return false
+  }
+
 }
