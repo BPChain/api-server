@@ -18,8 +18,16 @@ module.exports = function isValidJson (options = {}) {
     'avgDifficulty',
   ]
 
+  let parsedJson
+  try {
+    parsedJson = JSON.parse(json)
+  }
+  catch (error) {
+    return false
+  }
+
   const hasAllKeys = expectedKeys.every((item) => {
-    const keyExists = json.hasOwnProperty(item)
+    const keyExists = parsedJson.hasOwnProperty(item)
     if (!keyExists) {
       log.error(`Missing key in backend JSON: ${item}`)
     }
@@ -30,9 +38,9 @@ module.exports = function isValidJson (options = {}) {
     return false
   }
 
-  return (json.isMining === 1 || json.isMining === 0) &&
-    isNumeric(json.hashrate) &&
-    isNumeric(json.avgBlocktime) &&
-    isNumeric(json.gasPrice) &&
-    isNumeric(json.avgDifficulty)
+  return (parsedJson.isMining === 1 || parsedJson.isMining === 0) &&
+    isNumeric(parsedJson.hashrate) &&
+    isNumeric(parsedJson.avgBlocktime) &&
+    isNumeric(parsedJson.gasPrice) &&
+    isNumeric(parsedJson.avgDifficulty)
 }
