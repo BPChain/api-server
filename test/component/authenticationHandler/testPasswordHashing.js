@@ -24,6 +24,6 @@ describe('passwordHashing', () => {
     })
   })
   after(() => {
-    log.info('End testing user validation')
+    log.info('End testing password hashing')
   })
 })
