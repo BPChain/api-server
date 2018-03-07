@@ -5,27 +5,24 @@ const before = require('mocha').before
 const it = require('mocha').it
 const after = require('mocha').after
 
-const entriesRequest = require(
-  '../../../../components/dataStorageAccessor/model/entriesRequest',
+const timespanRequest = require(
+  '../../../../components/dataStorageAccessor/model/timespanRequest',
 )
 
 const log = console
 
-describe('EntriesRequest', () => {
+describe('TimespanRequest', () => {
   before(() => {
-    log.info('Start testing EntriesRequest')
+    log.info('Start testing TimespanRequest')
   })
   const mockCollection = {
     find: () => mockCollection,
-    limit: () => mockCollection,
-    sort: () => mockCollection,
     toArray: () => mockCollection,
-    reverse: () => [],
+    timeStamp: {},
   }
   it('should execute without throwing an error', () => {
     assert.doesNotThrow(() => {
-      entriesRequest({
-        numberOfItems: -2,
+      timespanRequest({
         connection: {
           db: {
             collection: () => {
@@ -33,15 +30,14 @@ describe('EntriesRequest', () => {
             },
           },
         },
+        startTime: '2012-09-27',
+        endTime: '2012-09-27',
       })
-        .then(data => {
-          assert.equal(data.length, 1)
-        })
     })
-    assert(typeof entriesRequest === 'function')
+    assert(typeof timespanRequest === 'function')
   })
   after(() => {
-    log.info('End testing EntriesRequest')
+    log.info('End testing TimespanRequest')
   })
 })
 
