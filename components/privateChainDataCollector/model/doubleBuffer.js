@@ -3,11 +3,12 @@
 */
 
 module.exports = class DoubleBuffer {
-  constructor ({connection, activeChain, Schema, StorageSchema, log}) {
+  constructor ({activeChain, bufferAggregator, config, connection, log, Schema, StorageSchema}) {
+    this.activeChain = activeChain
+    this.bufferSwitchTime = config.bufferSwitchTime
+    this.connection = connection
     this.log = log
     this.StorageSchema = StorageSchema
-    this.connection = connection
-    this.activeChain = activeChain
     this.Schema = Schema
 
     this.bufferA = this.createBuffer('a')
@@ -15,6 +16,11 @@ module.exports = class DoubleBuffer {
 
     this.activeBuffer = this.bufferA
     this.isBufferA = true
+
+    this.interval = setInterval(() => {
+      this.toggleActiveBuffer()
+      this.aggregateBuffer(bufferAggregator)
+    }, config.bufferSwitchTime)
   }
 
   createBuffer (bufferName) {
@@ -34,6 +40,10 @@ module.exports = class DoubleBuffer {
 
   getInactiveBufferLabel () {
     return  this.isBufferA ? 'b' : 'a'
+  }
+
+  stopBufferInterval () {
+    clearInterval(this.interval)
   }
 
   toggleActiveBuffer () {
