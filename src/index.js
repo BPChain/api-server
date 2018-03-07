@@ -11,7 +11,7 @@ const connection = mongoConnector
   .connect('mongodb://mongodb/chainboarddb?authSource=admin')
 const log = logger({ connection })
 
-const createUser = require('../components/authenticationHelper/createUser')
+const createUser = require('../components/authenticationHandler/createUser')
 
 const superAdmin = {
   username: 'superAdmin',

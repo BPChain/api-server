@@ -18,7 +18,7 @@ module.exports = async (options = {}) => {
 
   return await User.findOne({ 'username': username }, 'password salt', (error, data ) => {
     if (error) return false
-    if (!data.password) return false
+    if (!data) return false
     return data.password === passwordEncryption({
       password,
       salt: data.salt,

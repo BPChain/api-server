@@ -9,13 +9,10 @@ const cors = require('cors')
 const express = require('express')
 const NodeCache = require('node-cache')
 const session = require('express-session')
-const passport = require('passport')
 
 const config = require('../config')
 
-const createUser = require('./authenticationHelper/createUser')
-const authMiddleware = require('./authenticationHelper/authenticationMiddleware')
-const validateUser = require('./authenticationHelper/validateUser')
+const authMiddleware = require('./authenticationHandler/authenticationMiddleware')
 
 module.exports = ({
   backendController,
@@ -32,6 +29,10 @@ module.exports = ({
     require('./loggerHandler/controller/displayLogsFactory')
   const changeParametersFactory =
     require('./privateChainConfigurator/controller/changeParametersFactory')
+  const loginRouteFactory =
+    require('./authenticationHandler/loginRouteFactory')
+  const userCreationRouteFactory =
+    require('./authenticationHandler/userCreationRouteFactory')
 
   const handleGetStatistics = handleGetStatisticsFactory({
     connection,
@@ -47,6 +48,11 @@ module.exports = ({
     log,
   })
 
+  const createUser = userCreationRouteFactory({
+    connection,
+    log,
+  })
+
   const app = express()
 
   app.use(session({
@@ -59,6 +65,11 @@ module.exports = ({
     stdTTL: 1800,
     checkperiod: 900,
     errorOnMissing: true,
+  })
+
+  const logIn = loginRouteFactory({connection,
+    sessionCache,
+    log,
   })
 
   app.use((request, response, next) => {
@@ -80,11 +91,6 @@ module.exports = ({
     })
   })
 
-  // Init passport authentication
-  // app.use(passport.initialize())
-  // persistent login sessions
-  // app.use(passport.session())
-
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({
     extended: true,
@@ -95,48 +101,14 @@ module.exports = ({
 
   app.get('/log', displayLogs)
 
-  app.post('/login', async (request, response) => {
-    if (await validateUser({
-      username: request.body.username,
-      password: request.body.password,
-      connection,
-    })) {
-      sessionCache.set(request.sessionID, true, (error, success) => {
-        if (!error && success) {
-          log.info(`Authenticated new session: ${request.sessionID}`)
-        }
-        else {
-          log.error(
-            `Error occured trying to cache session: ${request.sessionID}`
-          )
-        }
-      })
-      response.sendStatus('200')
-    }
-    else {
-      response.sendStatus('401')
-    }
-  })
+  app.post('/login', logIn)
 
   app.post('/api/change', authMiddleware(), async (request, response) => {
     const status = await changeParameter(request, response)
     response.sendStatus(status)
   })
 
-  app.post('/api/createUser', authMiddleware(), async (request, response) => {
-    const success = await createUser({
-      connection,
-      log,
-      username: request.body.username,
-      password: request.body.password,
-    })
-    if (success) {
-      response.sendStatus(200)
-    }
-    else {
-      response.sendStatus(500)
-    }
-  })
+  app.post('/api/createUser', authMiddleware(), createUser)
 
   app.get('/*', (request, response) => {
     response.sendFile(
