@@ -12,10 +12,13 @@ const connection = mongoConnector
 const log = logger({ connection })
 
 const createUser = require('../components/authenticationHelper/createUser')
+
 const superAdmin = {
   username: 'superAdmin',
   password: 'secret',
 }
+
+log.info('Creating admin user')
 createUser({ connection, log, username: superAdmin.username, password: superAdmin.password })
 
 async function start (options = {}) {
