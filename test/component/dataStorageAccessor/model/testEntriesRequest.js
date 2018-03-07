@@ -6,7 +6,7 @@ const it = require('mocha').it
 const after = require('mocha').after
 
 const entriesRequest = require(
-  '../../../../components/dataStorageAccessor/model/entriesRequest'
+  '../../../../components/dataStorageAccessor/model/entriesRequest',
 )
 
 const log = console
@@ -15,27 +15,30 @@ describe('EntriesRequest', () => {
   before(() => {
     log.info('Start testing EntriesRequest')
   })
-  describe('EntriesRequest execution', () => {
-    const mockCollection = {
-      find: () => mockCollection,
-      limit: () => mockCollection,
-      sort: () => mockCollection,
-      toArray: () => mockCollection,
-      reverse: () => [100000] }
-    it('should execute without throwing an error', () => {
-      assert.doesNotThrow(() => {
-        entriesRequest({
-          numberOfItems: -2,
-          connection: {
-            db: {collection: () => {
+  const mockCollection = {
+    find: () => mockCollection,
+    limit: () => mockCollection,
+    sort: () => mockCollection,
+    toArray: () => mockCollection,
+    reverse: () => [100000],
+  }
+  it('should execute without throwing an error', () => {
+    assert.doesNotThrow(() => {
+      entriesRequest({
+        numberOfItems: -2,
+        connection: {
+          db: {
+            collection: () => {
               return mockCollection
-            }}}})
-          .then(data => {
-            assert.equal(data.length, 1)
-          })
+            },
+          },
+        },
       })
-      assert(typeof entriesRequest === 'function')
+        .then(data => {
+          assert.equal(data.length, 1)
+        })
     })
+    assert(typeof entriesRequest === 'function')
   })
   after(() => {
     log.info('End testing EntriesRequest')
