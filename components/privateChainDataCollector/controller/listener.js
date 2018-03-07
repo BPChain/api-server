@@ -1,7 +1,5 @@
 const ws = require('ws')
 
-
-const config = require('../../../config')
 const bufferAggregator = require('../model/bufferAggregator')
 const isValidJson = require('../model/checkJsonContent')
 const DoubleBuffer = require('../model/doubleBuffer')
@@ -11,15 +9,7 @@ const DoubleBuffer = require('../model/doubleBuffer')
   that alternatively store the data and get aggregated into the database
 */
 
-module.exports = async (options = {}) => {
-  const {
-    activeChain,
-    schema,
-    connection,
-    log,
-  } = options
-
-
+module.exports = async ({activeChain, log, config, connection, schema}) => {
   const StorageSchema = require(
     `../model/${activeChain.get()
       .toLowerCase()}Storage`

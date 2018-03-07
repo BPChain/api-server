@@ -29,10 +29,11 @@ module.exports = async (options = {}) => {
   privateChainConfigurator.start()
 
   privateChainCollector({
-    schema: config.ethereum.privateChain.schema,
     activeChain,
-    connection,
     log,
+    config,
+    connection,
+    schema: config.ethereum.privateChain.schema,
   })
   publicChainCollector({
     chainName: 'ethereum',
