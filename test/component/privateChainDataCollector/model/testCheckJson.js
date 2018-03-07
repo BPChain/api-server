@@ -25,20 +25,20 @@ describe('privateChains', () => {
     })
     it('should return false when Json is empty', () => {
       assert.equal(
-        isValidJson({json: {}, log: fakeLog}),
+        isValidJson({json: JSON.stringify({}), log: fakeLog}),
         false,
       )
     })
     it('should return false when Json is missing fields', () => {
       assert.equal(
-        isValidJson({json: {hostId: 'anId'}, log: fakeLog}),
+        isValidJson({json: JSON.stringify({hostId: 'anId'}), log: fakeLog}),
         false,
       )
     })
     it('should return false when Json has bad types', () => {
       assert.equal(
         isValidJson({
-          json: {
+          json: JSON.stringify({
             'chainName': 'ethereum',
             'hostId': 'abc',
             'isMining': 'false',
@@ -46,7 +46,7 @@ describe('privateChains', () => {
             'avgBlocktime': '64',
             'gasPrice': 533,
             'avgDifficulty': 56,
-          },
+          }),
           log: fakeLog}),
         false,
       )
@@ -54,7 +54,7 @@ describe('privateChains', () => {
     it('should return true when Json is as expected', () => {
       assert.equal(
         isValidJson({
-          json: {
+          json: JSON.stringify({
             'chainName': 'ethereum',
             'hostId': 'abc',
             'isMining': 1,
@@ -62,7 +62,7 @@ describe('privateChains', () => {
             'avgBlocktime': 64,
             'gasPrice': 533,
             'avgDifficulty': 56,
-          },
+          }),
           log: fakeLog}),
         true,
       )
