@@ -21,7 +21,7 @@ module.exports = async (options = {}) => {
       if (error || !data) {
         resolve(false)
       }
-      const result =  data.password === passwordEncryption({
+      const result = data.password === passwordEncryption({
         password,
         salt: data.salt,
       })
