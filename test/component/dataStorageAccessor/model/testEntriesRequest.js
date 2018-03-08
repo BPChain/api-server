@@ -34,9 +34,9 @@ describe('EntriesRequest', () => {
           },
         },
       })
-      .then(data => {
-        assert.equal(data.length, 1)
-      })
+        .then(data => {
+          assert.equal(data.length, 1)
+        })
     })
     assert(typeof entriesRequest === 'function')
   })
