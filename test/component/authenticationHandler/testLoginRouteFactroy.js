@@ -45,6 +45,12 @@ const successSessionCache = {
   },
 }
 
+const failedSessionCache = {
+  set: (string, boolean, callbackFunction) => {
+    callbackFunction(true, false)
+  },
+}
+
 const successRequest = {
   body: {
     username: username,
@@ -99,6 +105,10 @@ describe('loginRouteFactory', () => {
   describe('#loginRouteFactory()', () => {
     it('should return expected response when user can log in', async () => {
       const loginRoute = loginRouteFactory({ connection: successDataMockConnection, log, sessionCache: successSessionCache })
+      return expect(loginRoute(successRequest, successMockRespones)).to.eventually.be.rejectedWith('authorized request')
+    })
+    it('should return expected response when user can log in and session cache failed', async () => {
+      const loginRoute = loginRouteFactory({ connection: successDataMockConnection, log, sessionCache: failedSessionCache })
       return expect(loginRoute(successRequest, successMockRespones)).to.eventually.be.rejectedWith('authorized request')
     })
     it('should return expected response when user can not log in', async () => {
