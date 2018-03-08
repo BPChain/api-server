@@ -62,9 +62,6 @@ describe('validateUser', () => {
     log.info('Start testing user validation')
   })
   describe('#validateUser()', () => {
-    it('should return false when user is not in database', async () => {
-      assert.equal()
-    })
     it('should return false when password does not match', async () => {
       assert.equal(await validateUser({username, password, connection: errorMockConnection}), false)
     })
