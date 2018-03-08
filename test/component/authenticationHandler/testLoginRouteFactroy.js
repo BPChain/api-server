@@ -100,13 +100,10 @@ describe('loginRouteFactory', () => {
     it('should return expected response when user can log in', async () => {
       const loginRoute = loginRouteFactory({ connection: successDataMockConnection, log, sessionCache: successSessionCache })
       return expect(loginRoute(successRequest, successMockRespones)).to.eventually.be.rejectedWith('authorized request')
-
     })
     it('should return expected response when user can not log in', async () => {
       const loginRoute = loginRouteFactory({ connection: successDataMockConnection, log, sessionCache: successSessionCache })
       return expect(loginRoute(failureRequest, failedLogInMockRespones)).to.eventually.be.rejectedWith('failed to log in')
-
-      // expect(async () => await loginRoute(failureRequest, failedLogInMockRespones)).to.throw('failed to log in')
     })
     it('should return expected response when user is not in database', async () => {
       const loginRoute = loginRouteFactory({ connection: falseDataMockConnection, log, sessionCache: successSessionCache })
