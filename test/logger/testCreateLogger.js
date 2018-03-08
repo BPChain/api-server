@@ -18,6 +18,7 @@ describe('createLogger', () => {
     })
   })
   it('should store entry without error', () => {
+    const logLevels = ['trace', 'debug', 'info', 'warn', 'error', 'fatal']
     const logger = createLogger({
       connection: {model: () => {
         return class LogModel {
@@ -28,7 +29,9 @@ describe('createLogger', () => {
       }},
     })
     assert.doesNotThrow(() => {
-      logger.trace('')
+      logLevels.map(level => {
+        return logger[level]('')
+      })
     })
   })
   it('should throw error if saving failes', () => {
