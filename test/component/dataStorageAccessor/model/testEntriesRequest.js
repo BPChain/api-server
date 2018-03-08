@@ -20,7 +20,7 @@ describe('EntriesRequest', () => {
     limit: () => mockCollection,
     sort: () => mockCollection,
     toArray: () => mockCollection,
-    reverse: () => [],
+    reverse: () => [1],
   }
   it('should execute without throwing an error', () => {
     assert.doesNotThrow(() => {
@@ -34,9 +34,9 @@ describe('EntriesRequest', () => {
           },
         },
       })
-        .then(data => {
-          assert.equal(data.length, 1)
-        })
+      .then(data => {
+        assert.equal(data.length, 1)
+      })
     })
     assert(typeof entriesRequest === 'function')
   })
@@ -44,4 +44,3 @@ describe('EntriesRequest', () => {
     log.info('End testing EntriesRequest')
   })
 })
-
