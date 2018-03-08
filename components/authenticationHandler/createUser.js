@@ -9,7 +9,7 @@ module.exports = async (options = {}) => {
     password,
   } = options
 
-  const User = connection.model('usertable', userSchema)
+  const User = await connection.model('usertable', userSchema)
 
   const secret = passwordHashGenerator({ password })
   const user = new User({
