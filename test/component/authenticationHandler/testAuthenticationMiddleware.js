@@ -20,7 +20,7 @@ const mockIllegalRequest = {
 
 const mockResponse = {
   sendStatus: ()  => {
-    return false
+    throw new Error('unauthorized request')
   },
 }
 
@@ -41,9 +41,9 @@ describe('authenticationMiddleware', () => {
       const middleware = authMiddleware()
       assert.equal(middleware(mockRequest, mockResponse, mockNext), true)
     })
-    it('should return 415 status to unauthenticated requests', async () => {
+    it('should recognize unauthorized requests', async () => {
       const middleware = authMiddleware()
-      assert.equal(middleware(mockIllegalRequest, mockResponse, mockNext), undefined)
+      expect(() => middleware(mockIllegalRequest, mockResponse, mockNext)).to.throw('unauthorized request')
     })
 
   })
