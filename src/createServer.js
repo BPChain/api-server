@@ -12,30 +12,22 @@ const BlockchainController =
 const activeChain =
   require('../components/privateChainDataCollector/model/activeChain')
 
-module.exports = async (options = {}) => {
-  const {
-    connection,
-    activeChainName,
-    config,
-    log,
-  } = options
-
+module.exports = ({connection, activeChainName, config, log}) => {
+  const server = {}
   activeChain.set(activeChainName)
-
   const privateChainConfigurator = new BlockchainController({
     log,
     port: config.controllerPort,
   })
-  privateChainConfigurator.start()
-
-  privateChainCollector({
+  server.privateChainConfigurator = privateChainConfigurator.start()
+  server.privateChainCollector = privateChainCollector({
     activeChain,
     log,
     config,
     connection,
     schema: config.ethereum.privateChain.schema,
   })
-  publicChainCollector({
+  server.publicChainCollector = publicChainCollector({
     chainName: 'ethereum',
     schema:
       require(
@@ -45,10 +37,11 @@ module.exports = async (options = {}) => {
     config,
     log,
   })
-  frontendRouting({
+  server.frontendRouting = frontendRouting({
     backendController: privateChainConfigurator,
     activeChain,
     connection,
     log,
   })
+  return server
 }
