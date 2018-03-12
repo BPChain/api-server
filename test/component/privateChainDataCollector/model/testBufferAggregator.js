@@ -9,102 +9,70 @@ const bufferAggregator = require(
 )
 
 const log = console
-const optionsA = {
-  chainName: 'ethereum',
-  filledBuffer: {},
-  Schema: 'Schema',
-  StorageSchema: 'StorageSchema',
-  connection: {
-    model: (string, type) => {
-      if (type === 'Schema') {
-        return {
-          aggregate: () => {
-            return {
-              exec: () => {
-                return []
-              },
-            }
-          },
-          collection: {
-            remove: () => {},
-            find: () => {
+
+const callbackValues = {error: false, data: true}
+
+const model = () => {
+  return class Storage {
+    static aggregate ()  {
+      return {
+        exec: () => {
+          return []
+        },
+      }
+    }
+    lines () {}
+    save (callbackFunction)  {
+      callbackFunction(callbackValues.error, callbackValues.data)
+    }
+    static get collection () {
+      return {
+        find: () => {
+          return {
+            limit: () => {
               return {
-                limit: () => {
-                  return {
-                    sort: () => {},
-                  }
-                },
+                sort: () => {},
               }
             },
-          },
-        }
-      }
-      else {
-        return function Storage () {
-          return {
-            lines: () => {},
-            save: () => {},
           }
-        }
+        },
+        remove: () => {},
       }
-    },
-  },
-  log: {
-    info: () => {},
-    debug: () => {},
-  },
+    }
+  }
 }
-const optionsB = {
+
+const options = {
   chainName: 'ethereum',
   filledBuffer: {},
   Schema: 'Schema',
   StorageSchema: 'StorageSchema',
   connection: {
-    model: (string, type) => {
-      if (type === 'Schema') {
-        return {
-          aggregate: () => {
-            return {
-              exec: () => {
-                return [{}]
-              },
-            }
-          },
-          collection: {
-            remove: () => {},
-          },
-        }
-      }
-      else {
-        return function Storage () {
-          return {
-            lines: () => {},
-            save: () => {},
-          }
-        }
-      }
-    },
+    model,
   },
   log: {
     info: () => {},
     debug: () => {},
+    error: () => {},
   },
 }
+
 describe('privateChains', () => {
   before(() => {
     log.info('Start testing bufferAggregator')
   })
-  describe('bufferAggregator', () => {
-    it('should not throw an error', (done) => {
-      const resultA = bufferAggregator(optionsA)
-      const resultB = bufferAggregator(optionsB)
-      resultA.then(result => {
-        assert.equal(result, undefined)
-      })
-      resultB.then(result => {
-        assert.equal(result, undefined)
-      })
-      done()
+  describe('bufferAggregator',  () => {
+    it('should return undefined correctly or throw an error', async () => {
+      const result = await bufferAggregator(options)
+      assert.equal(result, undefined)
+    })
+
+    it('should throw an error when saving failes', async () => {
+      callbackValues.error = new Error('testError')
+      await bufferAggregator(options)
+        .catch(error =>  {
+          assert.equal(error, 'Error: testError')
+        })
     })
   })
   after(() => {
