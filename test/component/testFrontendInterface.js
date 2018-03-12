@@ -14,6 +14,26 @@ const frontendInterface = require(
 
 const log = console
 
+/* eslint-disable no-unused-vars */
+
+process.env.FRONTEND_ADMIN = 'some'
+process.env.FRONTEND_ADMIN_PASSWORD = 'abc'
+
+const connection = {
+  model: (string, type) => {
+    return class User {
+      static findOne (object, callbackFunction) {
+        callbackFunction(false, false)
+      }
+      static findOneAndUpdate (query, user, opts, callbackFunction) {
+        callbackFunction(false, true)
+      }
+      lines () { }
+      save () { }
+    }
+  },
+}
+
 let app
 describe('publicChains', () => {
   before(() => {
@@ -21,7 +41,7 @@ describe('publicChains', () => {
   })
   describe('frontendInterface', () => {
     it('should not throw an error', (done) => {
-      app = frontendInterface({})
+      app = frontendInterface({log, connection})
       assert.ok(app)
       done()
     })
