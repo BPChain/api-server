@@ -1,10 +1,12 @@
-const helper = require('./bufferAggregatorHelper')
+/* eslint no-unused-vars: 0 */
 
 /*
-  Aggregates the provided buffer and stores it in the database
+  Aggregates the provided buffer and stores it into the database
 */
 
-module.exports = async (options) => {
+const helper = require('./bufferAggregatorHelper')
+
+module.exports = async (options = {}) => {
   const {
     chainName,
     filledBufferName,
@@ -14,45 +16,46 @@ module.exports = async (options) => {
     log,
   } = options
 
-  log.debug(`Aggregate files from ${filledBufferName}`)
-  const Buffer = helper.initializeBuffer(connection, chainName, filledBufferName, Schema)
 
-  const result = {}
+  const values = await aggregateValues()
+  storeData(values)
 
-  await Promise
-    .all([
-      result.numberOfHosts = await helper.aggregateNumberOfHosts(Buffer, chainName),
-      result.numberOfMiners = await helper.aggregateNumberOfMiners(Buffer, chainName),
-      result.avgHashrate = await helper.aggregateAverageHashRate(Buffer, chainName),
-      result.avgBlocktime = await helper.aggregateAverageBlockTime(Buffer, chainName),
-      result.avgGasPrice = await helper.aggregateAverageGasPrice(Buffer, chainName),
-      result.avgDifficulty = await helper.aggregateAverageDifficulty(Buffer, chainName),
-    ])
-    .catch(log.error)
 
-  await Buffer.collection.remove({})
+  async function aggregateValues () {
+    log.debug(`Aggregate files from ${filledBufferName}`)
+    const Buffer = helper.initializeBuffer(options)
 
-  storeData(connection, chainName, StorageSchema, result, log)
+    const aggregatedValues = {}
 
-}
+    await Promise
+      .all([
+        aggregatedValues.numberOfHosts = await helper.aggregateNumberOfHosts(Buffer, chainName),
+        aggregatedValues.numberOfMiners = await helper.aggregateNumberOfMiners(Buffer, chainName),
+        aggregatedValues.avgHashrate = await helper.aggregateAverageHashRate(Buffer, chainName),
+        aggregatedValues.avgBlocktime = await helper.aggregateAverageBlockTime(Buffer, chainName),
+        aggregatedValues.avgGasPrice = await helper.aggregateAverageGasPrice(Buffer, chainName),
+        aggregatedValues.avgDifficulty = await helper.aggregateAverageDifficulty(Buffer, chainName),
+      ])
+      .catch(log.error)
 
-function storeData (connection, chainName, StorageSchema, result, log) {
-  const Storage = helper.inintializeStorage(connection, chainName, StorageSchema)
-  const dataLine = helper.createStorage(Storage, chainName, result)
+    await Buffer.collection.remove({})
+    return aggregatedValues
+  }
 
-  dataLine.save((error, savedData) => {
-    if (error) {
-      log.error(`Error occured while storing aggregated private data:
-        ${error}`)
-      throw error
-    }
-    else {
-      log.info(
-        'Successfully stored aggregated private data'
-      )
-      log.debug(`Stored aggregated private data:
-        ${savedData}`)
-      return 0
-    }
-  })
+
+  function storeData (aggregatedValues) {
+    const Storage = helper.inintializeStorage(options)
+    const dataLine = helper.createStorage({aggregatedValues, chainName, Storage})
+
+    dataLine.save((error, savedData) => {
+      if (error) {
+        log.error(`Error occured while storing aggregated private data: ${error}`)
+        throw error
+      }
+      else {
+        log.info('Successfully stored aggregated private data')
+        log.debug(`Stored aggregated private data: ${savedData}`)
+      }
+    })
+  }
 }

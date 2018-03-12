@@ -7,7 +7,6 @@ const mongoose = require('mongoose')
 const log = console
 
 module.exports.connect = mongoUri => {
-
   mongoose.Promise = global.Promise
   const mongoDB = mongoose.connect(mongoUri, {
     useMongoClient: true,
@@ -15,15 +14,12 @@ module.exports.connect = mongoUri => {
     user: process.env.MONGO_ADD_CHAINBOARDDBUSER_USERNAME,
     pass: process.env.MONGO_ADD_CHAINBOARDDBUSER_PASSWORD,
   })
-
-  mongoDB
-    .then(async () => {
+  return mongoDB
+    .then(() => {
       log.info('Mongodb has been connected')
     })
-    .catch(async (error) => {
-      log.error('Error while trying to connect with mongodb')
+    .catch(error => {
+      log.error(`Error while trying to connect with mongodb ${error}`)
       throw error
     })
-
-  return mongoDB
 }

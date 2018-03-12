@@ -2,15 +2,10 @@ const logSchema = require('./schema')
 
 const stdoutLog = console
 
-module.exports = (options = {}) => {
-  const {connection} = options
-
+module.exports = ({connection}) => {
   const LogModel = connection.model('log', logSchema)
 
-
-  function store (logOptions = {}) {
-    const {log, logLevel} = logOptions
-
+  function store ({log, logLevel}) {
     stdoutLog.info(log)
     const logEntry = new LogModel({
       log,

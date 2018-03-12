@@ -1,3 +1,5 @@
+const itemNumberLimiter = require('./itemNumberLimiter')
+
 module.exports = async (options = {}) => {
   let {numberOfItems} = options
   const {
@@ -9,12 +11,7 @@ module.exports = async (options = {}) => {
   const result = await connection.db
     .collection(`${chainName}_${accessibility}_storages`)
 
-  if (!numberOfItems) {
-    numberOfItems = 1
-  }
-  else if (numberOfItems > 10000) {
-    numberOfItems = 10000
-  }
+  numberOfItems = itemNumberLimiter(numberOfItems)
 
   const data = await result
     .find({})

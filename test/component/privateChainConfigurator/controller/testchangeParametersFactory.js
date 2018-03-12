@@ -65,7 +65,7 @@ describe('ChangeParametersFactory', () => {
     })
   })
   after(() => {
-    log.info('End testing BlockchainController')
+    log.info('End testing ChangeParametersFactory')
   })
 })
 

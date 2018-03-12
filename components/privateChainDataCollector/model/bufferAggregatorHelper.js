@@ -3,13 +3,13 @@
  so that the bufferAggregator does not need to contain the logic itself
 */
 
-exports.initializeBuffer = (connection, chainName, filledBufferName, Schema) =>
+exports.initializeBuffer = ({connection, chainName, filledBufferName, Schema}) =>
   connection.model(`${chainName}_private${filledBufferName}`, Schema)
 
-exports.inintializeStorage = (connection, chainName, StorageSchema) =>
+exports.inintializeStorage = ({connection, chainName, StorageSchema}) =>
   connection.model(`${chainName}_private_storage`, StorageSchema)
 
-exports.createStorage = (Storage, chainName, aggregatedValues) => {
+exports.createStorage = ({aggregatedValues, chainName, Storage}) => {
   return new Storage(
     Object.assign({
       chainName: chainName,
