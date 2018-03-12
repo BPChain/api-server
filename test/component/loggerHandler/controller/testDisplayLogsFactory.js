@@ -40,7 +40,11 @@ describe('publicChains', () => {
     log.info('Start testing frontend interface')
   })
   describe('frontendInterface', () => {
-    it('should not throw an error', (done) => {
+    it('should create function if no options are passed', () => {
+      const result = displayLogs
+      assert.equal(typeof result, 'function')
+    })
+    it('should not throw an error', () => {
       const logDisplayFunction = displayLogs({
         connection,
       })
@@ -65,7 +69,6 @@ describe('publicChains', () => {
         })
       const request1 = {
         query: {
-          logLevel: 'info',
           startTime: '2018-01-16T11:22:09Z',
           endTime: '2018-01-16T11:22:20Z',
           numberOfItems: 0,
@@ -75,8 +78,6 @@ describe('publicChains', () => {
         .then(returnedValue => {
           assert.equal(returnedValue, undefined)
         })
-
-      done()
     })
   })
   after(() => {

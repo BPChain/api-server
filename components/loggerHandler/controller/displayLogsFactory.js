@@ -2,9 +2,7 @@ const isodate = require('isodate')
 
 const logHTMLGenerator = require('../../../logger/logHTMLGenerator')
 
-module.exports = (options = {}) => {
-  const {connection} = options
-
+module.exports = ({connection}) => {
   return async (request, response) => {
     const {
       logLevel,
@@ -12,7 +10,6 @@ module.exports = (options = {}) => {
       endTime,
     } = request.query
     const numberOfItems = parseInt(request.query.numberOfItems) || 1000
-
     const logTranslation = {
       'trace': 10,
       'debug': 20,
@@ -27,9 +24,7 @@ module.exports = (options = {}) => {
 
     let query = {}
 
-    if (logLevel) {
-      query = Object.assign(query, {logLevel: {$gte: logNumber}})
-    }
+    query = Object.assign(query, {logLevel: {$gte: logNumber}})
 
     if (startTime && endTime) {
       query = Object.assign(
