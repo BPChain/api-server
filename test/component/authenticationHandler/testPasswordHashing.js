@@ -7,6 +7,7 @@ const after = require('mocha').after
 const assert = require('assert')
 const passwordEncryption = require('../../../components/authenticationHandler/passwordHashing')
 const log = console
+const expect = require('chai').expect
 
 
 
@@ -19,6 +20,9 @@ describe('passwordHashing', () => {
     log.info('Start testing password hashing')
   })
   describe('#pashwordHashing()', () => {
+    it('should throw an error with empty options', async () => {
+      expect(() => passwordEncryption()).to.throw(TypeError)
+    })
     it('should return the expected hash value', async () => {
       assert.equal(passwordEncryption({password, salt}), hashToExpect)
     })

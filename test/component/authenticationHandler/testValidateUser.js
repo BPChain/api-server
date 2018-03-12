@@ -7,6 +7,7 @@ const after = require('mocha').after
 const assert = require('assert')
 const validateUser = require('../../../components/authenticationHandler/validateUser')
 const log = console
+const expect = require('chai').expect
 
 
 const hashToExpect = '58585acd673067f96bea32a1c57bf3fc3fd5a42678567e72d5cb0ab7f08ea41dcf3a41af96c53948e13184ae6fe6cd0b8b4193fc593dfb2693b00c2b0ee7a316'
@@ -62,6 +63,9 @@ describe('validateUser', () => {
     log.info('Start testing user validation')
   })
   describe('#validateUser()', () => {
+    it('should throw an error with empty options', async () => {
+      expect(validateUser()).to.eventually.be.rejectedWith(TypeError)
+    })
     it('should return false when password does not match', async () => {
       assert.equal(await validateUser({username, password, connection: errorMockConnection}), false)
     })

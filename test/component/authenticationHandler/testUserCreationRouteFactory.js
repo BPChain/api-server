@@ -53,13 +53,13 @@ const request = {
   },
 }
 
-const successMockRespones = {
+const successMockResponse = {
   sendStatus: () => {
     throw new Error('user created')
   },
 }
 
-const failureMockRespones = {
+const failureMockResponse = {
   sendStatus: () => {
     throw new Error('user creation failed')
   },
@@ -71,13 +71,17 @@ describe('userCreationRouteFactory', () => {
     log.info('Start testing userCreationRoute')
   })
   describe('#userCreationRouteFactory()', () => {
+    it('should throw an error when options are empty', async () => {
+      const userRoute = userCreationRouteFactory()
+      return expect(userRoute(request, successMockResponse)).to.eventually.be.rejectedWith(TypeError)
+    })
     it('should return expected response when user can be created', async () => {
       const userRoute = userCreationRouteFactory({ connection: successConnection, log})
-      return expect(userRoute(request, successMockRespones)).to.eventually.be.rejectedWith('user created')
+      return expect(userRoute(request, successMockResponse)).to.eventually.be.rejectedWith('user created')
     })
     it('should return expected response when user can not be created', async () => {
       const userRoute = userCreationRouteFactory({ connection: failureConnection, log})
-      return expect(userRoute(request, failureMockRespones)).to.eventually.be.rejectedWith('user creation failed')
+      return expect(userRoute(request, failureMockResponse)).to.eventually.be.rejectedWith('user creation failed')
     })
   })
   after(() => {

@@ -7,6 +7,11 @@ const after = require('mocha').after
 const assert = require('assert')
 const createUser = require('../../../components/authenticationHandler/createUser')
 const log = console
+const chai = require('chai')
+const chaiAsPromised = require('chai-as-promised')
+
+chai.use(chaiAsPromised)
+const expect = require('chai').expect
 
 
 const password = 'abc'
@@ -118,6 +123,9 @@ describe('validateUser', () => {
     log.info('Start testing user validation')
   })
   describe('#validateUser()', () => {
+    it('should throw error with empty options', async () => {
+      return expect(createUser()).to.eventually.be.rejectedWith(TypeError)
+    })
     it('should return false when password does not match', async () => {
       assert.equal(await createUser(optionsA), false)
     })

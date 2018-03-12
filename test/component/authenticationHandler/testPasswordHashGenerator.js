@@ -22,6 +22,9 @@ describe('password hash generation', () => {
     it('should return a function()', () => {
       expect(hashGenerator).to.be.a('function')
     })
+    it('should throw error with empty options', () => {
+      expect(() => hashGenerator()).to.throw(TypeError)
+    })
     it('should return no expected hash value', async () => {
       assert.notEqual(hashGenerator({ password }), { salt: saltToNotExpect, password: hashToNotExpect })
     })

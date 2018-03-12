@@ -23,7 +23,7 @@ const salt = '123'
 const username = 'some'
 const wrongUsername = 'other'
 
-const successMockRespones = {
+const successMockResponse = {
   sendStatus: () => {
     throw new Error('authorized request')
   },
@@ -76,7 +76,7 @@ const failureMockResponse = {
   },
 }
 
-const failedLogInMockRespones = {
+const failedLogInMockResponse = {
   sendStatus: () => {
     throw new Error('failed to log in')
   },
@@ -105,15 +105,19 @@ describe('loginRouteFactory', () => {
   describe('#loginRouteFactory()', () => {
     it('should return expected response when user can log in', async () => {
       const loginRoute = loginRouteFactory({ connection: successDataMockConnection, log, sessionCache: successSessionCache })
-      return expect(loginRoute(successRequest, successMockRespones)).to.eventually.be.rejectedWith('authorized request')
+      return expect(loginRoute(successRequest, successMockResponse)).to.eventually.be.rejectedWith('authorized request')
+    })
+    it('should throw error with empty options', async () => {
+      const loginRoute = loginRouteFactory()
+      return expect(loginRoute(successRequest, successMockResponse)).to.eventually.be.rejectedWith(TypeError)
     })
     it('should return expected response when user can log in and session cache failed', async () => {
       const loginRoute = loginRouteFactory({ connection: successDataMockConnection, log, sessionCache: failedSessionCache })
-      return expect(loginRoute(successRequest, successMockRespones)).to.eventually.be.rejectedWith('authorized request')
+      return expect(loginRoute(successRequest, successMockResponse)).to.eventually.be.rejectedWith('authorized request')
     })
     it('should return expected response when user can not log in', async () => {
       const loginRoute = loginRouteFactory({ connection: successDataMockConnection, log, sessionCache: successSessionCache })
-      return expect(loginRoute(failureRequest, failedLogInMockRespones)).to.eventually.be.rejectedWith('failed to log in')
+      return expect(loginRoute(failureRequest, failedLogInMockResponse)).to.eventually.be.rejectedWith('failed to log in')
     })
     it('should return expected response when user is not in database', async () => {
       const loginRoute = loginRouteFactory({ connection: falseDataMockConnection, log, sessionCache: successSessionCache })
