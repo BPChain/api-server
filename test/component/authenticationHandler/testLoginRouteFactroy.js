@@ -24,10 +24,15 @@ const username = 'some'
 const wrongUsername = 'other'
 
 const successMockResponse = {
-  sendStatus: () => {
-    throw new Error('authorized request')
+  status: () => {
+    return {
+      send: () => {
+        throw new Error('authorized request')
+      },
+    }
   },
 }
+
 
 const successDataMockConnection = {
   model: () => {
@@ -71,20 +76,32 @@ const falseDataMockConnection = {
 }
 
 const failureMockResponse = {
-  sendStatus: () => {
-    throw new Error('unauthorized request')
+  status: () => {
+    return {
+      send: () => {
+        throw new Error('unauthorized request')
+      },
+    }
   },
 }
 
 const failedLogInMockResponse = {
-  sendStatus: () => {
-    throw new Error('failed to log in')
+  status: () => {
+    return {
+      send: () => {
+        throw new Error('failed to log in')
+      },
+    }
   },
 }
 
 const cacheErrorMockResponse = {
-  sendStatus: () => {
-    throw new Error('error when caching session')
+  status: () => {
+    return {
+      send: () => {
+        throw new Error('error when caching session')
+      },
+    }
   },
 }
 

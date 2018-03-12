@@ -28,11 +28,13 @@ module.exports = (options = {}) => {
           )
         }
       })
-      response.sendStatus('200')
+      response.status(200)
+        .send('true')
     }
     else {
       log.info('User could not be logged in.')
-      response.sendStatus('401')
+      response.status(200)
+        .send('false')
     }
   }
 }
