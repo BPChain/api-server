@@ -9,20 +9,9 @@ const mongoConnector = require('./mongoConnector')
 
 const connection = mongoConnector
   .connect('mongodb://mongodb/chainboarddb?authSource=admin')
-const log = logger({ connection })
+const log = logger({connection})
 
-const createUser = require('../components/authenticationHandler/createUser')
-
-const superAdmin = {
-  username: 'superAdmin',
-  password: 'secret',
-}
-
-log.info('Creating admin user')
-createUser({ connection, log, username: superAdmin.username, password: superAdmin.password })
-
-async function start (options = {}) {
-  const { activeChainName } = options
+async function start ({activeChainName}) {
   createServer({
     activeChainName,
     connection,
@@ -32,6 +21,4 @@ async function start (options = {}) {
 }
 
 log.info('Starting API-Server...')
-start({ activeChainName: 'ethereum' })
-
-module.exports = start
+start({activeChainName: 'ethereum'})

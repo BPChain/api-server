@@ -12,13 +12,13 @@ module.exports = async ({username, password, connection}) => {
   const promise = new Promise(resolve => {
     User.findOne({'username': username}, 'password salt', (error, data) => {
       if (error || !data) {
-        resolve(false)
+        return resolve(false)
       }
       const result = data.password === passwordEncryption({
         password,
         salt: data.salt,
       })
-      resolve(result)
+      return resolve(result)
     })
   })
   return await promise

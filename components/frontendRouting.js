@@ -34,6 +34,16 @@ module.exports = ({
   const userCreationRouteFactory =
     require('./authenticationHandler/userCreationRouteFactory')
 
+  const createUser = require('./authenticationHandler/createUser')
+
+  const superAdmin = {
+    username: process.env.FRONTEND_ADMIN,
+    password: process.env.FRONTEND_ADMIN_PASSWORD,
+  }
+
+  log.info('Creating admin user')
+  createUser({ connection, log, username: superAdmin.username, password: superAdmin.password })
+
   const handleGetStatistics = handleGetStatisticsFactory({
     connection,
     log,
@@ -48,7 +58,7 @@ module.exports = ({
     log,
   })
 
-  const createUser = userCreationRouteFactory({
+  const createUserRoute = userCreationRouteFactory({
     connection,
     log,
   })
@@ -67,7 +77,8 @@ module.exports = ({
     errorOnMissing: true,
   })
 
-  const logIn = loginRouteFactory({connection,
+  const logIn = loginRouteFactory({
+    connection,
     sessionCache,
     log,
   })
@@ -108,7 +119,7 @@ module.exports = ({
     response.sendStatus(status)
   })
 
-  app.post('/api/createUser', authMiddleware, createUser)
+  app.post('/api/createUser', authMiddleware, createUserRoute)
 
   app.get('/*', (request, response) => {
     response.sendFile(

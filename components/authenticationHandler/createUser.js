@@ -47,15 +47,15 @@ module.exports = async (options = {}) => {
     User.findOneAndUpdate(query, user, opts, (error, result) => {
       if (error) {
         log.error(error)
-        resolve(false)
+        return resolve(false)
       }
       else if (result) {
         log.info('Successfully saved user.')
-        resolve(true)
+        return resolve(true)
       }
       else {
         log.info('No new user was created.')
-        resolve(false)
+        return resolve(false)
       }
     })
   })
