@@ -45,10 +45,10 @@ describe('logout', () => {
     it('should return a function()', () => {
       expect(logout).to.be.a('function')
     })
-    it('should allow authenticated requests', async () => {
+    it('should be able to log out users', async () => {
       expect(() => logout(mockRequest, mockSuccess)).to.throw('success')
     })
-    it('should recognize unauthorized requests', async () => {
+    it('should recognize errors', async () => {
       expect(() => logout(failureRequest, mockFailure)).to.throw('failed to log out')
     })
   })
