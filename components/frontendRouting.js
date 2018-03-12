@@ -13,6 +13,7 @@ const session = require('express-session')
 const config = require('../config')
 
 const authMiddleware = require('./authenticationHandler/authenticationMiddleware')
+const logOut = require('./authenticationHandler/logout')
 
 module.exports = ({
   backendController,
@@ -113,6 +114,8 @@ module.exports = ({
   app.get('/log', displayLogs)
 
   app.post('/login', logIn)
+
+  app.post('/logout', authMiddleware, logOut)
 
   app.post('/api/change', authMiddleware, async (request, response) => {
     const status = await changeParameter(request, response)
