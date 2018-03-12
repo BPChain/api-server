@@ -55,7 +55,6 @@ module.exports = async (options = {}) => {
       else {
         log.info('Successfully stored aggregated private data')
         log.debug(`Stored aggregated private data: ${savedData}`)
-        return 0
       }
     })
   }
