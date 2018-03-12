@@ -1,11 +1,13 @@
 /* eslint-disable max-len */
 
 const describe = require('mocha').describe
-const before = require('mocha').before
 const it = require('mocha').it
-const after = require('mocha').after
 const loginRouteFactory = require('../../../components/authenticationHandler/loginRouteFactory')
-const log = console
+const log = {
+  info: () => {},
+  error: () => {},
+  debug: () => {},
+}
 
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
@@ -116,9 +118,6 @@ const failureRequest = {
 }
 
 describe('loginRouteFactory', () => {
-  before(() => {
-    log.info('Start testing loginRouteFactory')
-  })
   describe('#loginRouteFactory()', () => {
     it('should return expected response when user can log in', async () => {
       const loginRoute = loginRouteFactory({ connection: successDataMockConnection, log, sessionCache: successSessionCache })
@@ -145,8 +144,5 @@ describe('loginRouteFactory', () => {
       const loginRoute = loginRouteFactory({ connection: falseDataMockConnection, log, sessionCache: successSessionCache })
       return expect(loginRoute(successRequest, cacheErrorMockResponse)).to.eventually.be.rejectedWith('error when caching session')
     })
-  })
-  after(() => {
-    log.info('End testing loginRouteFactory')
   })
 })

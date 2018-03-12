@@ -103,12 +103,12 @@ module.exports = ({
 
   app.post('/login', logIn)
 
-  app.post('/api/change', authMiddleware(), async (request, response) => {
+  app.post('/api/change', authMiddleware, async (request, response) => {
     const status = await changeParameter(request, response)
     response.sendStatus(status)
   })
 
-  app.post('/api/createUser', authMiddleware(), createUser)
+  app.post('/api/createUser', authMiddleware, createUser)
 
   app.get('/*', (request, response) => {
     response.sendFile(

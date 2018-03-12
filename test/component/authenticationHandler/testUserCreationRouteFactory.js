@@ -1,11 +1,13 @@
 /* eslint-disable max-len */
 
 const describe = require('mocha').describe
-const before = require('mocha').before
 const it = require('mocha').it
-const after = require('mocha').after
 const userCreationRouteFactory = require('../../../components/authenticationHandler/userCreationRouteFactory')
-const log = console
+const log = {
+  info: () => {},
+  error: () => {},
+  debug: () => {},
+}
 
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
@@ -67,12 +69,9 @@ const failureMockResponse = {
 
 
 describe('userCreationRouteFactory', () => {
-  before(() => {
-    log.info('Start testing userCreationRoute')
-  })
   describe('#userCreationRouteFactory()', () => {
     it('should throw an error when options are empty', async () => {
-      const userRoute = userCreationRouteFactory()
+      const userRoute = userCreationRouteFactory({})
       return expect(userRoute(request, successMockResponse)).to.eventually.be.rejectedWith(TypeError)
     })
     it('should return expected response when user can be created', async () => {
@@ -83,8 +82,5 @@ describe('userCreationRouteFactory', () => {
       const userRoute = userCreationRouteFactory({ connection: failureConnection, log})
       return expect(userRoute(request, failureMockResponse)).to.eventually.be.rejectedWith('user creation failed')
     })
-  })
-  after(() => {
-    log.info('End testing userCreationRoute')
   })
 })

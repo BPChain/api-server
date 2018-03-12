@@ -1,12 +1,9 @@
 /* eslint-disable max-len */
 
 const describe = require('mocha').describe
-const before = require('mocha').before
 const it = require('mocha').it
-const after = require('mocha').after
 const assert = require('assert')
 const validateUser = require('../../../components/authenticationHandler/validateUser')
-const log = console
 const expect = require('chai').expect
 
 
@@ -59,9 +56,6 @@ const noDataMockConnection = {
 }
 
 describe('validateUser', () => {
-  before(() => {
-    log.info('Start testing user validation')
-  })
   describe('#validateUser()', () => {
     it('should throw an error with empty options', async () => {
       expect(validateUser()).to.eventually.be.rejectedWith(TypeError)
@@ -87,8 +81,5 @@ describe('validateUser', () => {
     it('should return false when the false data is returned', async () => {
       assert.equal(await validateUser({username, password, connection: falseDataMockConnection}), false)
     })
-  })
-  after(() => {
-    log.info('End testing user validation')
   })
 })

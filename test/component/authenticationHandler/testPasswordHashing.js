@@ -1,12 +1,9 @@
 /* eslint-disable max-len */
 
 const describe = require('mocha').describe
-const before = require('mocha').before
 const it = require('mocha').it
-const after = require('mocha').after
 const assert = require('assert')
 const passwordEncryption = require('../../../components/authenticationHandler/passwordHashing')
-const log = console
 const expect = require('chai').expect
 
 
@@ -16,9 +13,6 @@ const password = 'abc'
 const salt = '123'
 
 describe('passwordHashing', () => {
-  before(() => {
-    log.info('Start testing password hashing')
-  })
   describe('#pashwordHashing()', () => {
     it('should throw an error with empty options', async () => {
       expect(() => passwordEncryption()).to.throw(TypeError)
@@ -26,8 +20,5 @@ describe('passwordHashing', () => {
     it('should return the expected hash value', async () => {
       assert.equal(passwordEncryption({password, salt}), hashToExpect)
     })
-  })
-  after(() => {
-    log.info('End testing password hashing')
   })
 })

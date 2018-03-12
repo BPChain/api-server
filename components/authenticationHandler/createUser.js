@@ -11,15 +11,15 @@ module.exports = async (options = {}) => {
 
   const User = await connection.model('usertable', userSchema)
 
-  const secret = passwordHashGenerator({ password })
+  const secret = passwordHashGenerator({password})
   const user = new User({
     timestamp: Date.now(),
-    username: username,
+    username,
     password: secret.password,
     salt: secret.salt,
   })
 
-  const query = { username: user.username }
+  const query = {username: user.username}
 
   let isAlreadyPresent = false
   await User.findOne(query, (error, result) => {
@@ -37,12 +37,13 @@ module.exports = async (options = {}) => {
     }
   })
 
-  const opts = { upsert: true, new: true, setDefaultsOnInsert: true }
-
   if (isAlreadyPresent) {
     return false
   }
-  const promise = new Promise((resolve) => {
+
+  const opts = {upsert: true, new: true, setDefaultsOnInsert: true}
+
+  const promise = new Promise(resolve => {
     User.findOneAndUpdate(query, user, opts, (error, result) => {
       if (error) {
         log.error(error)

@@ -1,11 +1,6 @@
 const createUser = require('./createUser')
 
-module.exports = (options = {}) => {
-  const {
-    connection,
-    log,
-  } = options
-
+module.exports = ({connection, log}) => {
   return async (request, response) => {
     const {
       username,
@@ -19,13 +14,11 @@ module.exports = (options = {}) => {
       password,
     })
     if (success) {
-      log.info(success)
-      log.info('Returning success')
+      log.debug('Returning success')
       response.sendStatus(200)
     }
     else {
-      log.info(success)
-      log.info('Returning failure')
+      log.debug('Returning failure')
       response.sendStatus(500)
     }
   }

@@ -1,8 +1,6 @@
 const crypto = require('crypto')
 
-module.exports = (options = {}) => {
-  const {password} = options
-
+module.exports = ({password}) => {
   const saltLength = 16
 
   const salt = crypto.randomBytes(Math.ceil(saltLength / 2))

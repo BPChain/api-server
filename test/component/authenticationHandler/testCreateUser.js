@@ -1,12 +1,14 @@
 /* eslint-disable max-len */
 
 const describe = require('mocha').describe
-const before = require('mocha').before
 const it = require('mocha').it
-const after = require('mocha').after
 const assert = require('assert')
 const createUser = require('../../../components/authenticationHandler/createUser')
-const log = console
+const log = {
+  info: () => {},
+  error: () => {},
+  debug: () => {},
+}
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 
@@ -119,9 +121,6 @@ const optionsE = {
 }
 
 describe('validateUser', () => {
-  before(() => {
-    log.info('Start testing user validation')
-  })
   describe('#validateUser()', () => {
     it('should throw error with empty options', async () => {
       return expect(createUser()).to.eventually.be.rejectedWith(TypeError)
@@ -141,8 +140,5 @@ describe('validateUser', () => {
     it('should return true when username is free and user insertion succeeds', async () => {
       assert.equal(await createUser(optionsE), true)
     })
-  })
-  after(() => {
-    log.info('End testing user validation')
   })
 })

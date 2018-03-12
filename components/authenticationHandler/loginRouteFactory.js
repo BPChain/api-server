@@ -20,7 +20,7 @@ module.exports = (options = {}) => {
     })) {
       sessionCache.set(request.sessionID, true, (error, success) => {
         if (!error && success) {
-          log.info(`Authenticated new session: ${request.sessionID}`)
+          log.debug(`Authenticated new session: ${request.sessionID}`)
         }
         else {
           log.error(
@@ -28,12 +28,14 @@ module.exports = (options = {}) => {
           )
         }
       })
-      response.status(200)
+      response
+        .status(200)
         .send('true')
     }
     else {
-      log.info('User could not be logged in.')
-      response.status(200)
+      log.debug('User could not be logged in.')
+      response
+        .status(200)
         .send('false')
     }
   }
