@@ -115,6 +115,10 @@ module.exports = ({
 
   app.post('/login', logIn)
 
+  app.get('/checkLogin', authMiddleware, (request, response) => {
+    response.sendStatus(200)
+  })
+
   app.post('/logout', authMiddleware, logOut)
 
   app.post('/api/change', authMiddleware, async (request, response) => {
