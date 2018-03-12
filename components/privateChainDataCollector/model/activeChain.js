@@ -13,7 +13,5 @@ module.exports = {
     }
     return false
   },
-  get: () => {
-    return activeChain
-  },
+  get: () => activeChain,
 }
