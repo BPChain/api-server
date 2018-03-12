@@ -9,7 +9,7 @@ exports.initializeBuffer = ({connection, chainName, filledBufferName, Schema}) =
 exports.inintializeStorage = ({connection, chainName, StorageSchema}) =>
   connection.model(`${chainName}_private_storage`, StorageSchema)
 
-exports.createStorage = (Storage, chainName, aggregatedValues) => {
+exports.createStorage = ({aggregatedValues, chainName, Storage}) => {
   return new Storage(
     Object.assign({
       chainName: chainName,
