@@ -9,6 +9,11 @@ module.exports = async (options = {}) => {
     password,
   } = options
 
+  if (username === '' || password === '' || !password || !username) {
+    log.info('Username or password was empty!')
+    return false
+  }
+
   const User = await connection.model('usertable', userSchema)
 
   const secret = passwordHashGenerator({password})
