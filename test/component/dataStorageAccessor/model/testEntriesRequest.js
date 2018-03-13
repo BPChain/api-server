@@ -5,6 +5,12 @@ const before = require('mocha').before
 const it = require('mocha').it
 const after = require('mocha').after
 
+const chai = require('chai')
+const chaiAsPromised = require('chai-as-promised')
+
+chai.use(chaiAsPromised)
+const expect = require('chai').expect
+
 const entriesRequest = require(
   '../../../../components/dataStorageAccessor/model/entriesRequest',
 )
@@ -22,6 +28,9 @@ describe('EntriesRequest', () => {
     toArray: () => mockCollection,
     reverse: () => [1],
   }
+  it('should throw an error when no options are supplied', () => {
+    return expect(entriesRequest()).to.eventually.be.rejectedWith(TypeError)
+  })
   it('should execute without throwing an error', () => {
     assert.doesNotThrow(() => {
       entriesRequest({

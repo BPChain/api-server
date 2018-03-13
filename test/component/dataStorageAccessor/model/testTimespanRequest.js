@@ -27,7 +27,7 @@ describe('TimespanRequest', () => {
     timeStamp: {},
   }
   it('should throw an error when no parameters are supplied', () => {
-      return expect(timespanRequest()).to.eventually.be.rejectedWith(TypeError)
+    return expect(timespanRequest()).to.eventually.be.rejectedWith(TypeError)
   })
   it('should execute without throwing an error', () => {
     assert.doesNotThrow(() => {
