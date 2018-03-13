@@ -1,11 +1,12 @@
-const execa = require('execa')
+/*
+  Establish and return database connection
+*/
+
 const mongoose = require('mongoose')
-const path = require('path')
 
 const log = console
 
 module.exports.connect = mongoUri => {
-
   mongoose.Promise = global.Promise
   const mongoDB = mongoose.connect(mongoUri, {
     useMongoClient: true,
@@ -13,17 +14,13 @@ module.exports.connect = mongoUri => {
     user: process.env.MONGO_ADD_CHAINBOARDDBUSER_USERNAME,
     pass: process.env.MONGO_ADD_CHAINBOARDDBUSER_PASSWORD,
   })
-
-  mongoDB
-    .then(async () => {
+  return mongoDB
+    .then(connection => {
       log.info('Mongodb has been connected')
-      await execa(path.join(__dirname, 'unsetEnvVariables.sh'))
+      return connection
     })
-    .catch(async (error) => {
-      log.error('Error while trying to connect with mongodb')
-      await execa(path.join(__dirname, 'unsetEnvVariables.sh'))
+    .catch(error => {
+      log.error(`Error while trying to connect with mongodb ${error}`)
       throw error
     })
-
-  return mongoDB
 }

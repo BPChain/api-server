@@ -1,6 +1,6 @@
 # api-server
 Master-Branch: [![Build Status](https://travis-ci.org/BPChain/api-server.svg?branch=master)](https://travis-ci.org/BPChain/api-server) [![Coverage Status](https://coveralls.io/repos/github/BPChain/api-server/badge.svg?branch=master)](https://coveralls.io/github/BPChain/api-server?branch=master) <br />
-Dev-Branch: [![Build Status](https://travis-ci.org/BPChain/api-server.svg?branch=dev)](https://travis-ci.org/BPChain/api-server) [![Coverage Status](https://coveralls.io/repos/github/BPChain/api-server/badge.svg?branch=dev)](https://coveralls.io/github/BPChain/api-server?branch=dev) <br />
+Dev-Branch: [![Build Status](https://travis-ci.org/BPChain/api-server.svg?branch=dev)](https://travis-ci.org/BPChain/api-server) [![Coverage Status](https://coveralls.io/repos/github/BPChain/api-server/badge.svg?branch=dev)](https://coveralls.io/github/BPChain/api-server?branch=dev) [![Maintainability](https://api.codeclimate.com/v1/badges/112659dc9abb5e8dfb95/maintainability)](https://codeclimate.com/github/BPChain/api-server/maintainability) <br />
 
 A simple API-Server that provides a RESTful interface for the frontend, a Websocket for the simulated Blockchain and a Database for persisting the aggregated data.
 

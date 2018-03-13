@@ -3,7 +3,7 @@ env:
   node: true
   es6: true
 extends:
-    - eslint:recommended
+  - eslint:recommended
 parser: babel-eslint
 parserOptions:
   ecmaFeartures:
@@ -69,7 +69,7 @@ rules:
     - unix
   max-len:
     - error
-    - code: 80
+    - code: 100
       tabWidth: 4
   new-cap:
     - error
