@@ -9,7 +9,7 @@ module.exports = async (options = {}) => {
     password,
   } = options
 
-  if (username === '' || password === '' || !password || !username) {
+  if (!password || !username) {
     log.info('Username or password was empty!')
     return false
   }
