@@ -4,6 +4,12 @@ const before = require('mocha').before
 const it = require('mocha').it
 const after = require('mocha').after
 
+const chai = require('chai')
+const chaiAsPromised = require('chai-as-promised')
+
+chai.use(chaiAsPromised)
+const expect = require('chai').expect
+
 const bufferAggregator = require(
   '../../../../components/privateChainDataCollector/model/bufferAggregator'
 )
@@ -62,7 +68,10 @@ describe('privateChains', () => {
     log.info('Start testing bufferAggregator')
   })
   describe('bufferAggregator',  () => {
-    it('should return undefined correctly or throw an error', async () => {
+    it('should throw an error when no options are supplied', async () => {
+      return expect(bufferAggregator()).to.eventually.be.rejectedWith(TypeError)
+    })
+    it('should return undefined on correct behaviour', async () => {
       const result = await bufferAggregator(options)
       assert.equal(result, undefined)
     })
@@ -70,7 +79,7 @@ describe('privateChains', () => {
     it('should throw an error when saving failes', async () => {
       callbackValues.error = new Error('testError')
       await bufferAggregator(options)
-        .catch(error =>  {
+        .catch(error => {
           assert.equal(error, 'Error: testError')
         })
     })
