@@ -38,8 +38,8 @@ module.exports = ({
   const createUser = require('./authenticationHandler/createUser')
 
   const superAdmin = {
-    username: process.env.FRONTEND_ADMIN,
-    password: process.env.FRONTEND_ADMIN_PASSWORD,
+    username: process.env.MONGO_INITDB_ROOT_USERNAME,
+    password: process.env.MONGO_INITDB_ROOT_PASSWORD,
   }
 
   log.info('Creating admin user')
