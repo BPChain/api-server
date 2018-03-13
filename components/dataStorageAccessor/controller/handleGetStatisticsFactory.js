@@ -13,10 +13,8 @@ module.exports = (options = {}) => {
     const {startTime, endTime} = request.query
     const numberOfItems = parseInt(request.query.numberOfItems)
 
-    if (!(isNaN(Date.parse(startTime)) || isNaN(Date.parse(endTime)))) {
-      log.trace(
-        `Access ${accessibility} items ${startTime}||${endTime}`
-      )
+    if (!isNaN(Date.parse(startTime)) && !isNaN(Date.parse(endTime))) {
+      log.trace(`Access ${accessibility} items ${startTime}||${endTime}`)
       const data = await aggregator({
         chainName,
         accessibility,
@@ -27,12 +25,8 @@ module.exports = (options = {}) => {
       })
       response.send(data)
     }
-
     else if (Number.isInteger(numberOfItems) && numberOfItems > 0) {
-      log.trace(
-        `Access last ${numberOfItems} ${accessibility} items`
-      )
-
+      log.trace(`Access last ${numberOfItems} ${accessibility} items`)
       const data = await aggregator({
         chainName,
         accessibility,
@@ -43,7 +37,6 @@ module.exports = (options = {}) => {
       })
       response.send(data)
     }
-
     else {
       const data = await aggregator({
         chainName,
