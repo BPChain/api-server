@@ -20,6 +20,7 @@ describe('BlockchainController', () => {
     it('should be constructed without an error', () => {
       let blockchainController
       assert.doesNotThrow(() => {
+        blockchainController = new BlockchainController()
         blockchainController = new BlockchainController({})
       })
       assert.deepEqual(blockchainController.clientArray, [])
