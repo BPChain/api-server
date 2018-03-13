@@ -120,6 +120,66 @@ const optionsE = {
   log,
 }
 
+const optionsF = {
+  username: '',
+  password,
+  connection: {
+    model: (string, type) => {
+      return class User {
+        static findOne (object, callbackFunction) {
+          callbackFunction(false, false)
+        }
+        static findOneAndUpdate (query, user, opts, callbackFunction) {
+          callbackFunction(false, true)
+        }
+        lines () { }
+        save () { }
+      }
+    },
+  },
+  log,
+}
+
+const optionsG = {
+  username,
+  password: '',
+  connection: {
+    model: (string, type) => {
+      return class User {
+        static findOne (object, callbackFunction) {
+          callbackFunction(false, false)
+        }
+        static findOneAndUpdate (query, user, opts, callbackFunction) {
+          callbackFunction(false, true)
+        }
+        lines () { }
+        save () { }
+      }
+    },
+  },
+  log,
+}
+
+const optionsH = {
+  username: '',
+  password: '',
+  connection: {
+    model: (string, type) => {
+      return class User {
+        static findOne (object, callbackFunction) {
+          callbackFunction(false, false)
+        }
+        static findOneAndUpdate (query, user, opts, callbackFunction) {
+          callbackFunction(false, true)
+        }
+        lines () { }
+        save () { }
+      }
+    },
+  },
+  log,
+}
+
 describe('validateUser', () => {
   describe('#validateUser()', () => {
     it('should throw error with empty options', async () => {
@@ -139,6 +199,11 @@ describe('validateUser', () => {
     })
     it('should return true when username is free and user insertion succeeds', async () => {
       assert.equal(await createUser(optionsE), true)
+    })
+    it('should return false when username and/or password is empty', async () => {
+      assert.equal(await createUser(optionsF), false)
+      assert.equal(await createUser(optionsG), false)
+      assert.equal(await createUser(optionsH), false)
     })
   })
 })
