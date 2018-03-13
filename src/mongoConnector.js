@@ -15,8 +15,9 @@ module.exports.connect = mongoUri => {
     pass: process.env.MONGO_ADD_CHAINBOARDDBUSER_PASSWORD,
   })
   return mongoDB
-    .then(() => {
+    .then(connection => {
       log.info('Mongodb has been connected')
+      return connection
     })
     .catch(error => {
       log.error(`Error while trying to connect with mongodb ${error}`)
