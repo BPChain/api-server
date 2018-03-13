@@ -6,6 +6,13 @@ const after = require('mocha').after
 const path = require('path')
 
 const fse = require('fs-extra')
+
+const chai = require('chai')
+const chaiAsPromised = require('chai-as-promised')
+
+chai.use(chaiAsPromised)
+const expect = require('chai').expect
+
 const htmlGenerator = require(
   '../../logger/logHTMLGenerator'
 )
@@ -13,6 +20,11 @@ const htmlGenerator = require(
 const log = console
 
 const logObjects = [
+  {
+    timeStamp: 0,
+    log: 'A non classified log',
+    logLevel: 2,
+  },
   {
     timeStamp: 0,
     log: 'A trace log',
@@ -53,11 +65,13 @@ describe('publicChains', () => {
   before(() => {
     log.info('Start testing log HTML Generator')
   })
+  it('should throw an error when no data is supplied', () => {
+    return expect(htmlGenerator).to.throw(TypeError)
+  })
   describe('logHTMLGenerator', () => {
-    it('should generate correct logs for all logLevels', (done) => {
+    it('should generate correct logs for all logLevels', () => {
       const html = htmlGenerator({data: logObjects})
       assert.equal(html, testHTMLOutput)
-      done()
     })
   })
   after(() => {

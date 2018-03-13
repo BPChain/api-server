@@ -32,8 +32,7 @@ const siteTemplate = Handlebars.compile(`
   </HTML>
 `)
 
-module.exports = (options = {}) => {
-  const {data} = options
+module.exports = ({data}) => {
   const logLines = new Handlebars.SafeString(
     data.reduce((html, logEntry) => {
       const logLevelLine = new Handlebars.SafeString(
