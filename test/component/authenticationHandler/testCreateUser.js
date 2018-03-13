@@ -180,12 +180,12 @@ const optionsH = {
   log,
 }
 
-describe('validateUser', () => {
-  describe('#validateUser()', () => {
+describe('createUser', () => {
+  describe('#createUser()', () => {
     it('should throw error with empty options', async () => {
       return expect(createUser()).to.eventually.be.rejectedWith(TypeError)
     })
-    it('should return false when password does not match', async () => {
+    it('should return false when user is already present', async () => {
       assert.equal(await createUser(optionsA), false)
     })
     it('should return false when username lookup fails', async () => {

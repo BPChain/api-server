@@ -26,43 +26,50 @@ module.exports = async (options = {}) => {
 
   const query = {username: user.username}
 
-  let isAlreadyPresent = false
-  await User.findOne(query, (error, result) => {
-    if (error) {
-      log.debug(error)
-      isAlreadyPresent = true
-    }
-    if (result) {
-      log.info('Username is already taken.')
-      isAlreadyPresent = true
-    }
-    else {
-      log.info('Username is free.')
-      isAlreadyPresent = false
-    }
-  })
-
-  if (isAlreadyPresent) {
+  if (await isUserPresent()) {
     return false
   }
+  return await insertUserPromise()
 
-  const opts = {upsert: true, new: true, setDefaultsOnInsert: true}
 
-  const promise = new Promise(resolve => {
-    User.findOneAndUpdate(query, user, opts, (error, result) => {
+  async function isUserPresent () {
+    let isAlreadyPresent = false
+    await User.findOne(query, (error, result) => {
       if (error) {
         log.error(error)
-        return resolve(false)
+        isAlreadyPresent = true
       }
-      else if (result) {
-        log.info('Successfully saved user.')
-        return resolve(true)
+      if (result) {
+        log.info('Username is already taken.')
+        isAlreadyPresent = true
       }
       else {
-        log.info('No new user was created.')
-        return resolve(false)
+        log.info('Username is free.')
+        isAlreadyPresent = false
       }
     })
-  })
-  return await promise
+
+    return isAlreadyPresent
+  }
+
+  async function insertUserPromise () {
+    const opts = { upsert: true, new: true, setDefaultsOnInsert: true }
+    const promise = new Promise(resolve => {
+      User.findOneAndUpdate(query, user, opts, (error, result) => {
+        if (error) {
+          log.error(error)
+          return resolve(false)
+        }
+        else if (result) {
+          log.info('Successfully saved user.')
+          return resolve(true)
+        }
+        else {
+          log.info('No new user was created.')
+          return resolve(false)
+        }
+      })
+    })
+    return await promise
+  }
 }
