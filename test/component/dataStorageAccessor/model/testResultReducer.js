@@ -3,6 +3,14 @@ const before = require('mocha').before
 const it = require('mocha').it
 const after = require('mocha').after
 const assert = require('assert')
+
+const chai = require('chai')
+const chaiAsPromised = require('chai-as-promised')
+
+chai.use(chaiAsPromised)
+const expect = require('chai').expect
+
+
 const resultReducer = require(
   '../../../../components/dataStorageAccessor/model/resultReducer'
 )
@@ -16,6 +24,9 @@ describe('dbRequests', () => {
     log.info('Start testing database requests')
   })
   describe('#resultReducer()', () => {
+    it('should throw an error when no lines are supplied', () => {
+      return expect(resultReducer()).to.eventually.be.rejectedWith(TypeError)
+    })
     it('should return 10 items if 10 items are requested', async () => {
       assert.equal(
         (await resultReducer({
