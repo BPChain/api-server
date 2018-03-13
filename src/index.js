@@ -7,11 +7,11 @@ const logger = require('../logger/createLogger')
 const createServer = require('./createServer')
 const mongoConnector = require('./mongoConnector')
 
-const connection = mongoConnector
-  .connect('mongodb://mongodb/chainboarddb?authSource=admin')
-const log = logger({connection})
 
 async function start ({activeChainName}) {
+	const connection = await mongoConnector
+  	.connect('mongodb://mongodb/chainboarddb?authSource=admin')
+	const log = logger({connection})
   createServer({
     activeChainName,
     connection,
