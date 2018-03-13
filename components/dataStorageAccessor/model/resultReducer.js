@@ -12,9 +12,7 @@ module.exports = async (options = {}) => {
   }
   else {
     const nthLine = parseInt(lines.length / numberOfItems, 10) + 1
-    reducedLines = lines.filter((value, index) => {
-      return index % nthLine === 0
-    })
+    reducedLines = lines.filter((value, index) => (index % nthLine) === 0)
   }
 
   return reducedLines

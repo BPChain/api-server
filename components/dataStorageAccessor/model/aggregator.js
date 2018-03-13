@@ -25,5 +25,5 @@ module.exports = async (options = {}) => {
     lines = await entriesRequest(options)
   }
 
-  return lines.map((line) => Object.assign(line, {chainName}))
+  return lines.map(line => Object.assign(line, {chainName}))
 }
