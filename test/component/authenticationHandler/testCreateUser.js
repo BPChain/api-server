@@ -32,8 +32,8 @@ const optionsA = {
         static findOneAndUpdate (query, user, opts, callbackFunction) {
           callbackFunction(false, true)
         }
-        lines () { }
-        save () { }
+        lines () {}
+        save () {}
       }
     },
   },
@@ -52,8 +52,8 @@ const optionsB = {
         static findOneAndUpdate (query, user, opts, callbackFunction) {
           callbackFunction(true, false)
         }
-        lines () { }
-        save () { }
+        lines () {}
+        save () {}
       }
     },
   },
@@ -72,8 +72,8 @@ const optionsC = {
         static findOneAndUpdate (query, user, opts, callbackFunction) {
           callbackFunction(true, false)
         }
-        lines () { }
-        save () { }
+        lines () {}
+        save () {}
       }
     },
   },
@@ -92,8 +92,8 @@ const optionsD = {
         static findOneAndUpdate (query, user, opts, callbackFunction) {
           callbackFunction(false, false)
         }
-        lines () { }
-        save () { }
+        lines () {}
+        save () {}
       }
     },
   },
@@ -112,8 +112,8 @@ const optionsE = {
         static findOneAndUpdate (query, user, opts, callbackFunction) {
           callbackFunction(false, true)
         }
-        lines () { }
-        save () { }
+        lines () {}
+        save () {}
       }
     },
   },
@@ -132,8 +132,8 @@ const optionsF = {
         static findOneAndUpdate (query, user, opts, callbackFunction) {
           callbackFunction(false, true)
         }
-        lines () { }
-        save () { }
+        lines () {}
+        save () {}
       }
     },
   },
@@ -152,8 +152,8 @@ const optionsG = {
         static findOneAndUpdate (query, user, opts, callbackFunction) {
           callbackFunction(false, true)
         }
-        lines () { }
-        save () { }
+        lines () {}
+        save () {}
       }
     },
   },
@@ -161,8 +161,8 @@ const optionsG = {
 }
 
 const optionsH = {
-  username: '',
-  password: '',
+  username: undefined,
+  password: null,
   connection: {
     model: (string, type) => {
       return class User {
@@ -172,8 +172,8 @@ const optionsH = {
         static findOneAndUpdate (query, user, opts, callbackFunction) {
           callbackFunction(false, true)
         }
-        lines () { }
-        save () { }
+        lines () {}
+        save () {}
       }
     },
   },
