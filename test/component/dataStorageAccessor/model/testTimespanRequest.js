@@ -5,6 +5,12 @@ const before = require('mocha').before
 const it = require('mocha').it
 const after = require('mocha').after
 
+const chai = require('chai')
+const chaiAsPromised = require('chai-as-promised')
+
+chai.use(chaiAsPromised)
+const expect = require('chai').expect
+
 const timespanRequest = require(
   '../../../../components/dataStorageAccessor/model/timespanRequest',
 )
@@ -20,6 +26,9 @@ describe('TimespanRequest', () => {
     toArray: () => mockCollection,
     timeStamp: {},
   }
+  it('should throw an error when no parameters are supplied', () => {
+    return expect(timespanRequest()).to.eventually.be.rejectedWith(TypeError)
+  })
   it('should execute without throwing an error', () => {
     assert.doesNotThrow(() => {
       timespanRequest({

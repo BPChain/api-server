@@ -3,6 +3,7 @@ const before = require('mocha').before
 const it = require('mocha').it
 const after = require('mocha').after
 const assert = require('assert')
+
 const isValidJson = require(
   '../../../../components/privateChainDataCollector/model/checkJsonContent'
 )
@@ -17,6 +18,9 @@ describe('privateChains', () => {
     error: () => {},
   }
   describe('#checkJson()', () => {
+    it('should return false when no options are provided', () => {
+      assert.equal(isValidJson(), false)
+    })
     it('should return false when Json is not valid', () => {
       assert.equal(
         isValidJson({json: 'IAmNotAJsonString', log: fakeLog}),
