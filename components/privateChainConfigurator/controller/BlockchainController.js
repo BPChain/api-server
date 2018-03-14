@@ -14,6 +14,10 @@ class BlockchainController {
     return this.clientArray
   }
 
+  getClientNames () {
+    return this.clientArray.map(client => client.name)
+  }
+
   start () {
     const wsServer = new WebSocketServer({port: this.port})
     this.log.info(`Backend Server waiting for connections on port ${this.port}`)
