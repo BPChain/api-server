@@ -30,6 +30,11 @@ describe('BlockchainController', () => {
         new BlockchainController({clientArray: [3, 4]})
       assert.deepEqual(blockchainController.getClientArray(), [3, 4])
     })
+    it('should return correct client names', () => {
+      const blockchainController =
+        new BlockchainController({clientArray: [{name: 3}]})
+      assert.deepEqual(blockchainController.getClientNames(), [3])
+    })
   })
   describe('BlockchainController starting', () => {
     const blockchainController = new BlockchainController({

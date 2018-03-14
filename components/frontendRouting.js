@@ -34,6 +34,8 @@ module.exports = ({
     require('./authenticationHandler/loginRouteFactory')
   const userCreationRouteFactory =
     require('./authenticationHandler/userCreationRouteFactory')
+  const connectedNodesFactory =
+    require('./privateChainConfigurator/controller/connectedNodesFactory')
 
   const createUser = require('./authenticationHandler/createUser')
 
@@ -63,6 +65,8 @@ module.exports = ({
     connection,
     log,
   })
+
+  const connectedNodesRoute = connectedNodesFactory(backendController)
 
   const app = express()
 
@@ -111,6 +115,8 @@ module.exports = ({
 
   app.get('/api/:accessibility(private|public)/:chainName', handleGetStatistics)
 
+  app.get('/api/connectedNodes', authMiddleware, connectedNodesRoute)
+
   app.get('/log', displayLogs)
 
   app.post('/login', logIn)
@@ -121,10 +127,7 @@ module.exports = ({
 
   app.post('/logout', authMiddleware, logOut)
 
-  app.post('/api/change', authMiddleware, async (request, response) => {
-    const status = await changeParameter(request, response)
-    response.sendStatus(status)
-  })
+  app.post('/api/change', authMiddleware, changeParameter)
 
   app.post('/api/createUser', authMiddleware, createUserRoute)
 
