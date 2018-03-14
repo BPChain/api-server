@@ -20,36 +20,96 @@ describe('handleGetStatisticsFactory', () => {
   it('should aggregate with startTime and endTime', async () => {
     const testStartTime = '2018-02-12'
     const testEndTime = '2018-02-13'
+    const object = {
+      numberOfHosts: 2,
+      numberOfMiners: 2,
+      avgHashrate: 2,
+      avgBlocktime: 22,
+      avgGasPrice: 22,
+      avgDifficulty: 2,
+      timeStamp: '2018-02-20',
+    }
+    const resultObject = {
+      numberOfHosts: [2],
+      numberOfMiners: [2],
+      avgHashrate: [2],
+      avgBlocktime: [22],
+      avgGasPrice: [22],
+      avgDifficulty: [2],
+      timeStamp: ['2018-02-20'],
+      chainName: 'ethereum',
+    }
     const route = handleGetStatisticsFactory({
-      aggregator: ({startTime, endTime}) => `${startTime}-${endTime}`, log,
+      aggregator: () => [object], log,
     })
     const response = []
     await route(
-      {params: {}, query: {startTime: testStartTime, endTime: testEndTime}},
+      {params: {chainName: 'ethereum'}, query: {startTime: testStartTime, endTime: testEndTime}},
       {send: data => response.push(data)},
     )
-    assert.equal(response[0], `${testStartTime}-${testEndTime}`)
+    assert.deepEqual(response[0], resultObject)
   })
   it('should aggregate with numberOfItems', async () => {
+
+    const object = {
+      numberOfHosts: 2,
+      numberOfMiners: 2,
+      avgHashrate: 2,
+      avgBlocktime: 22,
+      avgGasPrice: 22,
+      avgDifficulty: 2,
+      timeStamp: '2018-02-20',
+    }
+    const resultObject = {
+      numberOfHosts: [2],
+      numberOfMiners: [2],
+      avgHashrate: [2],
+      avgBlocktime: [22],
+      avgGasPrice: [22],
+      avgDifficulty: [2],
+      timeStamp: ['2018-02-20'],
+      chainName: 'ethereum',
+    }
+
     const testNumberOfItems = 20
     const route = handleGetStatisticsFactory({
-      aggregator: ({numberOfItems}) => numberOfItems * 20, log,
+      aggregator: () => [object], log,
     })
     const response = []
     await route(
-      {params: {}, query: {numberOfItems: testNumberOfItems}},
+      {params: {chainName: 'ethereum'}, query: {numberOfItems: testNumberOfItems}},
       {send: data => response.push(data)},
     )
-    assert.equal(response[0], 400)
+    assert.deepEqual(response[0], resultObject)
   })
   it('should aggregate with default values if nothing is supplied', async () => {
+
+    const object = {
+      numberOfHosts: 2,
+      numberOfMiners: 2,
+      avgHashrate: 2,
+      avgBlocktime: 22,
+      avgGasPrice: 22,
+      avgDifficulty: 2,
+      timeStamp: '2018-02-20',
+    }
+    const resultObject = {
+      numberOfHosts: [2],
+      numberOfMiners: [2],
+      avgHashrate: [2],
+      avgBlocktime: [22],
+      avgGasPrice: [22],
+      avgDifficulty: [2],
+      timeStamp: ['2018-02-20'],
+      chainName: 'ethereum',
+    }
+
     const route = handleGetStatisticsFactory({
+      aggregator: () => [object],
       log,
-      aggregator: ({numberOfItems, startTime, endTime}) =>
-        `${numberOfItems}_${startTime}_${endTime}`,
     })
     const response = []
-    await route({params: {}, query: {}}, {send: data => response.push(data)})
-    assert.equal(response[0], '1_false_false')
+    await route({params: {chainName: 'ethereum'}, query: {}}, {send: data => response.push(data)})
+    assert.deepEqual(response[0], resultObject)
   })
 })
