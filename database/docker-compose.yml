@@ -7,11 +7,5 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
     container_name: mongodb
-    networks:
-      - backendnet
     volumes:
       - ./data/mongodb:/data/db
-networks:
-  backendnet:
-    external:
-      name: backendnet
