@@ -8,4 +8,4 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
     container_name: mongodb
     volumes:
-      - ./data/mongodb:/data/db
+      - mongodb-data:/data/db
