@@ -79,7 +79,7 @@ module.exports = ({
   const sessionCache = new NodeCache({
     stdTTL: 1800,
     checkperiod: 900,
-    errorOnMissing: true,
+    errorOnMissing: false,
   })
 
   const logIn = loginRouteFactory({
