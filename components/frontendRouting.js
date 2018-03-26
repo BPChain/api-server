@@ -75,6 +75,7 @@ module.exports = ({
     resave: true,
     saveUninitialized: true,
     cookie: { maxAge: 300000 },
+    sameSite: true,
   }))
   const sessionCache = new NodeCache({
     stdTTL: 1800,
@@ -89,9 +90,8 @@ module.exports = ({
   })
 
   app.use((request, response, next) => {
-    log.info('SessionId')
-    log.info(request.sessionID)
-    sessionCache.get(request.sessionID, (error, value) => {
+    log.info('session cookie', request.session.cookie)
+    sessionCache.get(request.session.cookie, (error, value) => {
       if (!error) {
         if (value !== undefined) {
           request.isAuthenticated = true

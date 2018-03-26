@@ -18,7 +18,7 @@ module.exports = (options = {}) => {
       password,
       connection,
     })) {
-      sessionCache.set(request.sessionID, true, (error, success) => {
+      sessionCache.set(request.session.cookie, true, (error, success) => {
         if (!error && success) {
           log.debug(`Authenticated new session: ${request.sessionID}`)
         }
