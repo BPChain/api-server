@@ -89,6 +89,8 @@ module.exports = ({
   })
 
   app.use((request, response, next) => {
+    log.info('SessionId')
+    log.info(request.sessionID)
     sessionCache.get(request.sessionID, (error, value) => {
       if (!error) {
         if (value !== undefined) {
@@ -101,6 +103,7 @@ module.exports = ({
         }
       }
       else {
+        log.warn('Session cache error!')
         request.isAuthenticated = false
         next()
       }
