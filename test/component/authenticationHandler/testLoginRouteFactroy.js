@@ -63,7 +63,9 @@ const successRequest = {
     username: username,
     password: password,
   },
-  sessionId: '123',
+  session: {
+    cookie: '123',
+  },
 }
 
 
