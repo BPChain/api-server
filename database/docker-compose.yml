@@ -9,3 +9,6 @@ services:
     container_name: mongodb
     volumes:
       - mongodb-data:/data/db
+
+volumes:
+  mongodb-data:
