@@ -66,7 +66,7 @@ module.exports = ({
     log,
   })
 
-  const getChainInfo = getChainInfoFactory(backendController)
+  const getChainInfo = getChainInfoFactory({backendController, activeChain})
 
   const app = express()
 

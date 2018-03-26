@@ -16,7 +16,9 @@ class BlockchainController {
 
   getClientInfos () {
     return this.clientArray
-      .map(client => client.chains)
+      .map(client => {
+        return client.chains.map(chain => Object.assign({target: client.target}, chain))
+      })
       .reduce((result, item) => result.concat(item), [])
   }
 
@@ -27,7 +29,7 @@ class BlockchainController {
       this.log.info(`Client connected on port ${this.port}`)
       connection.on('message', data => {
         this.log.info(`Client authentificated with: ${data}`)
-        this.clientArray.push(Object.assign({chains: JSON.parse(data)}, {connection}))
+        this.clientArray.push(JSON.parse(data), {connection})
       })
       connection.on('close', () => {
         this.log.info('Closing connection')

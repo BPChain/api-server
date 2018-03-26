@@ -32,17 +32,12 @@ describe('BlockchainController', () => {
     })
     it('should return correct client names', () => {
       const blockchainController =
-        new BlockchainController({clientArray: [{connection: 'secret', chains: [{
-          accessability: 'private',
-          active: true,
-          chain: 'testChain',
+        new BlockchainController({clientArray: [{connection: 'secret', target: 'AWS', chains: [{
+          chainName: 'testChain',
           parameters: [],
-          target: 'AWS',
-        }] }] })
+        }]}]})
       assert.deepEqual(blockchainController.getClientInfos(), [{
-        accessability: 'private',
-        active: true,
-        chain: 'testChain',
+        chainName: 'testChain',
         parameters: [],
         target: 'AWS',
       }])
