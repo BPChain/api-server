@@ -7,12 +7,13 @@ services:
     environment:
       MONGO_ADD_CHAINBOARDDBUSER_USERNAME: ${MONGO_ADD_CHAINBOARDDBUSER_USERNAME}
       MONGO_ADD_CHAINBOARDDBUSER_PASSWORD: ${MONGO_ADD_CHAINBOARDDBUSER_PASSWORD}
-    networks: 
-      - backendnet 
+    networks:
+      - backendnet
     ports:
       - "2020:2020"
+      - "3030:3030"
       - "4040:4040"
-networks: 
-  backendnet: 
-    external: 
-      name: backendnet 
+networks:
+  backendnet:
+    external:
+      name: backendnet
