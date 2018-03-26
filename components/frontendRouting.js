@@ -71,7 +71,7 @@ module.exports = ({
   const app = express()
 
   app.use(session({
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET || 'dummySecret',
     resave: true,
     saveUninitialized: true,
     cookie: { maxAge: 300000 },
