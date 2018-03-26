@@ -14,8 +14,10 @@ class BlockchainController {
     return this.clientArray
   }
 
-  getClientNames () {
-    return this.clientArray.map(client => client.name)
+  getClientInfos () {
+    return this.clientArray
+      .map(client => client.chains)
+      .reduce((result, item) => result.concat(item), [])
   }
 
   start () {
@@ -25,7 +27,7 @@ class BlockchainController {
       this.log.info(`Client connected on port ${this.port}`)
       connection.on('message', data => {
         this.log.info(`Client authentificated with: ${data}`)
-        this.clientArray.push(Object.assign(JSON.parse(data), {connection}))
+        this.clientArray.push(Object.assign({chains: JSON.parse(data)}, {connection}))
       })
       connection.on('close', () => {
         this.log.info('Closing connection')
@@ -38,11 +40,10 @@ class BlockchainController {
     return wsServer
   }
 
-  sendMessage (options = {}) {
-    const {message, target} = options
+  sendMessage ({message, target}) {
     const targetClient = this.clientArray
       .filter(Boolean)
-      .find(client => client.name === target)
+      .find(client => client.target === target)
     if (targetClient) {
       this.log.info(`Send ${message} to ${target}`)
       targetClient.connection.send(message)

@@ -34,8 +34,8 @@ module.exports = ({
     require('./authenticationHandler/loginRouteFactory')
   const userCreationRouteFactory =
     require('./authenticationHandler/userCreationRouteFactory')
-  const connectedNodesFactory =
-    require('./privateChainConfigurator/controller/connectedNodesFactory')
+  const getChainInfoFactory =
+    require('./privateChainConfigurator/controller/getChainInfoFactory')
 
   const createUser = require('./authenticationHandler/createUser')
 
@@ -66,7 +66,7 @@ module.exports = ({
     log,
   })
 
-  const connectedNodesRoute = connectedNodesFactory(backendController)
+  const getChainInfo = getChainInfoFactory(backendController)
 
   const app = express()
 
@@ -118,7 +118,7 @@ module.exports = ({
 
   app.get('/api/:accessibility(private|public)/:chainName', handleGetStatistics)
 
-  app.get('/api/connectedNodes', authMiddleware, connectedNodesRoute)
+  app.get('/api/getChainInfo',  getChainInfo)
 
   app.get('/log', displayLogs)
 

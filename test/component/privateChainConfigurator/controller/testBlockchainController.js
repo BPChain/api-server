@@ -32,8 +32,20 @@ describe('BlockchainController', () => {
     })
     it('should return correct client names', () => {
       const blockchainController =
-        new BlockchainController({clientArray: [{name: 3}]})
-      assert.deepEqual(blockchainController.getClientNames(), [3])
+        new BlockchainController({clientArray: [{connection: 'secret', chains: [{
+          accessability: 'private',
+          active: true,
+          chain: 'testChain',
+          parameters: [],
+          target: 'AWS',
+        }] }] })
+      assert.deepEqual(blockchainController.getClientInfos(), [{
+        accessability: 'private',
+        active: true,
+        chain: 'testChain',
+        parameters: [],
+        target: 'AWS',
+      }])
     })
   })
   describe('BlockchainController starting', () => {
@@ -49,7 +61,7 @@ describe('BlockchainController', () => {
     it('should authenticate Client', () => {
       ws = new WebSocket('ws://localhost:4343')
       ws.on('open', () => {
-        ws.send('{"name": "myTestClient"}')
+        ws.send('{"target": "myTestClient"}')
         setTimeout(() => {
           assert.equal(blockchainController.getClientArray().length, 1)
           assert(blockchainController.sendMessage({
