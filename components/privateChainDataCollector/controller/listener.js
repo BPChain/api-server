@@ -32,7 +32,7 @@ module.exports = async ({activeChain, log, config, connection, schema}) => {
     socket.on('message', (message) => {
       try {
         if (isValidJson({json: message, log})) {
-          doubleBuffer.storeTempPrivateData(message)
+          doubleBuffer.storeTempPrivateData(JSON.parse(message))
           socket.send(200)
         }
         else {
