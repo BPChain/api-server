@@ -114,7 +114,7 @@ module.exports = ({
   app.use(bodyParser.urlencoded({
     extended: true,
   }))
-  app.use(cors())
+  app.use(cors({credentials: true}))
 
   app.get('/api/:accessibility(private|public)/:chainName', handleGetStatistics)
 
