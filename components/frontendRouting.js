@@ -90,8 +90,8 @@ module.exports = ({
   })
 
   app.use((request, response, next) => {
-    log.info('session cookie', request.session.cookie)
-    sessionCache.get(request.session.cookie, (error, value) => {
+    log.info('session cookie', request.sessionID)
+    sessionCache.get(request.sessionID, (error, value) => {
       if (!error) {
         if (value !== undefined) {
           request.isAuthenticated = true
