@@ -29,7 +29,8 @@ class BlockchainController {
       this.log.info(`Client connected on port ${this.port}`)
       connection.on('message', data => {
         this.log.info(`Client authentificated with: ${data}`)
-        this.clientArray.push(JSON.parse(data), {connection})
+        const {target, chains} = JSON.parse(data)
+        this.clientArray.push({chains, target, connection})
       })
       connection.on('close', () => {
         this.log.info('Closing connection')
