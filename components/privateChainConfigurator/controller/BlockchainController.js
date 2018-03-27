@@ -28,8 +28,9 @@ class BlockchainController {
     wsServer.on('connection', connection => {
       this.log.info(`Client connected on port ${this.port}`)
       connection.on('message', data => {
-        this.log.info(`Client authentificated with: ${data}`)
-        this.clientArray.push(JSON.parse(data), {connection})
+        const client = JSON.parse(data).target
+        this.log.info(`Client authentificated as: ${client}`)
+        this.clientArray.push({target: client, connection})
       })
       connection.on('close', () => {
         this.log.info('Closing connection')
@@ -48,7 +49,7 @@ class BlockchainController {
       .find(client => client.target === target)
     if (targetClient) {
       this.log.info(`Send ${message} to ${target}`)
-      targetClient.connection.send(message)
+      targetClient.connection.send(JSON.stringify(message))
       return true
     }
     return false
