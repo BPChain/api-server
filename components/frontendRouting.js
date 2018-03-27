@@ -114,7 +114,10 @@ module.exports = ({
   app.use(bodyParser.urlencoded({
     extended: true,
   }))
-  app.use(cors({credentials: true}))
+  app.use(cors({origin: [
+    'http://localhost:4200',
+    'https://bpt-lab.org/bp2017w1-frontend',
+  ], credentials: true}))
 
   app.get('/api/:accessibility(private|public)/:chainName', handleGetStatistics)
 
