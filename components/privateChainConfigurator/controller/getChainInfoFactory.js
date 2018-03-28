@@ -1,12 +1,16 @@
 
-module.exports = ({backendController, activeChain}) => {
+module.exports = ({backendController, activeChains}) => {
   return (request, response) => {
     const privateChains = backendController
       .getClientInfos()
-      .map(chain => {
-        return Object.assign(chain, {
+      .map(client => {
+        const active = activeChains.getChains.some(item =>
+          item.target === client.target &&
+          client.chains.includes(item.name)
+        )
+        return Object.assign(client, {
           accessability: 'private',
-          active: chain.name === activeChain.get(),
+          active,
         })
       })
     response.send(privateChains)

@@ -5,12 +5,6 @@ const config = {
     'multichain',
   ],
   ethereum: {
-    privateChain: {
-      name:
-        'ethereum',
-      schema:
-        'ethereumSchema',
-    },
     publicChain: {
       numberOfMiners:
       'https://api.nanopool.org/v1/eth/pool/activeminers',

@@ -3,8 +3,8 @@
 */
 
 module.exports = class DoubleBuffer {
-  constructor ({activeChain, bufferAggregator, config, connection, log, Schema, StorageSchema}) {
-    this.activeChain = activeChain
+  constructor ({activeChains, bufferAggregator, config, connection, log, Schema, StorageSchema}) {
+    this.activeChains = activeChains
     this.bufferSwitchTime = config.bufferSwitchTime
     this.connection = connection
     this.log = log
@@ -25,7 +25,7 @@ module.exports = class DoubleBuffer {
 
   createBuffer (bufferName) {
     return this.connection.model(
-      `${this.activeChain.get()}_private_buffer_${bufferName.toLowerCase()}`,
+      `common_private_buffer_${bufferName.toLowerCase()}`,
       this.Schema,
     )
   }
@@ -59,14 +59,18 @@ module.exports = class DoubleBuffer {
   }
 
   aggregateBuffer (bufferAggregator) {
-    bufferAggregator({
-      filledBufferName: `_buffer_${this.getInactiveBufferLabel()}`,
-      chainName: this.activeChain.get(),
-      Schema: this.Schema,
-      StorageSchema: this.StorageSchema,
-      connection: this.connection,
-      log: this.log,
-    })
+    this.activeChains.getChains()
+      .forEach(item => {
+        bufferAggregator({
+          filledBufferName: `_buffer_${this.getInactiveBufferLabel()}`,
+          chainName: item.chaiName,
+          target: item.target,
+          Schema: this.Schema,
+          StorageSchema: this.StorageSchema,
+          connection: this.connection,
+          log: this.log,
+        })
+      })
   }
 
   storeTempPrivateData (privateData) {

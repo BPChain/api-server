@@ -17,7 +17,7 @@ const logOut = require('./authenticationHandler/logout')
 
 module.exports = ({
   backendController,
-  activeChain,
+  activeChains,
   connection,
   log,
 }) => {
@@ -57,7 +57,7 @@ module.exports = ({
   })
   const changeParameter = changeParametersFactory({
     backendController,
-    activeChain,
+    activeChains,
     log,
   })
 
@@ -66,7 +66,7 @@ module.exports = ({
     log,
   })
 
-  const getChainInfo = getChainInfoFactory({backendController, activeChain})
+  const getChainInfo = getChainInfoFactory({backendController, activeChains})
 
   const app = express()
 
@@ -138,9 +138,7 @@ module.exports = ({
   app.post('/api/createUser', authMiddleware, createUserRoute)
 
   app.get('/*', (request, response) => {
-    response.sendFile(
-      path.join(__dirname, 'dataStorageAccessor/view/index.html')
-    )
+    response.sendFile(path.join(__dirname, 'dataStorageAccessor/view/index.html'))
   })
 
   return app.listen(config.frontendPort, () => {

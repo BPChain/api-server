@@ -1,10 +1,4 @@
-module.exports = (options = {}) => {
-  const {
-    backendController,
-    log,
-    activeChain,
-  } = options
-
+module.exports = ({backendController, log, activeChains}) => {
   return async (request, response) => {
     const {
       parameter,
@@ -12,11 +6,10 @@ module.exports = (options = {}) => {
       target,
     } = request.body
 
-    log.debug(
-      `Trying to send a change request ${activeChain} ${parameter} ${value}`
-    )
-
-    if (backendController.sendMessage({
+    log.debug(`Trying to send a change request ${target} ${parameter} ${value}`)
+    log.info(backendController, activeChains, response)
+    // Implement setParametersRoute
+    /* if (backendController.sendMessage({
       message: {
         chainName: activeChain.get(),
         parameter,
@@ -35,6 +28,6 @@ module.exports = (options = {}) => {
         log.warn('Error occured trying to send a change request')
         response.sendStatus(400)
       }
-    }
+    }*/
   }
 }

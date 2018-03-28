@@ -8,17 +8,16 @@ const createServer = require('./createServer')
 const mongoConnector = require('./mongoConnector')
 
 
-async function start ({activeChainName}) {
+async function start () {
   const connection = await mongoConnector
     .connect('mongodb://mongodb/chainboarddb?authSource=admin')
   const log = logger({connection})
   log.info('Starting API-Server...')
   createServer({
-    activeChainName,
     connection,
     config,
     log,
   })
 }
 
-start({activeChainName: 'ethereum'})
+start()
