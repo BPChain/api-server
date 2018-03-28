@@ -3,15 +3,14 @@ const isodate = require('isodate')
 module.exports = async (options = {}) => {
   const {
     connection,
-    chainName,
     accessibility,
     startTime,
     endTime,
   } = options
 
   const result = await connection.db
-    .collection(`${chainName}_${accessibility}_storages`)
-
+    .collection(`common_${accessibility}_storages`)
+  // TODO: filter by chainName and or target
   return await result
     .find({
       timeStamp: {
