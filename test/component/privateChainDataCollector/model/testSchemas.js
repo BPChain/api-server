@@ -11,6 +11,7 @@ const ethereumSchema = require(
 const compareEthereumSchema = new Schema({
   hostId: {type: String},
   chainName: {type: String},
+  target: {type: String},
   isMining: {type: Number},
   hashrate: {type: Number},
   avgBlocktime: {type: Number},
@@ -23,6 +24,7 @@ const ethereumStorage = require(
 )
 const compareStorageSchema = new Schema({
   chainName: {type: String},
+  target: {type: String},
   timeStamp: {type: Date},
   numberOfHosts: {type: Number},
   numberOfMiners: {type: Number},

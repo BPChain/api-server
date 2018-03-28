@@ -26,7 +26,6 @@ describe('privateChainDataCollector', () => {
         log: console,
         config,
         connection: { model: () => 'testModel' },
-        schema: config.ethereum.privateChain.schema,
       })
 
       controller.then(result => {
@@ -57,7 +56,6 @@ describe('privateChainDataCollector', () => {
         }
       },
       },
-      schema: config.ethereum.privateChain.schema,
     })
 
     it('should send 415 on invalid JSON', () => {
