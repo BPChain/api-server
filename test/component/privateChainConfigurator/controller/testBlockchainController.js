@@ -44,17 +44,18 @@ describe('BlockchainController', () => {
     })
   })
   describe('BlockchainController starting', () => {
-    const blockchainController = new BlockchainController({
-      port: 4343,
-      log: {info: () => {}},
-    })
-    let wsServer
-    let ws
+
     it('should start server without error', () => {
-      wsServer = blockchainController.start()
+
     })
+
     it('should authenticate Client', () => {
-      ws = new WebSocket('ws://localhost:4343')
+      const blockchainController = new BlockchainController({
+        port: 4343,
+        log: {info: () => {}},
+      })
+      blockchainController.start()
+      const ws = new WebSocket('ws://localhost:4343')
       ws.on('open', () => {
         ws.send('{"target": "myTestClient"}')
         setTimeout(() => {
@@ -67,22 +68,30 @@ describe('BlockchainController', () => {
             ws.close()
             setTimeout(() => {
               assert.equal(blockchainController.getClientArray().length, 0)
-              wsServer.close()
+              blockchainController.stopServer()
             }, 100)
           }, 100)
         }, 100)
       })
     })
+
     it('should return false when no client exists to send a message to', () => {
+      const blockchainController = new BlockchainController({
+        port: 4545,
+        log: {info: () => {}},
+      })
+      blockchainController.start()
       assert.equal(blockchainController.sendMessage({
         message: 'HI',
         target: 'iDoNotExist',
       }),
       false
       )
+      blockchainController.stopServer()
     })
   })
   after(() => {
     log.info('End testing BlockchainController')
+
   })
 })

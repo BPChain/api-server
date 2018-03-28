@@ -70,7 +70,7 @@ describe('Create Server', () => {
         result.wsServer.close()
         result.doubleBuffer.stopBufferInterval()
       })
-      server.privateChainConfigurator.close()
+      server.privateChainConfigurator.stopServer()
       server.frontendRouting.close()
 
     })

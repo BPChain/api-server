@@ -8,6 +8,8 @@ class BlockchainController {
     this.log = log
     this.port = port
     this.clientArray = clientArray
+    this.intervalId = null
+    this.wsServer = null
   }
 
   getClientArray () {
@@ -22,16 +24,25 @@ class BlockchainController {
       .reduce((result, item) => result.concat(item), [])
   }
 
+  heartbeat () {
+    this.isAlive = true
+  }
+
   start () {
-    const wsServer = new WebSocketServer({port: this.port})
+    this.wsServer = new WebSocketServer({port: this.port})
     this.log.info(`Backend Server waiting for connections on port ${this.port}`)
-    wsServer.on('connection', connection => {
+    this.wsServer.on('connection', connection => {
+
+      connection.isAlive = true
+      connection.on('pong', this.heartbeat)
+
       this.log.info(`Client connected on port ${this.port}`)
       connection.on('message', data => {
         this.log.info(`Client authentificated with: ${data}`)
         const {target, chains} = JSON.parse(data)
         this.clientArray.push({chains, target, connection})
       })
+
       connection.on('close', () => {
         this.log.info('Closing connection')
         this.clientArray = this.clientArray.filter(
@@ -40,7 +51,22 @@ class BlockchainController {
         this.log.info(`Open connections: ${this.clientArray}`)
       })
     })
-    return wsServer
+
+    this.intervalId = setInterval(() => {
+      this.wsServer.clients.forEach((connection) => {
+        if (connection.isAlive === false) return connection.terminate()
+
+        connection.isAlive = false
+        connection.ping()
+      })
+    }, 30000)
+
+    return this.wsServer
+  }
+
+  stopServer () {
+    clearInterval(this.intervalId)
+    this.wsServer.close()
   }
 
   sendMessage ({message, target}) {

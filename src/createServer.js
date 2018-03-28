@@ -19,7 +19,8 @@ module.exports = ({connection, activeChainName, config, log}) => {
     log,
     port: config.controllerPort,
   })
-  server.privateChainConfigurator = privateChainConfigurator.start()
+  privateChainConfigurator.start()
+  server.privateChainConfigurator = privateChainConfigurator
   server.privateChainCollector = privateChainCollector({
     activeChain,
     log,
