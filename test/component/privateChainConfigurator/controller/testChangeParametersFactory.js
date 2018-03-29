@@ -107,8 +107,17 @@ const switchRequest = {
   },
 }
 
+const startStopRequest = {
+  body: {
+    parameters: JSON.stringify({
+      'stopChain': 'xain',
+      'startChain': 'multichain',
+    }),
+    chainName: 'ethereum',
+    target: 'aws',
+  },
+}
 
-const log = console
 const testLog = {
   error: () => {},
   debug: () => {},
@@ -116,12 +125,6 @@ const testLog = {
 }
 
 describe('ChangeParametersFactory', () => {
-
-
-  before(() => {
-    log.info('Start testing ChangeParametersFactory')
-  })
-
   describe('ChangeParametersFactory construction', () => {
     it('should be constructed without an error', () => {
       assert.doesNotThrow(() => {
@@ -193,8 +196,53 @@ describe('ChangeParametersFactory', () => {
       return expect(changeParametersRoute(switchRequest, setError))
         .to.eventually.be.rejectedWith('set error')
     })
-  })
-  after(() => {
-    log.info('End testing ChangeParametersFactory')
+    it('should send expected message when switching chain failed', () => {
+      const changeParametersRoute = changeParametersFactory({
+        backendController: backendControllerSuccess,
+        log: testLog,
+        activeChains: {
+          add: () => true,
+          remove: () => false,
+        },
+      })
+      return expect(changeParametersRoute(switchRequest, setError))
+        .to.eventually.be.rejectedWith('set error')
+    })
+    it('should send expected message when switching chain failed', () => {
+      const changeParametersRoute = changeParametersFactory({
+        backendController: backendControllerSuccess,
+        log: testLog,
+        activeChains: {
+          add: () => false,
+          remove: () => true,
+        },
+      })
+      return expect(changeParametersRoute(switchRequest, setError))
+        .to.eventually.be.rejectedWith('set error')
+    })
+    it('should send expected message when one of multiple set/stop/switch failed', () => {
+      const changeParametersRoute = changeParametersFactory({
+        backendController: backendControllerSuccess,
+        log: testLog,
+        activeChains: {
+          add: () => true,
+          remove: () => false,
+        },
+      })
+      return expect(changeParametersRoute(startStopRequest, setError))
+        .to.eventually.be.rejectedWith('set error')
+    })
+    it('should send expected message when one of multiple set/stop/switch failed', () => {
+      const changeParametersRoute = changeParametersFactory({
+        backendController: backendControllerSuccess,
+        log: testLog,
+        activeChains: {
+          add: () => false,
+          remove: () => true,
+        },
+      })
+      return expect(changeParametersRoute(startStopRequest, setError))
+        .to.eventually.be.rejectedWith('set error')
+    })
   })
 })
