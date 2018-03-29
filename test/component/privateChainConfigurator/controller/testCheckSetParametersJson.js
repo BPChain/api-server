@@ -41,6 +41,20 @@ describe('testCheckSetParametersJson', () => {
         false,
       )
     })
+    it('should return false when Json has wrong keys', () => {
+      assert.equal(
+        isValidJson({
+          json: JSON.stringify({
+            'startagChain': 33,
+            'stofdspChain': 33,
+            'numbargrOfHosts': 'abc',
+            'numbesdfOfMiners': 'cde',
+            'sdf': 33,
+          }),
+          log: console}),
+        false,
+      )
+    })
     it('should return true when Json is as expected', () => {
       assert.equal(
         isValidJson({
@@ -54,6 +68,17 @@ describe('testCheckSetParametersJson', () => {
           log: console}),
         true,
       )
+      /* eslint-disable max-len */
+      assert.equal(isValidJson({json: JSON.stringify({'numberOfMiners': 33}), log: console}), true)
+      assert.equal(isValidJson({json: JSON.stringify({'numberOfHosts': 33}), log: console}), true)
+      assert.equal(isValidJson({json: JSON.stringify({'numberOfMiners': 33, 'numberOfHosts': 33}), log: console}), true)
+      assert.equal(isValidJson({json: JSON.stringify({'startChain': 'abc'}), log: console}), true)
+      assert.equal(isValidJson({json: JSON.stringify({'stopChain': 'abc'}), log: console}), true)
+      assert.equal(isValidJson({json: JSON.stringify({'switchChainTo': 'abc'}), log: console}), true)
+      assert.equal(isValidJson({json: JSON.stringify({'startChain': 'abc', 'stopChain': 'abc'}), log: console}), true)
+      assert.equal(isValidJson({json: JSON.stringify({'startChain': 'abc', 'switchChainTo': 'abc'}), log: console}), true)
+      assert.equal(isValidJson({json: JSON.stringify({'stopChain': 'abc', 'switchChainTo': 'abc'}), log: console}), true)
+      assert.equal(isValidJson({json: JSON.stringify({'startChain': 'abc', 'stopChain': 'abc', 'switchChainTo': 'abc'}), log: console}), true)
     })
   })
 })

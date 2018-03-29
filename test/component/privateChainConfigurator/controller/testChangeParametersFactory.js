@@ -3,9 +3,7 @@
 const assert = require('assert')
 
 const describe = require('mocha').describe
-const before = require('mocha').before
 const it = require('mocha').it
-const after = require('mocha').after
 
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')

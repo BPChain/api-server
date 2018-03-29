@@ -10,6 +10,17 @@ const expectedKeys = [
   'switchChainTo',
 ]
 
+function hasOnlyExpectedkeys (json) {
+  let keysAreGood = true
+  Object.keys(json)
+    .forEach((key) => {
+      if (!expectedKeys.includes(key)) {
+        keysAreGood = false
+      }
+    })
+  return keysAreGood
+}
+
 /*
   Checks whether JSON provided by setParameters has expected Keys and values
 */
@@ -26,17 +37,17 @@ module.exports = function isValidJson (options = {}) {
   catch (error) {
     return false
   }
-  log.debug('Check whether setParameters Json is valid')
+  if (!hasOnlyExpectedkeys(parsedJson)) {
+    return false
+  }
   let allKeysValid = true
   Object.keys(parsedJson)
     .forEach((key) => {
-      if (expectedKeys.includes(key)) {
-        if (key === 'startChain' || key === 'stopChain' || key === 'switchChainTo') {
-          allKeysValid =  !isNumeric(parsedJson[key]) && allKeysValid ? true : false
-        }
-        else if (key === 'numberOfHosts' || key === 'numberOfMiners') {
-          allKeysValid = isNumeric(parsedJson[key]) && allKeysValid ? true : false
-        }
+      if (key === 'startChain' || key === 'stopChain' || key === 'switchChainTo') {
+        allKeysValid =  !isNumeric(parsedJson[key]) && allKeysValid ? true : false
+      }
+      else if (key === 'numberOfHosts' || key === 'numberOfMiners') {
+        allKeysValid = isNumeric(parsedJson[key]) && allKeysValid ? true : false
       }
     })
   return allKeysValid

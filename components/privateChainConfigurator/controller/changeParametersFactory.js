@@ -8,9 +8,7 @@ module.exports = ({ backendController, log, activeChains }) => {
       target,
     } = request.body
 
-    log.debug(`Trying to send a change request ${target} ${parameters}`)
-    log.info(backendController, activeChains, response)
-
+    log.debug(`Trying to send a change request to ${target}`)
 
     const isValidJson = checkSetParametersJson({ json: parameters, log })
 
