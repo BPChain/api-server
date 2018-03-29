@@ -1,6 +1,11 @@
 const describe = require('mocha').describe
 const it = require('mocha').it
 const assert = require('assert')
+const chai = require('chai')
+const chaiAsPromised = require('chai-as-promised')
+
+chai.use(chaiAsPromised)
+const expect = require('chai').expect
 
 const isValidJson = require(
   '../../../../components/privateChainConfigurator/controller/checkSetParametersJson'
@@ -12,8 +17,11 @@ describe('testCheckSetParametersJson', () => {
     info: () => {},
   }
   describe('#checkJson()', () => {
-    it('should return false when no options are provided', () => {
-      assert.equal(isValidJson(), false)
+    it('should throw type error when no option was provided', () => {
+      expect(() => isValidJson()).to.throw(TypeError)
+    })
+    it('should return false when no json was provided', () => {
+      assert.equal(isValidJson({log: fakeLog}), false)
     })
     it('should return false when Json is not valid', () => {
       assert.equal(
@@ -37,7 +45,8 @@ describe('testCheckSetParametersJson', () => {
             'numberOfMiners': 'cde',
             'switchChainTo': 33,
           }),
-          log: console}),
+          log: fakeLog,
+        }),
         false,
       )
     })
@@ -51,7 +60,8 @@ describe('testCheckSetParametersJson', () => {
             'numbesdfOfMiners': 'cde',
             'sdf': 33,
           }),
-          log: console}),
+          log: fakeLog,
+        }),
         false,
       )
     })
@@ -65,20 +75,21 @@ describe('testCheckSetParametersJson', () => {
             'numberOfMiners': 33,
             'switchChainTo': 'fgh',
           }),
-          log: console}),
+          log: fakeLog,
+        }),
         true,
       )
       /* eslint-disable max-len */
-      assert.equal(isValidJson({json: JSON.stringify({'numberOfMiners': 33}), log: console}), true)
-      assert.equal(isValidJson({json: JSON.stringify({'numberOfHosts': 33}), log: console}), true)
-      assert.equal(isValidJson({json: JSON.stringify({'numberOfMiners': 33, 'numberOfHosts': 33}), log: console}), true)
-      assert.equal(isValidJson({json: JSON.stringify({'startChain': 'abc'}), log: console}), true)
-      assert.equal(isValidJson({json: JSON.stringify({'stopChain': 'abc'}), log: console}), true)
-      assert.equal(isValidJson({json: JSON.stringify({'switchChainTo': 'abc'}), log: console}), true)
-      assert.equal(isValidJson({json: JSON.stringify({'startChain': 'abc', 'stopChain': 'abc'}), log: console}), true)
-      assert.equal(isValidJson({json: JSON.stringify({'startChain': 'abc', 'switchChainTo': 'abc'}), log: console}), true)
-      assert.equal(isValidJson({json: JSON.stringify({'stopChain': 'abc', 'switchChainTo': 'abc'}), log: console}), true)
-      assert.equal(isValidJson({json: JSON.stringify({'startChain': 'abc', 'stopChain': 'abc', 'switchChainTo': 'abc'}), log: console}), true)
+      assert.equal(isValidJson({json: JSON.stringify({'numberOfMiners': 33}), log: fakeLog}), true)
+      assert.equal(isValidJson({json: JSON.stringify({'numberOfHosts': 33}), log: fakeLog}), true)
+      assert.equal(isValidJson({json: JSON.stringify({'numberOfMiners': 33, 'numberOfHosts': 33}), log: fakeLog}), true)
+      assert.equal(isValidJson({json: JSON.stringify({'startChain': 'abc'}), log: fakeLog}), true)
+      assert.equal(isValidJson({json: JSON.stringify({'stopChain': 'abc'}), log: fakeLog}), true)
+      assert.equal(isValidJson({json: JSON.stringify({'switchChainTo': 'abc'}), log: fakeLog}), true)
+      assert.equal(isValidJson({json: JSON.stringify({'startChain': 'abc', 'stopChain': 'abc'}), log: fakeLog}), true)
+      assert.equal(isValidJson({json: JSON.stringify({'startChain': 'abc', 'switchChainTo': 'abc'}), log: fakeLog}), true)
+      assert.equal(isValidJson({json: JSON.stringify({'stopChain': 'abc', 'switchChainTo': 'abc'}), log: fakeLog}), true)
+      assert.equal(isValidJson({json: JSON.stringify({'startChain': 'abc', 'stopChain': 'abc', 'switchChainTo': 'abc'}), log: fakeLog}), true)
     })
   })
 })
