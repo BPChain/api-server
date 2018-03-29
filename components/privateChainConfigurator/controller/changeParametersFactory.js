@@ -1,33 +1,56 @@
-module.exports = ({backendController, log, activeChains}) => {
+const checkSetParametersJson = require('./checkSetParametersJson')
+
+module.exports = ({ backendController, log, activeChains }) => {
   return async (request, response) => {
     const {
-      parameter,
-      value,
+      parameters,
+      chainName,
       target,
     } = request.body
 
-    log.debug(`Trying to send a change request ${target} ${parameter} ${value}`)
+    log.debug(`Trying to send a change request ${target} ${parameters}`)
     log.info(backendController, activeChains, response)
-    // Implement setParametersRoute
-    /* if (backendController.sendMessage({
-      message: {
-        chainName: activeChain.get(),
-        parameter,
-        value,
-      },
-      target,
-    })) {
-      if (
-        (parameter === 'switchChain' && activeChain.set(value)) ||
-        (parameter === 'startChain')
-      ) {
-        log.info('Successfully sent a change request')
-        response.sendStatus(200)
+
+
+    const isValidJson = checkSetParametersJson({ json: parameters, log })
+
+    if (!isValidJson) {
+      log.info('json was not valid')
+      response.sendStatus(400)
+    }
+    else {
+      if (backendController.sendMessage({
+        message: {
+          parameters,
+          chainName,
+        },
+        target,
+      })) {
+        const parsedJson = JSON.parse(parameters)
+        let success = true
+        if (parsedJson.hasOwnProperty('startChain')) {
+          success = activeChains.add({chainName, target})
+        }
+        if (parsedJson.hasOwnProperty('stopChain')) {
+          success = activeChains.remove({chainName, target})
+        }
+        if (parsedJson.hasOwnProperty('switchChain')) {
+          success = activeChains.remove({chainName: parsedJson.switchChain.value, target})
+          success = activeChains.add({chainName, target})
+        }
+        if (success) {
+          log.info('Successfully sent a start/stop/switch request')
+          response.sendStatus(200)
+        }
+        else {
+          log.info('Error occured when sending start/stop/switch')
+          response.sendStatus(500)
+        }
       }
       else {
-        log.warn('Error occured trying to send a change request')
-        response.sendStatus(400)
+        log.info('Error occured trying to send a change request')
+        response.sendStatus(500)
       }
-    }*/
+    }
   }
 }
