@@ -2,20 +2,20 @@ function isNumeric (number) {
   return !isNaN(parseFloat(number)) && isFinite(number)
 }
 
+const expectedKeys = [
+  'startChain',
+  'stopChain',
+  'numberOfHosts',
+  'numberOfMiners',
+  'switchChainTo',
+]
+
 /*
   Checks whether JSON provided by setParameters has expected Keys and values
 */
 
 module.exports = function isValidJson (options = {}) {
   const {json, log} = options
-  const expectedKeys = [
-    'startChain',
-    'stopChain',
-    'numberOfHosts',
-    'numberOfMiners',
-    'switchChainTo',
-  ]
-
   let parsedJson
   try {
     parsedJson = JSON.parse(json)
@@ -26,21 +26,16 @@ module.exports = function isValidJson (options = {}) {
   catch (error) {
     return false
   }
-
-  log.info('Check whether setParameters Json is valid')
-
+  log.debug('Check whether setParameters Json is valid')
   let allKeysValid = true
-
   Object.keys(parsedJson)
     .forEach((key) => {
       if (expectedKeys.includes(key)) {
         if (key === 'startChain' || key === 'stopChain' || key === 'switchChainTo') {
-          const thisKeyValid = !isNumeric(parsedJson[key])
-          allKeysValid =  thisKeyValid && allKeysValid ? true : false
+          allKeysValid =  !isNumeric(parsedJson[key]) && allKeysValid ? true : false
         }
         else if (key === 'numberOfHosts' || key === 'numberOfMiners') {
-          const thisKeyValid = isNumeric(parsedJson[key])
-          allKeysValid = thisKeyValid && allKeysValid ? true : false
+          allKeysValid = isNumeric(parsedJson[key]) && allKeysValid ? true : false
         }
       }
     })

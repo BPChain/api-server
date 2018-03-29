@@ -1,19 +1,12 @@
 const describe = require('mocha').describe
-const before = require('mocha').before
 const it = require('mocha').it
-const after = require('mocha').after
 const assert = require('assert')
 
 const isValidJson = require(
   '../../../../components/privateChainConfigurator/controller/checkSetParametersJson'
 )
 
-const log = console
-
-describe('privateChains', () => {
-  before(() => {
-    log.info('Start testing private chains')
-  })
+describe('testCheckSetParametersJson', () => {
   const fakeLog = {
     error: () => {},
     info: () => {},
@@ -62,8 +55,5 @@ describe('privateChains', () => {
         true,
       )
     })
-  })
-  after(() => {
-    log.info('End testing public chains')
   })
 })
