@@ -100,7 +100,7 @@ const stopRequest = {
 const switchRequest = {
   body: {
     parameters: JSON.stringify({
-      'switchChain': 'xain',
+      'switchChainTo': 'xain',
     }),
     chainName: 'ethereum',
     target: 'aws',
@@ -181,7 +181,7 @@ describe('ChangeParametersFactory', () => {
       return expect(changeParametersRoute(stopRequest, setError))
         .to.eventually.be.rejectedWith('set error')
     })
-    it('should send expected message when swithcing chain failed', () => {
+    it('should send expected message when switching chain failed', () => {
       const changeParametersRoute = changeParametersFactory({
         backendController: backendControllerSuccess,
         log: testLog,
