@@ -5,7 +5,8 @@ const resultReducer = require('./resultReducer')
 
 module.exports = async (options = {}) => {
   const {
-    chainName,
+    chainName = '',
+    target = '',
     accessibility,
     connection,
     startTime,

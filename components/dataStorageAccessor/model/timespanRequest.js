@@ -4,6 +4,8 @@ module.exports = async (options = {}) => {
   const {
     connection,
     accessibility,
+    chainName = '',
+    target = '',
     startTime,
     endTime,
   } = options
@@ -12,11 +14,19 @@ module.exports = async (options = {}) => {
     .collection(`common_${accessibility}_storages`)
   // TODO: filter by chainName and or target
   return await result
-    .find({
-      timeStamp: {
-        $gte: isodate(startTime),
-        $lt: isodate(endTime),
+    .find([
+      {
+        $match: {chainName: chainName.toLowerCase()},
       },
-    })
+      {
+        $match: {target: target.toLowerCase()},
+      },
+      {
+        timeStamp: {
+          $gte: isodate(startTime),
+          $lt: isodate(endTime),
+        },
+      },
+    ])
     .toArray()
 }

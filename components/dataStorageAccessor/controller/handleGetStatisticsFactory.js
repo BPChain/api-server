@@ -10,13 +10,14 @@ module.exports = (options = {}) => {
 
   return async (request, response) => {
     const { chainName, accessibility } = request.params
-    const { startTime, endTime } = request.query
+    const { startTime, endTime, target } = request.query
     const numberOfItems = parseInt(request.query.numberOfItems)
     let data = []
     if (!isNaN(Date.parse(startTime)) && !isNaN(Date.parse(endTime))) {
       log.trace(`Access ${accessibility} items ${startTime}||${endTime}`)
       data = await aggregator({
         chainName,
+        target,
         accessibility,
         connection,
         numberOfItems,
@@ -28,6 +29,7 @@ module.exports = (options = {}) => {
       log.trace(`Access last ${numberOfItems} ${accessibility} items`)
       data = await aggregator({
         chainName,
+        target,
         accessibility,
         connection,
         numberOfItems,
@@ -38,6 +40,7 @@ module.exports = (options = {}) => {
     else {
       data = await aggregator({
         chainName,
+        target,
         accessibility,
         connection,
         numberOfItems: 1,
