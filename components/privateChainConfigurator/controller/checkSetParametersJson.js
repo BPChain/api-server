@@ -26,6 +26,7 @@ function hasOnlyExpectedkeys (json) {
 */
 
 module.exports = function isValidJson (options = {}) {
+  log.info('Check whether setParameters json is valid')
   const {json, log} = options
   let parsedJson
   try {
