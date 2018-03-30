@@ -13,8 +13,8 @@ module.exports = ({ backendController, log, activeChains }) => {
     const isValidJson = checkSetParametersJson({ json: parameters, log })
 
     if (!isValidJson) {
-      log.info('json was not valid')
-      response.sendStatus(400)
+      log.warn('json was not valid')
+      response.sendStatus(500)
     }
     else {
       if (backendController.sendMessage({
@@ -42,12 +42,12 @@ module.exports = ({ backendController, log, activeChains }) => {
           response.sendStatus(200)
         }
         else {
-          log.info('Error occured when sending start/stop/switch')
+          log.warn('Error occured when sending start/stop/switch')
           response.sendStatus(500)
         }
       }
       else {
-        log.info('Error occured trying to send a change request')
+        log.warn('Error occured trying to send a change request')
         response.sendStatus(500)
       }
     }
