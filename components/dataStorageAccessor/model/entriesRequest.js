@@ -17,8 +17,10 @@ module.exports = async (options = {}) => {
   const data = await result
     .find([{
       $match: {
-        chainName: chainName.toLowerCase(),
-        target: target.toLowerCase(),
+        $and: [
+          {chainName: chainName.toLowerCase()},
+          {target: target.toLowerCase()},
+        ],
       },
     }])
     .limit(numberOfItems)

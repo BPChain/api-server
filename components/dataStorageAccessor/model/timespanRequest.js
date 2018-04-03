@@ -16,8 +16,10 @@ module.exports = async (options = {}) => {
     .find([
       {
         $match: {
-          chainName: chainName.toLowerCase(),
-          target: target.toLowerCase(),
+          $and: [
+            {chainName: chainName.toLowerCase()},
+            {target: target.toLowerCase()},
+          ],
         },
       },
       {
