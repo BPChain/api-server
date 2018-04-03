@@ -66,7 +66,7 @@ module.exports = class DoubleBuffer {
       .forEach(item => {
         bufferAggregator({
           filledBufferName: `_buffer_${this.getInactiveBufferLabel()}`,
-          chainName: item.chaiName,
+          chainName: item.chainName,
           target: item.target,
           Schema: this.Schema,
           StorageSchema: this.StorageSchema,
