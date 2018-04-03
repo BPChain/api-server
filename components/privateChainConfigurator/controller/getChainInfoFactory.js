@@ -8,7 +8,7 @@ module.exports = ({backendController, activeChains}) => {
           .getChains()
           .some(item =>
             item.target === client.target &&
-          client.chains.includes(item.name)
+            client.chainName === item.chainName
           )
         return Object.assign(client, {
           accessability: 'private',
