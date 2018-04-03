@@ -5,7 +5,7 @@
 module.exports = class ActiveChains {
 
   constructor ({config}) {
-    this.activeChains = []
+    this.activeChains = ['ethereum', 'xain']
     this.config = config
   }
 
