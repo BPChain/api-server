@@ -6,8 +6,8 @@
 exports.initializeBuffer = ({connection, filledBufferName, Schema}) =>
   connection.model(`common_private${filledBufferName}`, Schema)
 
-exports.inintializeStorage = ({connection, StorageSchema}) =>
-  connection.model('ethereum_private_storage', StorageSchema)
+exports.intializeStorage = ({connection, StorageSchema}) =>
+  connection.model('common_private_storage', StorageSchema)
 
 exports.createStorage = ({aggregatedValues, chainName, target, Storage}) => {
   return new Storage(
