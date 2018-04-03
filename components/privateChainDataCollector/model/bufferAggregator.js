@@ -9,7 +9,7 @@ const helper = require('./bufferAggregatorHelper')
 module.exports = async (options = {}) => {
   const {
     chainName,
-    target,
+    target = 'computer',
     filledBufferName,
     Schema,
     StorageSchema,
