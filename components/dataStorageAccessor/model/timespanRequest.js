@@ -14,8 +14,12 @@ module.exports = async (options = {}) => {
     .collection(`common_${accessibility}_storages`)
   return await result
     .find([
-      {$match: {chainName: chainName.toLowerCase()}},
-      {$match: {target: target.toLowerCase()}},
+      {
+        $match: {
+          chainName: chainName.toLowerCase(),
+          target: target.toLowerCase(),
+        },
+      },
       {
         timeStamp: {
           $gte: isodate(startTime),
