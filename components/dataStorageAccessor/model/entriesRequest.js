@@ -15,14 +15,14 @@ module.exports = async (options = {}) => {
   numberOfItems = itemNumberLimiter(numberOfItems)
 
   const data = await result
-    .find([{
+    .find({
       $match: {
         $and: [
           {chainName: chainName.toLowerCase()},
           {target: target.toLowerCase()},
         ],
       },
-    }])
+    })
     .limit(numberOfItems)
     .sort({timeStamp: -1})
     .toArray()

@@ -13,21 +13,19 @@ module.exports = async (options = {}) => {
   const result = await connection.db
     .collection(`common_${accessibility}_storages`)
   return await result
-    .find([
-      {
-        $match: {
-          $and: [
-            {chainName: chainName.toLowerCase()},
-            {target: target.toLowerCase()},
-          ],
-        },
+    .find({
+      $match: {
+        $and: [
+          {chainName: chainName.toLowerCase()},
+          {target: target.toLowerCase()},
+          {
+            timeStamp: {
+              $gte: isodate(startTime),
+              $lt: isodate(endTime),
+            },
+          },
+        ],
       },
-      {
-        timeStamp: {
-          $gte: isodate(startTime),
-          $lt: isodate(endTime),
-        },
-      },
-    ])
+    })
     .toArray()
 }
