@@ -72,7 +72,6 @@ describe('Create Server', () => {
       })
       server.privateChainConfigurator.stopServer()
       server.frontendRouting.close()
-
     })
   })
 })

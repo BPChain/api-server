@@ -1,7 +1,7 @@
 const chainValueCollector = require('../model/chainValueCollector')
 
 module.exports = ({chainName, schema, connection, config, log}) => {
-  const Storage = connection.model(`${chainName}_public_storage`, schema)
+  const Storage = connection.model('common_public_storage', schema)
 
   return setInterval(async () => {
     const line = await chainValueCollector({chainName, config, log})

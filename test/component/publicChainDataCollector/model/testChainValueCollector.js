@@ -23,7 +23,7 @@ describe('publicChains', () => {
         'numberOfWorkers',
         'timeToNextEpoch',
         'timeStamp',
-        'chain',
+        'chainName',
       ]
       chainValueCollector({chainName: 'ethereum', config, log: {warn: () => {}}})
         .then(result => {

@@ -31,7 +31,7 @@ module.exports = ({connection, config, log}) => {
     chainName: 'ethereum',
     schema:
       require(
-        '../components/publicChainDataCollector/model/ethereumStorage.js'
+        '../components/publicChainDataCollector/model/commonStorage.js'
       ),
     connection,
     config,
