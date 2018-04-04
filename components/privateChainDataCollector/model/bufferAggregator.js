@@ -9,7 +9,7 @@ const helper = require('./bufferAggregatorHelper')
 module.exports = async (options = {}) => {
   const {
     chainName,
-    target = 'computer',
+    target = 'rx600s5-2',
     filledBufferName,
     Schema,
     StorageSchema,
