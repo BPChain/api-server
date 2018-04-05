@@ -6,8 +6,7 @@ module.exports = class ActiveChains {
 
   constructor ({config}) {
     this.activeChains = [
-      {chainName: 'ethereum', target: 'rx600s5-2'},
-      {chainName: 'xain', target: 'rx600s5-2'},
+    //  {chainName: 'ethereum', target: 'rx600s5-2'},
     ]
     this.config = config
   }
