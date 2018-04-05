@@ -25,8 +25,7 @@ function hasOnlyExpectedkeys (json) {
   Checks whether JSON provided by setParameters has expected Keys and values
 */
 
-module.exports = function isValidJson (options = {}) {
-  const {json, log} = options
+module.exports = function isValidJson ({json, log}) {
   log.info('Check whether setParameters json is valid')
   let parsedJson
   try {
@@ -41,15 +40,15 @@ module.exports = function isValidJson (options = {}) {
   if (!hasOnlyExpectedkeys(parsedJson)) {
     return false
   }
-  let allKeysValid = true
-  Object.keys(parsedJson)
-    .forEach((key) => {
+  const allKeysValid = Object.keys(parsedJson)
+    .every(key => {
       if (key === 'startChain' || key === 'stopChain' || key === 'switchChainTo') {
-        allKeysValid =  !isNumeric(parsedJson[key]) && allKeysValid
+        return !isNumeric(parsedJson[key])
       }
       else if (key === 'numberOfHosts' || key === 'numberOfMiners') {
-        allKeysValid = isNumeric(parsedJson[key]) && allKeysValid
+        return isNumeric(parsedJson[key])
       }
+      return false
     })
   return allKeysValid
 }
