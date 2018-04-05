@@ -16,6 +16,16 @@ const expectedKeys = [
   'avgDifficulty',
 ]
 
+function hasAllKeys ({json, log}) {
+  return expectedKeys.every(item => {
+    const keyExists = json.hasOwnProperty(item)
+    if (!keyExists) {
+      log.error(`Missing key in backend JSON: ${item}`)
+    }
+    return keyExists
+  })
+}
+
 module.exports = function isValidJson ({json, log}) {
   let parsedJson
   try {
@@ -25,19 +35,8 @@ module.exports = function isValidJson ({json, log}) {
     return false
   }
 
-  const hasAllKeys = expectedKeys.every(item => {
-    const keyExists = parsedJson.hasOwnProperty(item)
-    if (!keyExists) {
-      log.error(`Missing key in backend JSON: ${item}`)
-    }
-    return keyExists
-  })
-
-  if (!hasAllKeys) {
-    return false
-  }
-
-  return (parsedJson.isMining === 1 || parsedJson.isMining === 0) &&
+  return hasAllKeys({json: parsedJson, log}) &&
+    (parsedJson.isMining === 1 || parsedJson.isMining === 0) &&
     isNumeric(parsedJson.hashrate) &&
     isNumeric(parsedJson.avgBlocktime) &&
     isNumeric(parsedJson.gasPrice) &&
