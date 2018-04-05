@@ -1,22 +1,22 @@
-function isNumeric (number) {
-  return !isNaN(parseFloat(number)) && isFinite(number)
-}
-
 /*
   Checks whether JSON provided by private nodes has all expected keys
 */
 
-module.exports = function isValidJson ({json, log}) {
-  const expectedKeys = [
-    'chainName',
-    'hostId',
-    'isMining',
-    'hashrate',
-    'avgBlocktime',
-    'gasPrice',
-    'avgDifficulty',
-  ]
+function isNumeric (number) {
+  return !isNaN(parseFloat(number)) && isFinite(number)
+}
 
+const expectedKeys = [
+  'chainName',
+  'hostId',
+  'isMining',
+  'hashrate',
+  'avgBlocktime',
+  'gasPrice',
+  'avgDifficulty',
+]
+
+module.exports = function isValidJson ({json, log}) {
   let parsedJson
   try {
     parsedJson = JSON.parse(json)
