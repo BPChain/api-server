@@ -11,14 +11,11 @@ const expectedKeys = [
 ]
 
 function hasOnlyExpectedkeys (json) {
-  let keysAreGood = true
-  Object.keys(json)
-    .forEach((key) => {
-      if (!expectedKeys.includes(key)) {
-        keysAreGood = false
-      }
-    })
-  return keysAreGood
+  if (!Object.keys(json).length) {
+    return false
+  }
+  return Object.keys(json)
+    .every(key => expectedKeys.includes(key))
 }
 
 /*
@@ -30,9 +27,6 @@ module.exports = function isValidJson ({json, log}) {
   let parsedJson
   try {
     parsedJson = JSON.parse(json)
-    if (Object.keys(parsedJson).length === 0) {
-      return false
-    }
   }
   catch (error) {
     return false
@@ -40,7 +34,7 @@ module.exports = function isValidJson ({json, log}) {
   if (!hasOnlyExpectedkeys(parsedJson)) {
     return false
   }
-  const allKeysValid = Object.keys(parsedJson)
+  return Object.keys(parsedJson)
     .every(key => {
       if (['startChain', 'stopChain', 'switchChainTo'].includes(key)) {
         return !isNumeric(parsedJson[key])
@@ -50,5 +44,4 @@ module.exports = function isValidJson ({json, log}) {
       }
       return false
     })
-  return allKeysValid
 }
