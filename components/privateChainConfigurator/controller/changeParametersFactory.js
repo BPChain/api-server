@@ -18,10 +18,10 @@ module.exports = ({ backendController, log, activeChains }) => {
     }
     else {
       if (backendController.sendMessage({
-        message: {
+        message: JSON.stringify({
           parameters,
           chainName,
-        },
+        }),
         target,
       })) {
         const parsedJson = JSON.parse(parameters)
