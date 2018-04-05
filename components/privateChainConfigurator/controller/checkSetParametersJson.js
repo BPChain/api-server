@@ -24,23 +24,15 @@ function hasOnlyExpectedkeys (json) {
 
 module.exports = function isValidJson ({json, log}) {
   log.info('Check whether setParameters json is valid')
-  let parsedJson
-  try {
-    parsedJson = JSON.parse(json)
-  }
-  catch (error) {
-    log.warn(`Could not parse json ${json}: ${error.message}`)
-    return false
-  }
-  if (!hasOnlyExpectedkeys(parsedJson)) {
+  if (!hasOnlyExpectedkeys(json)) {
     log.warn(`Json has not only expected keys ${json} | ${expectedKeys}`)
     return false
   }
-  return Object.keys(parsedJson)
+  return Object.keys(json)
     .every(key => {
       if (['startChain', 'stopChain', 'switchChainTo'].includes(key)) {
-        return !isNumeric(parsedJson[key])
+        return !isNumeric(json[key])
       }
-      return isNumeric(parsedJson[key])
+      return isNumeric(json[key])
     })
 }
