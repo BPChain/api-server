@@ -39,9 +39,6 @@ module.exports = function isValidJson ({json, log}) {
       if (['startChain', 'stopChain', 'switchChainTo'].includes(key)) {
         return !isNumeric(parsedJson[key])
       }
-      else if (['numberOfHosts', 'numberOfMiners'].includes(key)) {
-        return isNumeric(parsedJson[key])
-      }
-      return false
+      return isNumeric(parsedJson[key])
     })
 }
