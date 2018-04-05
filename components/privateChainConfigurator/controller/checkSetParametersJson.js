@@ -45,10 +45,10 @@ module.exports = function isValidJson (options = {}) {
   Object.keys(parsedJson)
     .forEach((key) => {
       if (key === 'startChain' || key === 'stopChain' || key === 'switchChainTo') {
-        allKeysValid =  !isNumeric(parsedJson[key]) && allKeysValid ? true : false
+        allKeysValid =  !isNumeric(parsedJson[key]) && allKeysValid
       }
       else if (key === 'numberOfHosts' || key === 'numberOfMiners') {
-        allKeysValid = isNumeric(parsedJson[key]) && allKeysValid ? true : false
+        allKeysValid = isNumeric(parsedJson[key]) && allKeysValid
       }
     })
   return allKeysValid

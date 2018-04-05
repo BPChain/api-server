@@ -27,15 +27,14 @@ module.exports = ({ backendController, log, activeChains }) => {
         const parsedJson = JSON.parse(parameters)
         let success = true
         if (parsedJson.hasOwnProperty('startChain')) {
-          success = activeChains.add({chainName, target}) && success ? true : false
+          success = activeChains.add({chainName, target}) && success
         }
         if (parsedJson.hasOwnProperty('stopChain')) {
-          success = activeChains.remove({chainName, target}) && success ? true : false
+          success = activeChains.remove({chainName, target}) && success
         }
         if (parsedJson.hasOwnProperty('switchChainTo')) {
-          success = activeChains.remove({chainName, target}) ? true : false
-          success = activeChains.add({chainName: parsedJson.switchChainTo.value, target}) &&
-            success ? true : false
+          success = activeChains.remove({chainName, target})
+          success = activeChains.add({chainName: parsedJson.switchChainTo.value, target}) && success
         }
         if (success) {
           log.info('Successfully sent a start/stop/switch request')
