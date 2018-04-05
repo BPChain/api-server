@@ -120,6 +120,7 @@ const testLog = {
   error: () => {},
   debug: () => {},
   info: () => {},
+  warn: () => {},
 }
 
 describe('ChangeParametersFactory', () => {
