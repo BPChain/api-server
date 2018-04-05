@@ -25,23 +25,23 @@ module.exports = ({ backendController, log, activeChains }) => {
         target,
       })) {
         const parsedJson = JSON.parse(parameters)
-        let success = true
-        if (parsedJson.hasOwnProperty('startChain')) {
-          success = activeChains.add({chainName, target}) && success
-        }
-        if (parsedJson.hasOwnProperty('stopChain')) {
-          success = activeChains.remove({chainName, target}) && success
-        }
-        if (parsedJson.hasOwnProperty('switchChainTo')) {
-          success = activeChains.remove({chainName, target})
-          success = activeChains.add({chainName: parsedJson.switchChainTo.value, target}) && success
-        }
-        if (success) {
+
+        try {
+          if (parsedJson.hasOwnProperty('startChain')) {
+            activeChains.add({chainName, target})
+          }
+          if (parsedJson.hasOwnProperty('stopChain')) {
+            activeChains.remove({chainName, target})
+          }
+          if (parsedJson.hasOwnProperty('switchChainTo')) {
+            activeChains.remove({chainName, target})
+            activeChains.add({chainName: parsedJson.switchChainTo.value, target})
+          }
           log.info('Successfully sent a start/stop/switch request')
           response.sendStatus(200)
         }
-        else {
-          log.warn('Error occured when sending start/stop/switch')
+        catch (error) {
+          log.warn(`Error occured when sending start/stop/switch: ${error.message}`)
           response.sendStatus(500)
         }
       }

@@ -15,9 +15,10 @@ module.exports = class ActiveChains {
   add ({chainName, target}) {
     if (this.config.activePrivateChains.includes(chainName)) {
       this.activeChains.push({chainName, target})
-      return true
     }
-    return false
+    else {
+      throw new Error(`Unable to add chain ${chainName}`)
+    }
   }
 
   remove ({chainName, target}) {
