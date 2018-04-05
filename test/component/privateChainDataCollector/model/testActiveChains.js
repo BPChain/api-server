@@ -14,16 +14,17 @@ describe('privateChains', () => {
     log.info('Start testing private chains')
   })
   describe('#activeChain()', () => {
-    it('should return false when trying to set to a chain is not implemented', () => {
-      assert.equal(
-        activeChains.add({chainName: 'unimplementedChain', target: 'aws'}),
-        false,
+    it('should throw an error when trying to set to a chain that is not implemented', () => {
+      assert.throws(() => {
+        activeChains.add({chainName: 'unimplementedChain', target: 'aws'})
+      },
+      'Unable to add chain unimplementedChain',
       )
     })
-    it('should return true when trying to set to a chain is implemented', () => {
+    it('should return undefined when trying to set to a chain that is implemented', () => {
       assert.equal(
         activeChains.add({chainName: 'ethereum', target: 'aws'}),
-        true,
+        undefined,
       )
     })
     it('Should return the valid chain once it has been set', () => {

@@ -55,7 +55,7 @@ module.exports = ({
   const displayLogs = displayLogsFactory({
     connection,
   })
-  const changeParameter = changeParametersFactory({
+  const setParameters = changeParametersFactory({
     backendController,
     activeChains,
     log,
@@ -133,7 +133,7 @@ module.exports = ({
 
   app.post('/logout', authMiddleware, logOut)
 
-  app.post('/api/change', authMiddleware, changeParameter)
+  app.post('/api/setParameters', authMiddleware, setParameters)
 
   app.post('/api/createUser', authMiddleware, createUserRoute)
 
