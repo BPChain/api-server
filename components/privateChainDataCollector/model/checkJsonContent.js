@@ -6,8 +6,7 @@ function isNumeric (number) {
   Checks whether JSON provided by private nodes has all expected keys
 */
 
-module.exports = function isValidJson (options = {}) {
-  const {json, log} = options
+module.exports = function isValidJson ({json, log}) {
   const expectedKeys = [
     'chainName',
     'hostId',
@@ -26,7 +25,7 @@ module.exports = function isValidJson (options = {}) {
     return false
   }
 
-  const hasAllKeys = expectedKeys.every((item) => {
+  const hasAllKeys = expectedKeys.every(item => {
     const keyExists = parsedJson.hasOwnProperty(item)
     if (!keyExists) {
       log.error(`Missing key in backend JSON: ${item}`)
