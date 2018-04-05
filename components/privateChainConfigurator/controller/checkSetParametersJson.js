@@ -29,7 +29,7 @@ module.exports = function isValidJson ({json, log}) {
     parsedJson = JSON.parse(json)
   }
   catch (error) {
-    log.warn(`Could not parse json ${json}`)
+    log.warn(`Could not parse json ${json}: ${error.message}`)
     return false
   }
   if (!hasOnlyExpectedkeys(parsedJson)) {
