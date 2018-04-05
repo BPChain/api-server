@@ -42,10 +42,10 @@ module.exports = function isValidJson ({json, log}) {
   }
   const allKeysValid = Object.keys(parsedJson)
     .every(key => {
-      if (key === 'startChain' || key === 'stopChain' || key === 'switchChainTo') {
+      if (['startChain', 'stopChain', 'switchChainTo'].includes(key)) {
         return !isNumeric(parsedJson[key])
       }
-      else if (key === 'numberOfHosts' || key === 'numberOfMiners') {
+      else if (['numberOfHosts', 'numberOfMiners'].includes(key)) {
         return isNumeric(parsedJson[key])
       }
       return false
