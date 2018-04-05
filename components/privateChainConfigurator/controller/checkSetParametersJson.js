@@ -29,9 +29,11 @@ module.exports = function isValidJson ({json, log}) {
     parsedJson = JSON.parse(json)
   }
   catch (error) {
+    log.warn(`Could not parse json ${json}`)
     return false
   }
   if (!hasOnlyExpectedkeys(parsedJson)) {
+    log.warn(`Json has not only expected keys ${json} | ${expectedKeys}`)
     return false
   }
   return Object.keys(parsedJson)
