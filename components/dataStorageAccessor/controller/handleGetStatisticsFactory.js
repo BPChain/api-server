@@ -9,8 +9,8 @@ module.exports = (options = {}) => {
   } = options
 
   return async (request, response) => {
-    const { chainName, accessibility } = request.params
-    const { startTime, endTime, target } = request.query
+    const {chainName, accessibility} = request.params
+    const {startTime, endTime, target} = request.query
     const numberOfItems = parseInt(request.query.numberOfItems)
     let data = []
     const chainIdentifier = {
