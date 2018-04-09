@@ -74,7 +74,7 @@ module.exports = ({
     secret: process.env.SESSION_SECRET || 'dummySecret',
     resave: true,
     saveUninitialized: true,
-    cookie: { maxAge: 300000 },
+    cookie: { maxAge: 900000 },
     sameSite: true,
   }))
   const sessionCache = new NodeCache({
