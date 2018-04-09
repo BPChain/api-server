@@ -22,7 +22,7 @@ module.exports = class ActiveChains {
 
   remove ({chainName, target}) {
     this.activeChains = this.activeChains.filter(item =>
-      item.chainName === chainName && item.target === target
+      item.chainName !== chainName || item.target !== target
     )
   }
   getChains () {
