@@ -18,8 +18,12 @@ describe('privateChains', () => {
     error: () => {},
   }
   describe('#checkJson()', () => {
-    it('should return false when no options are provided', () => {
-      assert.equal(isValidJson(), false)
+    it('should throw an Error when no options are provided', () => {
+      assert.throws(() => {
+        isValidJson()
+      },
+      TypeError,
+      )
     })
     it('should return false when Json is not valid', () => {
       assert.equal(

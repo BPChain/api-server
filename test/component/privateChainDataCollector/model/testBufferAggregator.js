@@ -50,6 +50,7 @@ const model = () => {
 
 const options = {
   chainName: 'ethereum',
+  target: 'testTarget',
   filledBuffer: {},
   Schema: 'Schema',
   StorageSchema: 'StorageSchema',

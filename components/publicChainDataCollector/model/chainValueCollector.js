@@ -14,7 +14,7 @@ module.exports = async ({chainName, config, log}) => {
     {
       timeStamp: (new Date)
         .toUTCString(),
-      chain: chainName,
+      chainName,
     },
   )
   return result

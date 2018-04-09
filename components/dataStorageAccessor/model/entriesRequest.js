@@ -3,18 +3,22 @@ const itemNumberLimiter = require('./itemNumberLimiter')
 module.exports = async (options = {}) => {
   let {numberOfItems} = options
   const {
+    chainName = '',
+    target = '',
     connection,
-    chainName,
     accessibility,
   } = options
 
   const result = await connection.db
-    .collection(`${chainName}_${accessibility}_storages`)
+    .collection(`common_${accessibility}_storages`)
 
   numberOfItems = itemNumberLimiter(numberOfItems)
 
   const data = await result
-    .find({})
+    .find({
+      chainName: chainName.toLowerCase(),
+      target: target.toLowerCase(),
+    })
     .limit(numberOfItems)
     .sort({timeStamp: -1})
     .toArray()

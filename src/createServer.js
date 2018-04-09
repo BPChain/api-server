@@ -9,29 +9,29 @@ const publicChainCollector =
   require('../components/publicChainDataCollector/controller/nanopoolCaller')
 const BlockchainController =
   require('../components/privateChainConfigurator/controller/BlockchainController')
-const activeChain =
-  require('../components/privateChainDataCollector/model/activeChain')
+const ActiveChains =
+  require('../components/privateChainDataCollector/model/ActiveChains')
 
-module.exports = ({connection, activeChainName, config, log}) => {
+module.exports = ({connection, config, log}) => {
+  const activeChains = new ActiveChains({config})
   const server = {}
-  activeChain.set(activeChainName)
   const privateChainConfigurator = new BlockchainController({
     log,
     port: config.controllerPort,
   })
-  server.privateChainConfigurator = privateChainConfigurator.start()
+  privateChainConfigurator.start()
+  server.privateChainConfigurator = privateChainConfigurator
   server.privateChainCollector = privateChainCollector({
-    activeChain,
+    activeChains,
     log,
     config,
     connection,
-    schema: config.ethereum.privateChain.schema,
   })
   server.publicChainCollector = publicChainCollector({
     chainName: 'ethereum',
     schema:
       require(
-        '../components/publicChainDataCollector/model/ethereumStorage.js'
+        '../components/publicChainDataCollector/model/commonStorage.js'
       ),
     connection,
     config,
@@ -39,7 +39,7 @@ module.exports = ({connection, activeChainName, config, log}) => {
   })
   server.frontendRouting = frontendRouting({
     backendController: privateChainConfigurator,
-    activeChain,
+    activeChains,
     connection,
     log,
   })

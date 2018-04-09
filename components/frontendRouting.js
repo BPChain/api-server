@@ -17,7 +17,7 @@ const logOut = require('./authenticationHandler/logout')
 
 module.exports = ({
   backendController,
-  activeChain,
+  activeChains,
   connection,
   log,
 }) => {
@@ -34,6 +34,8 @@ module.exports = ({
     require('./authenticationHandler/loginRouteFactory')
   const userCreationRouteFactory =
     require('./authenticationHandler/userCreationRouteFactory')
+  const getChainInfoFactory =
+    require('./privateChainConfigurator/controller/getChainInfoFactory')
 
   const createUser = require('./authenticationHandler/createUser')
 
@@ -53,9 +55,9 @@ module.exports = ({
   const displayLogs = displayLogsFactory({
     connection,
   })
-  const changeParameter = changeParametersFactory({
+  const setParameters = changeParametersFactory({
     backendController,
-    activeChain,
+    activeChains,
     log,
   })
 
@@ -64,18 +66,21 @@ module.exports = ({
     log,
   })
 
+  const getChainInfo = getChainInfoFactory({backendController, activeChains})
+
   const app = express()
 
   app.use(session({
-    secret: 'workworkworkworkwork', // change!
+    secret: process.env.SESSION_SECRET || 'dummySecret',
     resave: true,
     saveUninitialized: true,
-    cookie: { maxAge: 300000 },
+    cookie: { maxAge: 900000 },
+    sameSite: true,
   }))
   const sessionCache = new NodeCache({
     stdTTL: 1800,
     checkperiod: 900,
-    errorOnMissing: true,
+    errorOnMissing: false,
   })
 
   const logIn = loginRouteFactory({
@@ -85,6 +90,7 @@ module.exports = ({
   })
 
   app.use((request, response, next) => {
+    log.info('session cookie', request.sessionID)
     sessionCache.get(request.sessionID, (error, value) => {
       if (!error) {
         if (value !== undefined) {
@@ -97,6 +103,7 @@ module.exports = ({
         }
       }
       else {
+        log.warn('Session cache error!')
         request.isAuthenticated = false
         next()
       }
@@ -107,9 +114,14 @@ module.exports = ({
   app.use(bodyParser.urlencoded({
     extended: true,
   }))
-  app.use(cors())
+  app.use(cors({origin: [
+    'http://localhost:4200',
+    'https://bpt-lab.org/bp2017w1-frontend',
+  ], credentials: true}))
 
   app.get('/api/:accessibility(private|public)/:chainName', handleGetStatistics)
+
+  app.get('/api/getChainInfo',  getChainInfo)
 
   app.get('/log', displayLogs)
 
@@ -121,17 +133,12 @@ module.exports = ({
 
   app.post('/logout', authMiddleware, logOut)
 
-  app.post('/api/change', authMiddleware, async (request, response) => {
-    const status = await changeParameter(request, response)
-    response.sendStatus(status)
-  })
+  app.post('/api/setParameters', authMiddleware, setParameters)
 
   app.post('/api/createUser', authMiddleware, createUserRoute)
 
   app.get('/*', (request, response) => {
-    response.sendFile(
-      path.join(__dirname, 'dataStorageAccessor/view/index.html')
-    )
+    response.sendFile(path.join(__dirname, 'dataStorageAccessor/view/index.html'))
   })
 
   return app.listen(config.frontendPort, () => {

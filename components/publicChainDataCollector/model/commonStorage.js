@@ -1,7 +1,7 @@
 const Schema = require('mongoose').Schema
 
 module.exports = new Schema({
-  chain: {type: String},
+  chainName: {type: String},
   timeStamp: {type: Date},
   numberOfWorkers: {type: Number},
   numberOfMiners: {type: Number},

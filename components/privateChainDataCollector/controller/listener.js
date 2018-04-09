@@ -9,14 +9,12 @@ const DoubleBuffer = require('../model/doubleBuffer')
   that alternatively store the data and get aggregated into the database
 */
 
-module.exports = async ({activeChain, log, config, connection, schema}) => {
-  const StorageSchema = require(
-    `../model/${activeChain.get()}Storage`
-  )
-  const Schema = require(`../model/${schema}`)
+module.exports = async ({activeChains, log, config, connection}) => {
+  const StorageSchema = require('../model/ethereumStorage')
+  const Schema = require('../model/ethereumSchema')
 
   const doubleBuffer = new DoubleBuffer({
-    activeChain,
+    activeChains,
     bufferAggregator,
     log,
     config,
@@ -32,7 +30,7 @@ module.exports = async ({activeChain, log, config, connection, schema}) => {
     socket.on('message', (message) => {
       try {
         if (isValidJson({json: message, log})) {
-          doubleBuffer.storeTempPrivateData(message)
+          doubleBuffer.storeTempPrivateData(JSON.parse(message))
           socket.send(200)
         }
         else {

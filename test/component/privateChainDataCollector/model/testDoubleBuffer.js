@@ -20,7 +20,7 @@ describe('privateChains', () => {
         assert.doesNotThrow(() => {
           const doubleBuffer = new DoubleBuffer({
             connection: { model: () => 'model' },
-            activeChain: { get: () => { } },
+            activeChain: { getChains: () => { } },
             config: {bufferSwitchTime: 1000},
           })
           assert.ok(doubleBuffer)
@@ -33,7 +33,7 @@ describe('privateChains', () => {
       () => {
         const doubleBuffer = new DoubleBuffer({
           connection: { model: () => 'testModel' },
-          activeChain: { get: () => { } },
+          activeChain: { getChains: () => { } },
           config: {bufferSwitchTime: 100},
         })
         assert.equal(doubleBuffer.getActiveBuffer(), 'testModel')
@@ -45,7 +45,7 @@ describe('privateChains', () => {
       () => {
         const doubleBuffer = new DoubleBuffer({
           connection: { model: () => 'testModel' },
-          activeChain: { get: () => { } },
+          activeChain: { getChains: () => { } },
           config: {bufferSwitchTime: 10000},
         })
         assert.equal(doubleBuffer.getActiveBufferLabel(), 'a')
@@ -58,17 +58,17 @@ describe('privateChains', () => {
       () => {
         const doubleBuffer = new DoubleBuffer({
           connection: { model: (name) => name },
-          activeChain: { get: () => 'test' },
+          activeChain: { getChains: () => { } },
           log: { trace: () => { } },
           config: {bufferSwitchTime: 10000},
         })
         assert.equal(doubleBuffer.getActiveBufferLabel(), 'a')
         assert.equal(doubleBuffer.getInactiveBufferLabel(), 'b')
-        assert.equal(doubleBuffer.getActiveBuffer(), 'test_private_buffer_a')
+        assert.equal(doubleBuffer.getActiveBuffer(), 'common_private_buffer_a')
         doubleBuffer.toggleActiveBuffer()
         assert.equal(doubleBuffer.getActiveBufferLabel(), 'b')
         assert.equal(doubleBuffer.getInactiveBufferLabel(), 'a')
-        assert.equal(doubleBuffer.getActiveBuffer(), 'test_private_buffer_b')
+        assert.equal(doubleBuffer.getActiveBuffer(), 'common_private_buffer_b')
         doubleBuffer.stopBufferInterval()
       }
     )
@@ -88,7 +88,7 @@ describe('privateChains', () => {
               }
             },
           },
-          activeChain: { get: () => { } },
+          activeChain: { getChains: () => { } },
           log: { debug: () => { } },
           config: {bufferSwitchTime: 1000},
         })
@@ -114,7 +114,7 @@ describe('privateChains', () => {
               }
             },
           },
-          activeChain: { get: () => { } },
+          activeChain: { getChains: () => { } },
           log: { debug: () => { } },
           config: {bufferSwitchTime: 1000},
         })

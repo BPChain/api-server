@@ -6,10 +6,10 @@ const expect = require('chai').expect
 const Schema = require('mongoose').Schema
 
 const ethereumStorage = require(
-  '../../../../components/publicChainDataCollector/model/ethereumStorage'
+  '../../../../components/publicChainDataCollector/model/commonStorage'
 )
 const compareEthereumStorage = new Schema({
-  chain: {type: String},
+  chainName: {type: String},
   timeStamp: {type: Date},
   numberOfWorkers: {type: Number},
   numberOfMiners: {type: Number},

@@ -9,6 +9,7 @@ const helper = require('./bufferAggregatorHelper')
 module.exports = async (options = {}) => {
   const {
     chainName,
+    target = 'rx600s5-2',
     filledBufferName,
     Schema,
     StorageSchema,
@@ -29,12 +30,18 @@ module.exports = async (options = {}) => {
 
     await Promise
       .all([
-        aggregatedValues.numberOfHosts = await helper.aggregateNumberOfHosts(Buffer, chainName),
-        aggregatedValues.numberOfMiners = await helper.aggregateNumberOfMiners(Buffer, chainName),
-        aggregatedValues.avgHashrate = await helper.aggregateAverageHashRate(Buffer, chainName),
-        aggregatedValues.avgBlocktime = await helper.aggregateAverageBlockTime(Buffer, chainName),
-        aggregatedValues.avgGasPrice = await helper.aggregateAverageGasPrice(Buffer, chainName),
-        aggregatedValues.avgDifficulty = await helper.aggregateAverageDifficulty(Buffer, chainName),
+        aggregatedValues.numberOfHosts = await helper
+          .aggregateNumberOfHosts(Buffer, chainName, target),
+        aggregatedValues.numberOfMiners = await helper
+          .aggregateNumberOfMiners(Buffer, chainName, target),
+        aggregatedValues.avgHashrate = await helper
+          .aggregateAverageHashRate(Buffer, chainName, target),
+        aggregatedValues.avgBlocktime = await helper
+          .aggregateAverageBlockTime(Buffer, chainName, target),
+        aggregatedValues.avgGasPrice = await helper
+          .aggregateAverageGasPrice(Buffer, chainName, target),
+        aggregatedValues.avgDifficulty = await helper
+          .aggregateAverageDifficulty(Buffer, chainName, target),
       ])
       .catch(log.error)
 
@@ -44,8 +51,8 @@ module.exports = async (options = {}) => {
 
 
   function storeData (aggregatedValues) {
-    const Storage = helper.inintializeStorage(options)
-    const dataLine = helper.createStorage({aggregatedValues, chainName, Storage})
+    const Storage = helper.intializeStorage(options)
+    const dataLine = helper.createStorage({aggregatedValues, chainName, target, Storage})
 
     dataLine.save((error, savedData) => {
       if (error) {

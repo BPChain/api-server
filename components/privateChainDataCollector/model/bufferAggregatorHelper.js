@@ -3,27 +3,32 @@
  so that the bufferAggregator does not need to contain the logic itself
 */
 
-exports.initializeBuffer = ({connection, chainName, filledBufferName, Schema}) =>
-  connection.model(`${chainName}_private${filledBufferName}`, Schema)
+exports.initializeBuffer = ({connection, filledBufferName, Schema}) =>
+  connection.model(`common_private${filledBufferName}`, Schema)
 
-exports.inintializeStorage = ({connection, chainName, StorageSchema}) =>
-  connection.model(`${chainName}_private_storage`, StorageSchema)
+exports.intializeStorage = ({connection, StorageSchema}) =>
+  connection.model('common_private_storage', StorageSchema)
 
-exports.createStorage = ({aggregatedValues, chainName, Storage}) => {
+exports.createStorage = ({aggregatedValues, chainName, target, Storage}) => {
   return new Storage(
     Object.assign({
-      chainName: chainName,
+      chainName,
+      target,
       timeStamp: Date.now(),
     },
     aggregatedValues,
-    ))
+    )
+  )
 }
 
-exports.aggregateNumberOfMiners = async (Buffer, chainName) => {
+exports.aggregateNumberOfMiners = async (Buffer, chainName, target) => {
   const result = await Buffer
     .aggregate(
       [{
         $match: {chainName: chainName.toLowerCase()},
+      },
+      {
+        $match: {target: target.toLowerCase()},
       },
       {
         $match: {isMining: 1},
@@ -43,12 +48,14 @@ exports.aggregateNumberOfMiners = async (Buffer, chainName) => {
   return result.length ? result[0].count : 0
 }
 
-exports.aggregateNumberOfHosts = async (Buffer, chainName) => {
-
+exports.aggregateNumberOfHosts = async (Buffer, chainName, target) => {
   const result = await Buffer
     .aggregate(
       [{
         $match: {chainName: chainName.toLowerCase()},
+      },
+      {
+        $match: {target: target.toLowerCase()},
       },
       {
         $group: {
@@ -65,12 +72,15 @@ exports.aggregateNumberOfHosts = async (Buffer, chainName) => {
   return result.length ? result[0].count : 0
 }
 
-async function aggregateAverage (Buffer, chainName, field) {
+async function aggregateAverage (Buffer, chainName, target, field) {
 
   const result = await Buffer
     .aggregate(
       [{
         $match: {chainName: chainName.toLowerCase()},
+      },
+      {
+        $match: {target: target.toLowerCase()},
       },
       {
         $group: {
@@ -88,18 +98,18 @@ async function aggregateAverage (Buffer, chainName, field) {
   return result.length ? result[0].avgValue : 0
 }
 
-exports.aggregateAverageHashRate = async (Buffer, chainName) => {
-  return await aggregateAverage(Buffer, chainName, 'hashrate')
+exports.aggregateAverageHashRate = async (Buffer, chainName, target) => {
+  return await aggregateAverage(Buffer, chainName, target, 'hashrate')
 }
 
-exports.aggregateAverageBlockTime = async (Buffer, chainName) => {
-  return await aggregateAverage(Buffer, chainName, 'avgBlocktime')
+exports.aggregateAverageBlockTime = async (Buffer, chainName, target) => {
+  return await aggregateAverage(Buffer, chainName, target, 'avgBlocktime')
 }
 
-exports.aggregateAverageGasPrice = async (Buffer, chainName) => {
-  return await aggregateAverage(Buffer, chainName, 'gasPrice')
+exports.aggregateAverageGasPrice = async (Buffer, chainName, target) => {
+  return await aggregateAverage(Buffer, chainName, target, 'gasPrice')
 }
 
-exports.aggregateAverageDifficulty = async (Buffer, chainName) => {
-  return await aggregateAverage(Buffer, chainName, 'avgDifficulty')
+exports.aggregateAverageDifficulty = async (Buffer, chainName, target) => {
+  return await aggregateAverage(Buffer, chainName, target, 'avgDifficulty')
 }

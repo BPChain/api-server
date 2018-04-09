@@ -6,12 +6,15 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    networks: 
+      - backendnet 
     container_name: mongodb
-    networks:
-      - backendnet
     volumes:
       - mongodb-data:/data/db
-networks:
-  backendnet:
-    external:
-      name: backendnet
+networks: 
+  backendnet: 
+    external: 
+      name: backendnet 
+
+volumes:
+  mongodb-data:
