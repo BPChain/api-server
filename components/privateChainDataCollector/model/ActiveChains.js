@@ -25,6 +25,11 @@ module.exports = class ActiveChains {
       item.chainName !== chainName || item.target !== target
     )
   }
+
+  removeChainsOf ({target}) {
+    this.activeChains = this.activeChains.filter(item => item.target !== target)
+  }
+
   getChains () {
     return this.activeChains
   }

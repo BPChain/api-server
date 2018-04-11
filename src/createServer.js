@@ -16,6 +16,7 @@ module.exports = ({connection, config, log}) => {
   const activeChains = new ActiveChains({config})
   const server = {}
   const privateChainConfigurator = new BlockchainController({
+    activeChains,
     log,
     port: config.controllerPort,
   })

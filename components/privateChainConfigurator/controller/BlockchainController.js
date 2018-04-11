@@ -4,7 +4,8 @@ const WebSocketServer = ws.Server
 
 class BlockchainController {
   constructor (options = {}) {
-    const {log = console, port = 4040, clientArray = []} = options
+    const {activeChains, log = console, port = 4040, clientArray = []} = options
+    this.activeChains = activeChains
     this.log = log
     this.port = port
     this.clientArray = clientArray
@@ -45,14 +46,20 @@ class BlockchainController {
 
       connection.on('close', () => {
         this.log.info('Closing connection')
+        this.clientArray.forEach(client => {
+          if (client.connection !== connection) {
+            this.activeChains.removeChainsOf({target: client.target})
+          }
+        })
         this.clientArray = this.clientArray.filter(
           client => client.connection !== connection
         )
         this.log.info(`Open connections: ${this.clientArray}`)
       })
     })
+
     this.intervalId = setInterval(() => {
-      this.wsServer.clients.forEach((connection) => {
+      this.wsServer.clients.forEach(connection => {
         if (connection.isAlive === false) {
           return () => {
             this.log.info('Closing connection')
