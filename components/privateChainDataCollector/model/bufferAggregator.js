@@ -38,8 +38,8 @@ module.exports = async (options = {}) => {
           .aggregateAverageHashRate(Buffer, chainName, target),
         aggregatedValues.avgBlocktime = await helper
           .aggregateAverageBlockTime(Buffer, chainName, target),
-        aggregatedValues.avgGasPrice = await helper
-          .aggregateAverageGasPrice(Buffer, chainName, target),
+        aggregatedValues.avgBlockSize = await helper
+          .aggregateAverageBlockSize(Buffer, chainName, target),
         aggregatedValues.avgDifficulty = await helper
           .aggregateAverageDifficulty(Buffer, chainName, target),
       ])

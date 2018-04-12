@@ -85,7 +85,7 @@ describe('privateChainDataCollector', () => {
             'isMining': 1,
             'hashrate': 45,
             'avgBlocktime': 64,
-            'gasPrice': 533,
+            'blockSize': 533,
             'avgDifficulty': 56,
           }))
           ws2.on('message', (message) => {

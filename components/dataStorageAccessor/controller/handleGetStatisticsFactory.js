@@ -59,7 +59,7 @@ module.exports = (options = {}) => {
       numberOfMiners: [],
       avgHashrate: [],
       avgBlocktime: [],
-      avgGasPrice: [],
+      avgBlockSize: [],
       avgDifficulty: [],
       timeStamp: [],
     })

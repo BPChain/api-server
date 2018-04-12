@@ -106,8 +106,8 @@ exports.aggregateAverageBlockTime = async (Buffer, chainName, target) => {
   return await aggregateAverage(Buffer, chainName, target, 'avgBlocktime')
 }
 
-exports.aggregateAverageGasPrice = async (Buffer, chainName, target) => {
-  return await aggregateAverage(Buffer, chainName, target, 'gasPrice')
+exports.aggregateAverageBlockSize = async (Buffer, chainName, target) => {
+  return await aggregateAverage(Buffer, chainName, target, 'blockSize')
 }
 
 exports.aggregateAverageDifficulty = async (Buffer, chainName, target) => {
