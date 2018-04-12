@@ -28,8 +28,8 @@ module.exports = ({
     require('./dataStorageAccessor/controller/handleGetStatisticsFactory')
   const displayLogsFactory =
     require('./loggerHandler/controller/displayLogsFactory')
-  const changeParametersFactory =
-    require('./privateChainConfigurator/controller/changeParametersFactory')
+  const setChainInfoFactory =
+    require('./privateChainConfigurator/controller/setChainInfoFactory')
   const loginRouteFactory =
     require('./authenticationHandler/loginRouteFactory')
   const userCreationRouteFactory =
@@ -55,7 +55,7 @@ module.exports = ({
   const displayLogs = displayLogsFactory({
     connection,
   })
-  const setParameters = changeParametersFactory({
+  const setParameters = setChainInfoFactory({
     backendController,
     activeChains,
     log,
