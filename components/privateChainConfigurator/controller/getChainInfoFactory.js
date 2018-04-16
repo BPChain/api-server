@@ -10,9 +10,16 @@ module.exports = ({backendController, activeChains}) => {
             item.target === client.target &&
             client.chainName === item.chainName
           )
+        const scenario = active
+          ? activeChains
+            .getChains()
+            .find(item => item.chainName === client.chainName && item.target === client.target)
+            .scenario
+          : {}
         return Object.assign(client, {
           accessability: 'private',
           active,
+          scenario,
         })
       })
     response.send(privateChains)
