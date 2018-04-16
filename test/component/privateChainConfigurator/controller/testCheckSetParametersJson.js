@@ -49,7 +49,6 @@ describe('testCheckSetParametersJson', () => {
             stopChain: 33,
             numberOfHosts: 'abc',
             numberOfMiners: 'cde',
-            switchChainTo: 33,
             scenario: {
               period: 'hallol',
               payloadSize: 'seit 16 jahren 1&1',
@@ -93,7 +92,6 @@ describe('testCheckSetParametersJson', () => {
             stopChain: 'cde',
             numberOfHosts: 33,
             numberOfMiners: 33,
-            switchChainTo: 'fgh',
             scenario: {
               period: 313,
               payloadSize: 13123,
@@ -109,11 +107,7 @@ describe('testCheckSetParametersJson', () => {
       assert.equal(isValidJson({json: {numberOfMiners: 33, numberOfHosts: 33}, log: fakeLog}), true)
       assert.equal(isValidJson({json: {startChain: 'abc'}, log: fakeLog}), true)
       assert.equal(isValidJson({json: {stopChain: 'abc'}, log: fakeLog}), true)
-      assert.equal(isValidJson({json: {switchChainTo: 'abc'}, log: fakeLog}), true)
       assert.equal(isValidJson({json: {startChain: 'abc', stopChain: 'abc'}, log: fakeLog}), true)
-      assert.equal(isValidJson({json: {startChain: 'abc', switchChainTo: 'abc'}, log: fakeLog}), true)
-      assert.equal(isValidJson({json: {stopChain: 'abc', switchChainTo: 'abc'}, log: fakeLog}), true)
-      assert.equal(isValidJson({json: {startChain: 'abc', stopChain: 'abc', switchChainTo: 'abc'}, log: fakeLog}), true)
       assert.equal(isValidJson({json: {scenario: {period: 343, payloadSize: 333}}, log: fakeLog}), true)
     })
   })

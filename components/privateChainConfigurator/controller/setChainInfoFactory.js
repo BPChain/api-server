@@ -31,15 +31,11 @@ module.exports = ({ backendController, log, activeChains }) => {
           if (parameters.hasOwnProperty('stopChain')) {
             activeChains.remove({chainName, target})
           }
-          if (parameters.hasOwnProperty('switchChainTo')) {
-            activeChains.remove({chainName, target})
-            activeChains.add({chainName: parameters.switchChainTo.value, target})
-          }
           log.info('Successfully sent a start/stop/switch request')
           response.sendStatus(200)
         }
         catch (error) {
-          log.warn(`Error occured when sending start/stop/switch: ${error.message}`)
+          log.warn(`Error occured when sending start/stop: ${error.message}`)
           response.sendStatus(500)
         }
       }

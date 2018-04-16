@@ -7,7 +7,6 @@ const expectedKeys = [
   'stopChain',
   'numberOfHosts',
   'numberOfMiners',
-  'switchChainTo',
   'scenario',
 ]
 
@@ -31,7 +30,7 @@ module.exports = function isValidJson ({json, log}) {
   }
   return Object.keys(json)
     .every(key => {
-      if (['startChain', 'stopChain', 'switchChainTo'].includes(key)) {
+      if (['startChain', 'stopChain'].includes(key)) {
         return !isNumeric(json[key])
       }
       else if (['scenario'].includes(key)) {
