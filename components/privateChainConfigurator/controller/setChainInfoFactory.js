@@ -34,9 +34,11 @@ module.exports = ({ backendController, log, activeChains }) => {
         try {
           if (parameters.hasOwnProperty('startChain')) {
             activeChains.add({chainName, target})
-            await sleepSeconds(5)
-            log.info(`Setting scenario: '${defaultScenario.name}'`)
-            activeChains.setScenario({chainName, target, scenario: defaultScenario})
+            sleepSeconds(5)
+              .then(() => {
+                log.info(`Setting scenario: '${defaultScenario.name}'`)
+                activeChains.setScenario({chainName, target, scenario: defaultScenario})
+              })
           }
           if (parameters.hasOwnProperty('stopChain')) {
             activeChains.remove({chainName, target})
