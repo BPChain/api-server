@@ -43,7 +43,7 @@ module.exports = ({ backendController, log, activeChains }) => {
           }
           if (parameters.hasOwnProperty('scenario')) {
             log.info(`Setting scenario: '${parameters.scenario.name}'`)
-            activeChains.setScenario({chainName, target, scenario: defaultScenario})
+            activeChains.setScenario({chainName, target, scenario: parameters.scenario})
           }
           log.info('Successfully sent a start/stop request')
           response.sendStatus(200)
