@@ -1,4 +1,11 @@
+const sleepSeconds = require('sleepjs').sleepSeconds
 const checkSetParametersJson = require('./checkSetParametersJson')
+
+const defaultScenario = {
+  name: 'defaultScenario',
+  period: 30,
+  payloadSize: 20,
+}
 
 module.exports = ({ backendController, log, activeChains }) => {
   return async (request, response) => {
@@ -27,11 +34,18 @@ module.exports = ({ backendController, log, activeChains }) => {
         try {
           if (parameters.hasOwnProperty('startChain')) {
             activeChains.add({chainName, target})
+            await sleepSeconds(5)
+            log.info(`Setting scenario: '${defaultScenario.name}'`)
+            activeChains.setScenario({chainName, target, scenario: defaultScenario})
           }
           if (parameters.hasOwnProperty('stopChain')) {
             activeChains.remove({chainName, target})
           }
-          log.info('Successfully sent a start/stop/switch request')
+          if (parameters.hasOwnProperty('scenario')) {
+            log.info(`Setting scenario: '${parameters.scenario.name}'`)
+            activeChains.setScenario({chainName, target, scenario: defaultScenario})
+          }
+          log.info('Successfully sent a start/stop request')
           response.sendStatus(200)
         }
         catch (error) {
