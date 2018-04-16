@@ -36,7 +36,7 @@ module.exports = function isValidJson ({json, log}) {
       else if (['scenario'].includes(key)) {
         return Object.keys(json[key])
           .every(subKey => {
-            if (['period', 'payloadSize'].includes(subKey)) {
+            if (['period', 'payloadSize', 'name'].includes(subKey)) {
               return isNumeric(json[key][subKey])
             }
             else {
