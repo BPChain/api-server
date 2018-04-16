@@ -36,7 +36,15 @@ describe('privateChains', () => {
     it('should execute removeChainOf({target}) correctly', () => {
       activeChains.add({chainName: 'ethereum', target: 'fsoc'})
       activeChains.removeChainsOf({target: 'fsoc'})
-      assert.deepEqual(activeChains.getChains(), [{chainName: 'ethereum', scenario: {name: 'noScenario', payloadSize: 0, period: 0}, target: 'aws'}])
+      assert.deepEqual(activeChains.getChains(),
+        [
+          {
+            chainName: 'ethereum',
+            scenario: {name: 'noScenario', payloadSize: 0, period: 0},
+            target: 'aws',
+          },
+        ]
+      )
     })
     it('should execute remove({chainName, target}) correctly', () => {
       activeChains.remove({chainName: 'ethereum', target: 'aws'})
