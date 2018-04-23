@@ -4,9 +4,9 @@
 
 module.exports = class ActiveChains {
 
-  constructor ({ config }) {
+  constructor ({config}) {
     this.config = config
-    this.emptyScenario = { name: 'noScenario', period: 0, payloadSize: 0 }
+    this.emptyScenario = {name: 'noScenario', period: 0, payloadSize: 0}
     this.backendState = {
       /*
         'rx600s5-2': {
@@ -30,7 +30,7 @@ module.exports = class ActiveChains {
     }
   }
 
-  setScenario ({ chainName, target, scenario }) {
+  setScenario ({chainName, target, scenario}) {
     this.backendScenario[target] = {}
     this.backendScenario[target][chainName] = scenario
   }
@@ -45,30 +45,36 @@ module.exports = class ActiveChains {
   }
 
   getActiveChains () {
-    Object.keys(this.backendState)
+    return Object.keys(this.backendState)
       .reduce((result, target) => {
-        return result.concat(target.map(chainName => {
-          return this.isChainActive({monitor: target, chainName}) ? {target, chainName} : null
-        })
+        return result.concat(Object.keys(this.backendState[target])
+          .map(chainName => {
+            return this.isChainActive({monitor: target, chainName}) ? {target, chainName, state: this.backendState[target][chainName]} : null
+          })
           .filter(Boolean)
         )
       }, [])
   }
 
-  getState ({ monitor }) {
-    this.backendState[monitor]
+  getState ({monitor}) {
+    return this.backendState[monitor]
   }
 
-  setState ({ monitor, state }) {
+  setState ({monitor, state}) {
     this.backendState[monitor] = state
   }
 
-  removeMonitor ({ monitor }) {
+  removeMonitor ({monitor}) {
     this.backendState[monitor] = undefined
   }
 
-  isChainActive ({ monitor, chainName }) {
-    const chainInfo = this.backendState[monitor][chainName]
-    return chainInfo.hosts !== 0 || chainInfo.miners !== 0
+  isChainActive ({monitor, chainName}) {
+    try {
+      const chainInfo = this.backendState[monitor][chainName]
+      return chainInfo.hosts !== 0 || chainInfo.miners !== 0
+    }
+    catch (error) {
+      return false
+    }
   }
 }
