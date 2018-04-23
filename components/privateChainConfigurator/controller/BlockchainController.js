@@ -40,8 +40,13 @@ class BlockchainController {
       this.log.info(`Client connected on port ${this.port}`)
       connection.on('message', data => {
         this.log.info(`Client authentificated with: ${data}`)
-        const {target, chains} = JSON.parse(data)
-        this.clientArray.push({chains, target, connection})
+        const {target, chains, monitor, state} = JSON.parse(data)
+        if (target) {
+          this.clientArray.push({chains, target, connection})
+        }
+        if (monitor) {
+          this.activeChains.setState({monitor, state})
+        }
       })
 
       connection.on('close', () => {
@@ -63,9 +68,11 @@ class BlockchainController {
         if (connection.isAlive === false) {
           return () => {
             this.log.info('Closing connection')
+            const monitor = this.clientArray.find(client => client.connection === connection)
             this.clientArray = this.clientArray.filter(
               client => client.connection !== connection
             )
+            this.activeChains.removeMonitor({monitor})
             connection.terminate()
           }
         }

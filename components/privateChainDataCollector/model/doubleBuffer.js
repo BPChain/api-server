@@ -60,9 +60,9 @@ module.exports = class DoubleBuffer {
 
   aggregateBuffer (bufferAggregator) {
     this.log.info(
-      `Aggregate buffer for ${this.activeChains.getChains().length} active private chains`
+      `Aggregate buffer for ${this.activeChains.getActiveChains().length} active private chains`
     )
-    this.activeChains.getChains()
+    this.activeChains.getActiveChains()
       .forEach(item => {
         bufferAggregator({
           filledBufferName: `_buffer_${this.getInactiveBufferLabel()}`,
