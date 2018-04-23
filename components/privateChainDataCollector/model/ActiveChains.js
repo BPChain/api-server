@@ -4,44 +4,71 @@
 
 module.exports = class ActiveChains {
 
-  constructor ({config}) {
-    this.activeChains = [/*
-      {
-        chainName: 'ethereum',
-        target: 'rx600s5-2',
-        scenario: {name: '', period: 2.3, payloadSize: 3},
-      },*/
-    ]
+  constructor ({ config }) {
     this.config = config
-    this.emptyScenario = {name: 'noScenario', period: 0, payloadSize: 0}
-  }
-
-  add ({chainName, target}) {
-    if (this.config.activePrivateChains.includes(chainName)) {
-      this.activeChains.push({chainName, target, scenario: this.emptyScenario})
+    this.emptyScenario = { name: 'noScenario', period: 0, payloadSize: 0 }
+    this.backendState = {
+      /*
+        'rx600s5-2': {
+          'ethereum': {
+            miners: 0,
+            hosts: 0,
+          },
+        }
+      */
     }
-    else {
-      throw new Error(`Unable to add chain ${chainName}`)
+    this.backendScenario = {
+      /*
+        'rx600s5-2': {
+          'ethereum': {
+            name: 'someName',
+            period: 2.3,
+            payloadSize: 222
+          },
+        }
+      */
     }
   }
 
-  setScenario ({chainName, target, scenario}) {
-    this.activeChains
-      .find(item => item.chainName === chainName && item.target === target)
-      .scenario = scenario
+  setScenario ({ chainName, target, scenario }) {
+    this.backendScenario[target] = {}
+    this.backendScenario[target][chainName] = scenario
   }
 
-  remove ({chainName, target}) {
-    this.activeChains = this.activeChains.filter(item =>
-      item.chainName !== chainName || item.target !== target
-    )
+  getScenario ({chainName, target}) {
+    try {
+      return this.backendScenario[target][chainName]
+    }
+    catch (error) {
+      return undefined
+    }
   }
 
-  removeChainsOf ({target}) {
-    this.activeChains = this.activeChains.filter(item => item.target !== target)
+  getActiveChains () {
+    Object.keys(this.backendState)
+      .reduce((result, target) => {
+        return result.concat(target.map(chainName => {
+          return this.isChainActive({monitor: target, chainName}) ? {target, chainName} : null
+        })
+          .filter(Boolean)
+        )
+      }, [])
   }
 
-  getChains () {
-    return this.activeChains
+  getState ({ monitor }) {
+    this.backendState[monitor]
+  }
+
+  setState ({ monitor, state }) {
+    this.backendState[monitor] = state
+  }
+
+  removeMonitor ({ monitor }) {
+    this.backendState[monitor] = undefined
+  }
+
+  isChainActive ({ monitor, chainName }) {
+    const chainInfo = this.backendState[monitor][chainName]
+    return chainInfo.hosts !== 0 || chainInfo.miners !== 0
   }
 }

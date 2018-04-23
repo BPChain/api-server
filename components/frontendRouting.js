@@ -57,7 +57,6 @@ module.exports = ({
   })
   const setParameters = setChainInfoFactory({
     backendController,
-    activeChains,
     log,
   })
 
