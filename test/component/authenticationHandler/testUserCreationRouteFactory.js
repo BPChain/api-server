@@ -75,11 +75,11 @@ describe('userCreationRouteFactory', () => {
       return expect(userRoute(request, successMockResponse)).to.eventually.be.rejectedWith(TypeError)
     })
     it('should return expected response when user can be created', async () => {
-      const userRoute = userCreationRouteFactory({ connection: successConnection, log})
+      const userRoute = userCreationRouteFactory({connection: successConnection, log})
       return expect(userRoute(request, successMockResponse)).to.eventually.be.rejectedWith('user created')
     })
     it('should return expected response when user can not be created', async () => {
-      const userRoute = userCreationRouteFactory({ connection: failureConnection, log})
+      const userRoute = userCreationRouteFactory({connection: failureConnection, log})
       return expect(userRoute(request, failureMockResponse)).to.eventually.be.rejectedWith('user creation failed')
     })
   })
