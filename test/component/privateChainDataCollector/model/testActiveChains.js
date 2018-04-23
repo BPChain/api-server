@@ -5,7 +5,6 @@ const ActiveChains = require(
   '../../../../components/privateChainDataCollector/model/ActiveChains'
 )
 const config = require('../../../../config')
-const log = console
 describe('privateChains', () => {
   describe('#getActiveChains()', () => {
     const activeChains = new ActiveChains({config})
@@ -49,7 +48,21 @@ describe('privateChains', () => {
       )
     })
     it('should return all the active chains', () => {
-      activeChains.setState({monitor: 'some', state: {someChain: {miners: 1, hosts: 1}, 'someOtherChain': {miners: 1, hosts: 1}}})
+      activeChains.setState(
+        {
+          monitor: 'some',
+          state: {
+            someChain: {
+              miners: 1,
+              hosts: 1,
+            },
+            someOtherChain: {
+              miners: 1,
+              hosts: 1,
+            },
+          },
+        }
+      )
       assert.deepEqual(
         activeChains.getActiveChains(),
         [
@@ -73,8 +86,34 @@ describe('privateChains', () => {
       )
     })
     it('should return all the active chains from multiple monitors', () => {
-      activeChains.setState({monitor: 'some', state: {someChain: {miners: 1, hosts: 1}, someOtherChain: {miners: 1, hosts: 1}}})
-      activeChains.setState({monitor: 'someOther', state: {yetAnotherChain: {miners: 99, hosts: 33}, wurstChain: {miners: 22, hosts: 11}}})
+      activeChains.setState(
+        {
+          monitor: 'some',
+          state: {
+            someChain: {
+              miners: 1,
+              hosts: 1,
+            },
+            someOtherChain: {
+              miners: 1,
+              hosts: 1,
+            },
+          },
+        }
+      )
+      activeChains.setState({
+        monitor: 'someOther',
+        state: {
+          yetAnotherChain: {
+            miners: 99,
+            hosts: 33,
+          },
+          wurstChain: {
+            miners: 22,
+            hosts: 11,
+          },
+        },
+      })
       assert.deepEqual(
         activeChains.getActiveChains(),
         [
@@ -115,13 +154,13 @@ describe('privateChains', () => {
     })
   })
   describe('#getScenario', () => {
-    const activeChains = new ActiveChains({config})
+    // const activeChains = new ActiveChains({config})
     it('should return undefined when no scenario runs', () => {
 
     })
   })
   describe('#getState', () => {
-    const activeChains = new ActiveChains({config})
+    // const activeChains = new ActiveChains({config})
     it('should return undefined when no state is set', () => {
 
     })

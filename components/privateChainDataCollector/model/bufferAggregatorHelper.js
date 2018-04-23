@@ -41,7 +41,7 @@ exports.aggregateNumberOfMiners = async (Buffer, chainName, target) => {
       {
         $group: {
           _id: 1,
-          count: { $sum: 1 },
+          count: {$sum: 1},
         },
       }])
     .exec()
@@ -65,7 +65,7 @@ exports.aggregateNumberOfHosts = async (Buffer, chainName, target) => {
       {
         $group: {
           _id: 1,
-          count: { $sum: 1 },
+          count: {$sum: 1},
         },
       }])
     .exec()

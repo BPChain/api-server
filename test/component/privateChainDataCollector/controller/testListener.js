@@ -25,7 +25,7 @@ describe('privateChainDataCollector', () => {
         }},
         log: console,
         config,
-        connection: { model: () => 'testModel' },
+        connection: {model: () => 'testModel'},
       })
 
       controller.then(result => {

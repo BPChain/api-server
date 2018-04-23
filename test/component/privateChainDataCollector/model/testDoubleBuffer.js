@@ -19,8 +19,8 @@ describe('privateChains', () => {
       () => {
         assert.doesNotThrow(() => {
           const doubleBuffer = new DoubleBuffer({
-            connection: { model: () => 'model' },
-            activeChain: { getChains: () => { } },
+            connection: {model: () => 'model'},
+            activeChain: {getChains: () => { }},
             config: {bufferSwitchTime: 1000},
           })
           assert.ok(doubleBuffer)
@@ -32,8 +32,8 @@ describe('privateChains', () => {
       'should return correct activeBuffer',
       () => {
         const doubleBuffer = new DoubleBuffer({
-          connection: { model: () => 'testModel' },
-          activeChain: { getChains: () => { } },
+          connection: {model: () => 'testModel'},
+          activeChain: {getChains: () => { }},
           config: {bufferSwitchTime: 100},
         })
         assert.equal(doubleBuffer.getActiveBuffer(), 'testModel')
@@ -44,8 +44,8 @@ describe('privateChains', () => {
       'should return correct buffer labels',
       () => {
         const doubleBuffer = new DoubleBuffer({
-          connection: { model: () => 'testModel' },
-          activeChain: { getChains: () => { } },
+          connection: {model: () => 'testModel'},
+          activeChain: {getChains: () => { }},
           config: {bufferSwitchTime: 10000},
         })
         assert.equal(doubleBuffer.getActiveBufferLabel(), 'a')
@@ -57,9 +57,9 @@ describe('privateChains', () => {
       'should toggle buffers correctly',
       () => {
         const doubleBuffer = new DoubleBuffer({
-          connection: { model: (name) => name },
-          activeChain: { getChains: () => { } },
-          log: { trace: () => { } },
+          connection: {model: (name) => name},
+          activeChain: {getChains: () => { }},
+          log: {trace: () => { }},
           config: {bufferSwitchTime: 10000},
         })
         assert.equal(doubleBuffer.getActiveBufferLabel(), 'a')
@@ -88,8 +88,8 @@ describe('privateChains', () => {
               }
             },
           },
-          activeChain: { getChains: () => { } },
-          log: { debug: () => { } },
+          activeChain: {getChains: () => { }},
+          log: {debug: () => { }},
           config: {bufferSwitchTime: 1000},
         })
         assert.doesNotThrow(() => {
@@ -114,8 +114,8 @@ describe('privateChains', () => {
               }
             },
           },
-          activeChain: { getChains: () => { } },
-          log: { debug: () => { } },
+          activeChain: {getChains: () => { }},
+          log: {debug: () => { }},
           config: {bufferSwitchTime: 1000},
         })
         assert.throws(() => doubleBuffer.storeTempPrivateData())

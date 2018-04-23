@@ -1,6 +1,6 @@
 const checkSetParametersJson = require('./checkSetParametersJson')
 
-module.exports = ({ backendController, log, activeChains }) => {
+module.exports = ({backendController, log, activeChains}) => {
   return async (request, response) => {
     const {
       parameters,
@@ -10,7 +10,7 @@ module.exports = ({ backendController, log, activeChains }) => {
 
     log.debug(`Trying to send a change request to ${target}`)
 
-    const isValidJson = checkSetParametersJson({ json: parameters, log })
+    const isValidJson = checkSetParametersJson({json: parameters, log})
 
     if (!isValidJson) {
       log.warn('json was not valid')
@@ -27,7 +27,7 @@ module.exports = ({ backendController, log, activeChains }) => {
 
         if (parameters.hasOwnProperty('scenario')) {
           log.info(`Setting scenario: '${parameters.scenario.name}'`)
-          activeChains.setScenario({ chainName, target, scenario: parameters.scenario })
+          activeChains.setScenario({chainName, target, scenario: parameters.scenario})
         }
         log.info('Successfully sent a start/stop request')
         response.sendStatus(200)
