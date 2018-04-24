@@ -63,19 +63,15 @@ module.exports = class ActiveChains {
   }
 
   getBackendState ({monitor, chainName}) {
-    let result = {}
     try {
-      result = this.backendState[monitor][chainName]
+      return this.backendState[monitor][chainName]
     }
     catch (error) {
-      this.backendState[monitor] = {}
-      this.backendState[monitor][chainName] = {
+      return {
         miners: 0,
         hosts: 0,
       }
-      result = this.backendState[monitor][chainName]
     }
-    return result
   }
 
   setState ({monitor, state}) {
