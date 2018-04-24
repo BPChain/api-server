@@ -53,7 +53,7 @@ class BlockchainController {
         this.log.info('Closing connection')
         this.clientArray.forEach(client => {
           if (client.connection !== connection) {
-            this.activeChains.removeChainsOf({target: client.target})
+            this.activeChains.removeMonitor({monitor: client.target})
           }
         })
         this.clientArray = this.clientArray.filter(
