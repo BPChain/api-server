@@ -76,6 +76,11 @@ module.exports = class ActiveChains {
       return chainInfo.hosts !== 0 || chainInfo.miners !== 0
     }
     catch (error) {
+      this.backendState[monitor] = {}
+      this.backendState[monitor][chainName] = {
+        miners: 0,
+        hosts: 0,
+      }
       return false
     }
   }
