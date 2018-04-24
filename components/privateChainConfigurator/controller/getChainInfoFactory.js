@@ -18,7 +18,7 @@ module.exports = ({backendController, activeChains}) => {
           accessability: 'private',
           active,
           scenario,
-          state: active.backendState[client.target][client.chainName],
+          state: activeChains.getBackendState({monitor: client.target, chainName: client.chainName}),
         })
       })
     response.send(privateChains)
