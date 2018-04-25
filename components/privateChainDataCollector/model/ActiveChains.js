@@ -121,7 +121,7 @@ module.exports = class ActiveChains {
       console.info('starting recording')
       this.isRecording = true
       this.recordingName = recordingName
-      this.timespan = Date.now()
+      this.startTime = Date.now()
 
       return response.sendStatus(200)
     }
