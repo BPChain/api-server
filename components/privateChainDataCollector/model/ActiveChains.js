@@ -49,9 +49,9 @@ module.exports = class ActiveChains {
       .reduce((result, target) => {
         return result.concat(Object.keys(this.getState({monitor: target}))
           .map(chainName => {
-            return this.isChainActive({
-              monitor: target,
-              chainName}) ? {target, chainName, state: this.getState({monitor: target})[chainName]} : null
+            return this.isChainActive({monitor: target, chainName})
+              ? {target, chainName, state: this.getState({monitor: target})[chainName]}
+              : null
           })
           .filter(Boolean)
         )
