@@ -6,7 +6,7 @@ const Schema = require('mongoose').Schema
 
 const recordSchema = new Schema({
   recordingName: {type: String},
-  startTume: {type: Number},
+  startTime: {type: Number},
   endTime: {type: Number},
 })
 
