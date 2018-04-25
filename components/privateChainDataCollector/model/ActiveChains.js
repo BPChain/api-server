@@ -47,11 +47,11 @@ module.exports = class ActiveChains {
   getActiveChains () {
     return Object.keys(this.backendState)
       .reduce((result, target) => {
-        return result.concat(Object.keys(this.backendState[target])
+        return result.concat(Object.keys(this.getState({monitor: target}))
           .map(chainName => {
             return this.isChainActive({
               monitor: target,
-              chainName}) ? {target, chainName, state: this.backendState[target][chainName]} : null
+              chainName}) ? {target, chainName, state: this.getState({monitor: target})[chainName]} : null
           })
           .filter(Boolean)
         )
@@ -59,7 +59,7 @@ module.exports = class ActiveChains {
   }
 
   getState ({monitor}) {
-    return this.backendState[monitor]
+    return this.backendState[monitor] || {}
   }
 
   getBackendState ({monitor, chainName}) {
@@ -79,12 +79,12 @@ module.exports = class ActiveChains {
   }
 
   removeMonitor ({monitor}) {
-    this.backendState[monitor] = undefined
+    this.backendState[monitor] = {}
   }
 
   isChainActive ({monitor, chainName}) {
     try {
-      const chainInfo = this.backendState[monitor][chainName]
+      const chainInfo = this.getBackendState({monitor, chainName})
       return chainInfo.hosts !== 0 || chainInfo.miners !== 0
     }
     catch (error) {
