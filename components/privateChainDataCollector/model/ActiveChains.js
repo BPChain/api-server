@@ -106,7 +106,7 @@ module.exports = class ActiveChains {
 
       if (this.isRecording) {
         console.info('already recording')
-        response.status(500)
+        return response.status(500)
           .send('A recording is already in progress')
       }
       console.info('starting recording')
@@ -114,7 +114,7 @@ module.exports = class ActiveChains {
       this.recordingName = recordingName
       this.timespan = timespan
 
-      response.sendStatus(200)
+      return response.sendStatus(200)
     }
   }
 
@@ -124,7 +124,7 @@ module.exports = class ActiveChains {
       this.isRecording = false
       this.recordingName = ''
       this.timespan = 0
-      response.sendStatus(200)
+      return response.sendStatus(200)
     }
   }
 }
