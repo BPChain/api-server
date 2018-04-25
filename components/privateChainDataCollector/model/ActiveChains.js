@@ -141,8 +141,8 @@ module.exports = class ActiveChains {
   }
 
   saveRecordingToDatabase ({recordingName}) {
-    const Storage = this.intializeRecordStorage()
-    const dataLine = this.createRecordStorage({recordingName, Storage})
+    const Storage = this.intializeRecordInfoStorage()
+    const dataLine = this.createRecordInfoStorage({recordingName, Storage})
 
     dataLine.save((error, savedData) => {
       if (error) {
