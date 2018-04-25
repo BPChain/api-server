@@ -16,7 +16,6 @@ module.exports = async (options = {}) => {
     connection,
     log,
     isRecording,
-    recordingName,
   } = options
 
 
@@ -76,7 +75,7 @@ module.exports = async (options = {}) => {
   }
 
   function storeData (aggregatedValues) {
-    const Storage = helper.intializeStorage({connection, StorageSchema, recordingName})
+    const Storage = helper.intializeStorage({connection, StorageSchema})
     const dataLine = helper.createStorage({aggregatedValues, chainName, Storage})
 
     dataLine.save((error, savedData) => {

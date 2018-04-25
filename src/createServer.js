@@ -13,7 +13,7 @@ const ActiveChains =
   require('../components/privateChainDataCollector/model/ActiveChains')
 
 module.exports = ({connection, config, log}) => {
-  const activeChains = new ActiveChains({config})
+  const activeChains = new ActiveChains({config, connection})
   const server = {}
   const privateChainConfigurator = new BlockchainController({
     activeChains,

@@ -83,7 +83,6 @@ module.exports = class DoubleBuffer {
           connection: this.connection,
           log: this.log,
           isRecording: this.activeChains.isRecording,
-          recordingName: this.activeChains.recordingName,
         })
       })
   }

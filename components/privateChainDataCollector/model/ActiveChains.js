@@ -2,10 +2,20 @@
   Holds state of active chain and checks if valid chain is selected
 */
 
+const Schema = require('mongoose').Schema
+
+const recordSchema = new Schema({
+  recordingName: {type: String},
+  startTume: {type: Number},
+  endTime: {type: Number},
+})
+
+
 module.exports = class ActiveChains {
 
-  constructor ({config}) {
+  constructor ({config, connection}) {
     this.config = config
+    this.connection = connection
     this.emptyScenario = {name: 'noScenario', period: 0, payloadSize: 0}
     this.backendState = {
       /*
@@ -31,7 +41,7 @@ module.exports = class ActiveChains {
 
     this.isRecording = false
     this.recordingName = ''
-    this.timespan = 0
+    this.startTime = 0
 
   }
 
@@ -101,7 +111,6 @@ module.exports = class ActiveChains {
     return (request, response) => {
       const {
         recordingName,
-        timespan,
       } = request.body
 
       if (this.isRecording) {
@@ -112,18 +121,48 @@ module.exports = class ActiveChains {
       console.info('starting recording')
       this.isRecording = true
       this.recordingName = recordingName
-      this.timespan = timespan
+      this.timespan = Date.now()
 
       return response.sendStatus(200)
     }
   }
 
+  intializeRecordInfoStorage () {
+    return this.connection.model('recording_infos', recordSchema)
+  }
+
+  createRecordInfoStorage ({recordingName, Storage}) {
+    console.log('creating recording storage')
+    return new Storage({
+      recordingName,
+      startTime: this.startTime,
+      endTime: Date.now()}
+    )
+  }
+
+  saveRecordingToDatabase ({recordingName}) {
+    const Storage = this.intializeRecordStorage()
+    const dataLine = this.createRecordStorage({recordingName, Storage})
+
+    dataLine.save((error, savedData) => {
+      if (error) {
+        console.error(`Error occured while storing record metadata: ${error}`)
+        throw error
+      }
+      else {
+        console.info('Successfully stored recorded meatadata')
+        console.debug(`Stored record metadata: ${savedData}`)
+      }
+    })
+  }
+
   stopRecording () {
     return (request, response) => {
       console.info('stopping recording')
+      this.saveRecordingToDatabase({recordingName: this.recordingName})
       this.isRecording = false
       this.recordingName = ''
-      this.timespan = 0
+      this.startTime = 0
       return response.sendStatus(200)
     }
   }
