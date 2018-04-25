@@ -131,18 +131,18 @@ module.exports = class ActiveChains {
     return this.connection.model('recording_infos', recordSchema)
   }
 
-  createRecordInfoStorage ({recordingName, Storage}) {
+  createRecordInfoStorage ({Storage}) {
     console.log('creating recording storage')
     return new Storage({
-      recordingName,
+      recordingName: this.recordingName,
       startTime: this.startTime,
       endTime: Date.now()}
     )
   }
 
-  saveRecordingToDatabase ({recordingName}) {
+  saveRecordingToDatabase () {
     const Storage = this.intializeRecordInfoStorage()
-    const dataLine = this.createRecordInfoStorage({recordingName, Storage})
+    const dataLine = this.createRecordInfoStorage({Storage})
 
     dataLine.save((error, savedData) => {
       if (error) {
@@ -159,7 +159,7 @@ module.exports = class ActiveChains {
   stopRecording () {
     return (request, response) => {
       console.info('stopping recording')
-      this.saveRecordingToDatabase({recordingName: this.recordingName})
+      this.saveRecordingToDatabase()
       this.isRecording = false
       this.recordingName = ''
       this.startTime = 0
