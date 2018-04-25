@@ -137,6 +137,10 @@ module.exports = ({
 
   app.post('/api/createUser', authMiddleware, createUserRoute)
 
+  app.post('/api/startRecording', authMiddleware, activeChains.startRecording)
+
+  app.post('/api/stopRecording', authMiddleware, activeChains.stopRecording)
+
   app.get('/*', (request, response) => {
     response.sendFile(path.join(__dirname, 'dataStorageAccessor/view/index.html'))
   })

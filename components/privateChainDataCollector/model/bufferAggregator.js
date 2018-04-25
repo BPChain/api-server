@@ -15,11 +15,18 @@ module.exports = async (options = {}) => {
     StorageSchema,
     connection,
     log,
+    isRecording,
+    recordingName,
   } = options
 
 
   const values = await aggregateValues()
   storeData(values)
+  if (isRecording) {
+    log.info('Storing recorded data')
+    saveRecording(values)
+  }
+
 
 
   async function aggregateValues () {
@@ -49,10 +56,28 @@ module.exports = async (options = {}) => {
     return aggregatedValues
   }
 
+  function saveRecording (aggregatedValues) {
+
+    console.info('saving recorded data')
+
+    const Storage = helper.intializeRecordStorage(options)
+    const dataLine = helper.createRecordStorage({aggregatedValues, chainName, Storage})
+
+    dataLine.save((error, savedData) => {
+      if (error) {
+        log.error(`Error occured while storing recorded data: ${error}`)
+        throw error
+      }
+      else {
+        log.info('Successfully stored recorded data')
+        log.debug(`Stored recorded data: ${savedData}`)
+      }
+    })
+  }
 
   function storeData (aggregatedValues) {
-    const Storage = helper.intializeStorage(options)
-    const dataLine = helper.createStorage({aggregatedValues, chainName, target, Storage})
+    const Storage = helper.intializeStorage({connection, StorageSchema, recordingName})
+    const dataLine = helper.createStorage({aggregatedValues, chainName, Storage})
 
     dataLine.save((error, savedData) => {
       if (error) {

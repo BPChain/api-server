@@ -28,6 +28,11 @@ module.exports = class ActiveChains {
         }
       */
     }
+
+    this.isRecording = false
+    this.recordingName = ''
+    this.timespan = 0
+
   }
 
   setScenario ({chainName, target, scenario}) {
@@ -90,5 +95,37 @@ module.exports = class ActiveChains {
     catch (error) {
       return false
     }
+  }
+
+  startRecording (request, response) {
+    const {
+      recordingName,
+      timespan,
+    } = request.body
+
+    if (this.isRecording) {
+      console.info('already recording')
+      response.status(500)
+        .send('A recording is already in progress')
+    }
+
+    console.info('starting recording')
+
+    this.isRecording = true
+    this.recordingName = recordingName
+    this.timespan = timespan
+
+    response.sendStatus(200)
+  }
+
+  stopRecording (request, response) {
+
+    console.log('stopping recording')
+
+    this.isRecording = false
+    this.recordingName = ''
+    this.timespan = 0
+
+    response.sendStatus(200)
   }
 }
