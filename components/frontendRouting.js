@@ -9,6 +9,7 @@ const cors = require('cors')
 const express = require('express')
 const NodeCache = require('node-cache')
 const session = require('express-session')
+const morgan = require('morgan')
 
 const config = require('../config')
 
@@ -118,6 +119,8 @@ module.exports = ({
     'http://localhost:4200',
     'https://bpt-lab.org/bp2017w1-frontend',
   ], credentials: true}))
+
+  app.use(morgan())
 
   app.get('/api/:accessibility(private|public)/:chainName', handleGetStatistics)
 
