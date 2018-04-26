@@ -114,6 +114,11 @@ module.exports = class ActiveChains {
     return (request, response) => {
       const requestedName = request.body.recordingName
 
+      if (typeof requestedName !== 'string') {
+        return response.status(500)
+          .send('recording name was not of type string!')
+      }
+
       this.log.debug(requestedName)
 
       if (this.isRecording) {

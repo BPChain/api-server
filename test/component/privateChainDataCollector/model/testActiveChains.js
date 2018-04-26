@@ -226,38 +226,68 @@ describe('privateChains', () => {
     })
   })
   describe('#startRecording', () => {
-    /* eslint-disable no-unused-vars */
-    const connection = {
-      model: (string, type) => {
-        return class Storage {
-          static findById (query, callbackFunction) {
-            callbackFunction(false, true)
+    it('should set the recording state accordingly', () => {
+      /* eslint-disable no-unused-vars */
+      const connection = {
+        model: (string, type) => {
+          return class Storage {
+            static findById (query, callbackFunction) {
+              callbackFunction(false, true)
+            }
+            lines () { }
+            save () { }
           }
-          lines () { }
-          save () { }
-        }
-      },
-    }
-    /* eslint-enable no-unused-vars */
-    const activeChains = new ActiveChains({config, log, connection})
-    const startRecording = activeChains.startRecording()
-    const request = {
-      body: {
-        recordingName: 'some',
-      },
-    }
-    const response = {
-      sendStatus: () => {
-        return true
-      },
-      send: () => {
-        return true
-      },
-    }
-    startRecording(request, response)
-    assert(activeChains.isRecording)
-    assert.equal(activeChains.recordingName, request.body.recordingName)
-    assert.notEqual(activeChains.startTime, 0)
+        },
+      }
+      /* eslint-enable no-unused-vars */
+      const activeChains = new ActiveChains({config, log, connection})
+      const startRecording = activeChains.startRecording()
+      const request = {
+        body: {
+          recordingName: 'some',
+        },
+      }
+      const response = {
+        sendStatus: () => {
+          return true
+        },
+        send: () => {
+          return true
+        },
+      }
+      startRecording(request, response)
+      assert(activeChains.isRecording)
+      assert.equal(activeChains.recordingName, request.body.recordingName)
+      assert.notEqual(activeChains.startTime, 0)
+    })
+    it('should recognize unallowed recording names', () => {
+      const activeChains = new ActiveChains({config, log})
+      const startRecording = activeChains.startRecording()
+      const request = {
+        body: {
+          recordingName: 123,
+        },
+      }
+      const response = {
+        sendStatus: () => {
+          return true
+        },
+        send: () => {
+          return true
+        },
+        status: () => {
+          return {
+            send: () => {
+              return true
+            },
+          }
+        },
+      }
+      startRecording(request, response)
+      assert(!activeChains.isRecording)
+      assert.deepEqual(activeChains.recordingName, '')
+      assert.equal(activeChains.startTime, 0)
+    })
   })
   describe('#getRecording', () => {
 
