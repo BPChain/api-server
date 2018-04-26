@@ -120,7 +120,7 @@ module.exports = ({
     'https://bpt-lab.org/bp2017w1-frontend',
   ], credentials: true}))
 
-  app.use(morgan())
+  app.use(morgan('combined'))
 
   app.get('/api/:accessibility(private|public)/:chainName', handleGetStatistics)
 

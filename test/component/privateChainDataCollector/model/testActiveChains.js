@@ -189,7 +189,7 @@ describe('privateChains', () => {
         {someChain: {miners: 1, hosts: 1}}
       )
       activeChains.removeMonitor({monitor: 'some'})
-      assert.equal(activeChains.getState({monitor: 'some'}), undefined)
+      assert.deepEqual(activeChains.getState({monitor: 'some'}), {})
 
     })
   })
