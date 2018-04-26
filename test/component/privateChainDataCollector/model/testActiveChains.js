@@ -193,4 +193,38 @@ describe('privateChains', () => {
 
     })
   })
+  describe('#startRecording', () => {
+    const log = {
+      info: () => {},
+      error: () => {},
+      debug: () => {},
+    }
+    const activeChains = new ActiveChains({config, log})
+    const startRecording = activeChains.startRecording()
+    const request = {
+      body: {
+        recordingName: 'some',
+      },
+    }
+    const response = {
+      sendStatus: () => {
+        return true
+      },
+    }
+    startRecording(request, response)
+    assert(activeChains.isRecording)
+    assert.equal(activeChains.recordingName, request.body.recordingName)
+  })
+  describe('#saveRecordingToDatabase', () => {
+
+  })
+  describe('#getRecording', () => {
+
+  })
+  describe('#getListOfRecordings', () => {
+
+  })
+  describe('#stopRecording', () => {
+
+  })
 })
