@@ -25,7 +25,6 @@ exports.intializeRecordStorage = ({connection, StorageSchema}) =>
   connection.model('recording_storage', StorageSchema)
 
 exports.createRecordStorage = ({aggregatedValues, chainName, Storage}) => {
-  console.log('creating recording storage')
   return new Storage(
     Object.assign({
       chainName,

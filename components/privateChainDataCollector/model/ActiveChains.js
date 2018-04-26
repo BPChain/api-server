@@ -15,7 +15,8 @@ const storageSchema = require('../../privateChainDataCollector/model/ethereumSto
 
 module.exports = class ActiveChains {
 
-  constructor ({config, connection}) {
+  constructor ({config, connection, log}) {
+    this.log = log
     this.config = config
     this.connection = connection
     this.emptyScenario = {name: 'noScenario', period: 0, payloadSize: 0}
@@ -113,14 +114,14 @@ module.exports = class ActiveChains {
     return (request, response) => {
       const requestedName = request.body.recordingName
 
-      console.log(requestedName)
+      this.log.debug(requestedName)
 
       if (this.isRecording) {
-        console.info('already recording')
+        this.log.debug('already recording')
         return response.status(500)
           .send('A recording is already in progress')
       }
-      console.info('starting recording')
+      this.log.debug('starting recording')
       this.isRecording = true
       this.recordingName = requestedName
       this.startTime = Date.now()
@@ -134,7 +135,7 @@ module.exports = class ActiveChains {
   }
 
   createRecordInfoStorage ({Storage, name}) {
-    console.log('creating recording storage')
+    this.log.debug('creating recording storage')
     return new Storage({
       recordingName: name,
       startTime: this.startTime,
@@ -152,12 +153,12 @@ module.exports = class ActiveChains {
 
     dataLine.save((error, savedData) => {
       if (error) {
-        console.error(`Error occured while storing record metadata: ${error}`)
+        this.log.error(`Error occured while storing record metadata: ${error}`)
         throw error
       }
       else {
-        console.info('Successfully stored recorded meatadata')
-        console.debug(`Stored record metadata: ${savedData}`)
+        this.log.debug('Successfully stored recorded meatadata')
+        this.log.debug(`Stored record metadata: ${savedData}`)
       }
     })
   }
@@ -197,8 +198,8 @@ module.exports = class ActiveChains {
 
   stopRecording () {
     return (request, response) => {
-      console.info('stopping recording')
-      console.info(this.recordingName)
+      this.log.debug('stopping recording')
+      this.log.debug(this.recordingName)
       this.saveRecordingToDatabase({nameToStore: this.recordingName})
       this.isRecording = false
       this.recordingName = ''

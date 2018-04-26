@@ -57,7 +57,7 @@ module.exports = async (options = {}) => {
 
   function saveRecording (aggregatedValues) {
 
-    console.info('saving recorded data')
+    log.info('saving recorded data')
 
     const Storage = helper.intializeRecordStorage(options)
     const dataLine = helper.createRecordStorage({aggregatedValues, chainName, Storage})
