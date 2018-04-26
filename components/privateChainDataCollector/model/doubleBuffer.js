@@ -17,20 +17,10 @@ module.exports = class DoubleBuffer {
     this.activeBuffer = this.bufferA
     this.isBufferA = true
 
-    this.isRecording = false
-
     this.interval = setInterval(() => {
       this.toggleActiveBuffer()
       this.aggregateBuffer(bufferAggregator)
     }, config.bufferSwitchTime)
-  }
-
-  startRecording () {
-    this.isRecording = true
-  }
-
-  stopRecording () {
-    this.isRecording = false
   }
 
   createBuffer (bufferName) {
