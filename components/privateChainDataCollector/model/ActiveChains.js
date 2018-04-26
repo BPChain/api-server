@@ -109,11 +109,9 @@ module.exports = class ActiveChains {
 
   startRecording () {
     return (request, response) => {
-      const {
-        recordingName,
-      } = request.body
+      const requestedName = request.body.recordingName
 
-      console.log(recordingName)
+      console.log(requestedName)
 
       if (this.isRecording) {
         console.info('already recording')
@@ -122,7 +120,7 @@ module.exports = class ActiveChains {
       }
       console.info('starting recording')
       this.isRecording = true
-      this.recordingName = recordingName
+      this.recordingName = requestedName
       this.startTime = Date.now()
 
       return response.sendStatus(200)
