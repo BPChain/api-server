@@ -161,15 +161,40 @@ describe('privateChains', () => {
     })
   })
   describe('#getScenario', () => {
-    // const activeChains = new ActiveChains({config})
+    const activeChains = new ActiveChains({config})
     it('should return undefined when no scenario runs', () => {
-
+      assert.deepEqual(activeChains.getScenario({
+        chainName: 'wurstChain',
+        target: 'gurkenPc'}), undefined)
+    })
+    it('should return the expected scenario once it has been set', () => {
+      const scenario = {name: 'some', period: 123, payloadSize: 123}
+      activeChains.setScenario({chainName: 'wurstChain', target: 'gurkenPc', scenario})
+      assert.deepEqual(activeChains.getScenario({
+        chainName: 'wurstChain',
+        target: 'gurkenPc'}),
+      {
+        'name': 'some',
+        'payloadSize': 123,
+        'period': 123,
+      })
+    })
+    it('should leave scenario undefined for chains it has not been set to', () => {
+      assert.deepEqual(activeChains.getScenario({
+        chainName: 'gurkenChain',
+        target: 'gurkenPc'}), undefined)
+      assert.deepEqual(activeChains.getScenario({
+        chainName: 'wurstChain',
+        target: 'wurstPc'}), undefined)
+      assert.deepEqual(activeChains.getScenario({
+        chainName: 'gurkenChain',
+        target: 'wurstPc'}), undefined)
     })
   })
   describe('#getState', () => {
-    // const activeChains = new ActiveChains({config})
-    it('should return undefined when no state is set', () => {
-
+    const activeChains = new ActiveChains({config})
+    it('should return {} when no state is set', () => {
+      assert.deepEqual(activeChains.getState({monitor: 'some'}), {})
     })
   })
   describe('#isChainActive', () => {
