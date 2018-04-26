@@ -56,19 +56,15 @@ module.exports = async (options = {}) => {
   }
 
   function saveRecording (aggregatedValues) {
+    const RecordStorage = helper.intializeRecordStorage(options)
+    const recordEntry = helper.createRecordStorage({aggregatedValues, chainName, Storage})
 
-    log.info('saving recorded data')
-
-    const Storage = helper.intializeRecordStorage(options)
-    const dataLine = helper.createRecordStorage({aggregatedValues, chainName, Storage})
-
-    dataLine.save((error, savedData) => {
+    recordEntry.save((error, savedData) => {
       if (error) {
-        log.error(`Error occured while storing recorded data: ${error}`)
+        log.error(`Error when storing recorded data: ${error}`)
         throw error
       }
       else {
-        log.info('Successfully stored recorded data')
         log.debug(`Stored recorded data: ${savedData}`)
       }
     })
