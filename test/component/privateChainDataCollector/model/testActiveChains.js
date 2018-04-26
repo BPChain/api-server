@@ -5,6 +5,13 @@ const ActiveChains = require(
   '../../../../components/privateChainDataCollector/model/ActiveChains'
 )
 const config = require('../../../../config')
+
+const log = {
+  info: () => {},
+  error: () => {},
+  debug: () => {},
+}
+
 describe('privateChains', () => {
   describe('#getActiveChains()', () => {
     const activeChains = new ActiveChains({config})
@@ -194,12 +201,20 @@ describe('privateChains', () => {
     })
   })
   describe('#startRecording', () => {
-    const log = {
-      info: () => {},
-      error: () => {},
-      debug: () => {},
+    /* eslint-disable no-unused-vars */
+    const connection = {
+      model: (string, type) => {
+        return class Storage {
+          static findById (query, callbackFunction) {
+            callbackFunction(false, true)
+          }
+          lines () { }
+          save () { }
+        }
+      },
     }
-    const activeChains = new ActiveChains({config, log})
+    /* eslint-enable no-unused-vars */
+    const activeChains = new ActiveChains({config, log, connection})
     const startRecording = activeChains.startRecording()
     const request = {
       body: {
@@ -210,21 +225,89 @@ describe('privateChains', () => {
       sendStatus: () => {
         return true
       },
+      send: () => {
+        return true
+      },
     }
     startRecording(request, response)
     assert(activeChains.isRecording)
     assert.equal(activeChains.recordingName, request.body.recordingName)
-  })
-  describe('#saveRecordingToDatabase', () => {
-
+    assert.notEqual(activeChains.startTime, 0)
   })
   describe('#getRecording', () => {
 
   })
   describe('#getListOfRecordings', () => {
-
+    /* eslint-disable no-unused-vars */
+    const connection = {
+      model: (string, type) => {
+        return class Storage {
+          static findById (query, callbackFunction) {
+            callbackFunction(false, true)
+          }
+          lines () { }
+          save () { }
+        }
+      },
+    }
+    /* eslint-enable no-unused-vars */
+    const activeChains = new ActiveChains({config, log, connection})
+    const startRecording = activeChains.startRecording()
+    const stopRecording = activeChains.stopRecording()
+    const getRecording = activeChains.getRecording()
+    const request = {
+      body: {
+        recordingName: 'some',
+      },
+    }
+    const recordingRequest = {
+      query: {
+        recordingId: 'some',
+      },
+    }
+    const response = {
+      sendStatus: () => {
+        return true
+      },
+      send: () => {
+        return true
+      },
+    }
+    startRecording(request, response)
+    stopRecording(request, response)
+    getRecording(recordingRequest, response)
   })
   describe('#stopRecording', () => {
-
+    /* eslint-disable no-unused-vars */
+    const connection = {
+      model: (string, type) => {
+        return class Storage {
+          lines () { }
+          save () { }
+        }
+      },
+    }
+    /* eslint-enable no-unused-vars */
+    const activeChains = new ActiveChains({config, log, connection})
+    const startRecording = activeChains.startRecording()
+    const stopRecording = activeChains.stopRecording()
+    const request = {
+      body: {
+        recordingName: 'some',
+      },
+    }
+    const response = {
+      sendStatus: () => {
+        return true
+      },
+      send: () => {
+        return true
+      },
+    }
+    startRecording(request, response)
+    stopRecording(request, response)
+    assert(!activeChains.isRecording)
+    assert.equal(activeChains.recordingName, '')
+    assert.equal(activeChains.startTime, 0)
   })
 })

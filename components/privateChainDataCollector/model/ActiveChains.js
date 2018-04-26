@@ -165,7 +165,6 @@ module.exports = class ActiveChains {
 
   getRecording () {
     return async (request, response) => {
-
       const Storage = this.intializeRecordStorage()
       await new Promise((resolve) => {
         Storage.findById(request.query.recordingId, (error, recording) => {
