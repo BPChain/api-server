@@ -164,11 +164,10 @@ module.exports = class ActiveChains {
 
   getRecording () {
     return async (request, response) => {
-      const recordingId = request.body.recordingId
 
       const Storage = this.intializeRecordStorage()
       await new Promise((resolve) => {
-        Storage.findById(recordingId, (error, recording) => {
+        Storage.findById(request.query.recordingId, (error, recording) => {
           if (error) {
             response.send(500)
             return resolve()
