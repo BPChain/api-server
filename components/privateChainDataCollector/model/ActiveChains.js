@@ -10,6 +10,8 @@ const recordSchema = new Schema({
   endTime: {type: Number},
 })
 
+const storageSchema = require('../../privateChainDataCollector/model/ethereumStorage')
+
 
 module.exports = class ActiveChains {
 
@@ -140,6 +142,10 @@ module.exports = class ActiveChains {
     )
   }
 
+  intializeRecordStorage () {
+    return this.connection.model('recording_storage', storageSchema)
+  }
+
   saveRecordingToDatabase ({nameToStore}) {
     const Storage = this.intializeRecordInfoStorage()
     const dataLine = this.createRecordInfoStorage({Storage, name: nameToStore})
@@ -154,6 +160,24 @@ module.exports = class ActiveChains {
         console.debug(`Stored record metadata: ${savedData}`)
       }
     })
+  }
+
+  getRecording () {
+    return async (request, response) => {
+      const recordingId = request.body.recordingId
+
+      const Storage = this.intializeRecordStorage()
+      await new Promise((resolve) => {
+        Storage.findById(recordingId, (error, recording) => {
+          if (error) {
+            response.send(500)
+            return resolve()
+          }
+          response.send(recording)
+          return resolve()
+        })
+      })
+    }
   }
 
   getListOfRecordings () {
