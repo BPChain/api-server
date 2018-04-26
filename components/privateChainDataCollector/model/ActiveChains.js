@@ -156,6 +156,22 @@ module.exports = class ActiveChains {
     })
   }
 
+  getListOfRecordings () {
+    return async (request, response) => {
+      const Storage = this.intializeRecordInfoStorage()
+      await new Promise((resolve) => {
+        Storage.find({}, (error, info) => {
+          if (error) {
+            response.send(500)
+            return resolve()
+          }
+          response.send(info)
+          return resolve()
+        })
+      })
+    }
+  }
+
   stopRecording () {
     return (request, response) => {
       console.info('stopping recording')
