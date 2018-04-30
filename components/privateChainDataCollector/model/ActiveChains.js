@@ -144,7 +144,8 @@ module.exports = class ActiveChains {
     return new Storage({
       recordingName: name,
       startTime: this.startTime,
-      endTime: Date.now()}
+      endTime: Date.now(),
+    }
     )
   }
 
@@ -171,19 +172,33 @@ module.exports = class ActiveChains {
   getRecording () {
     return async (request, response) => {
       const RecordStorage = this.intializeRecordStorage()
+      const RecordInfoStorage = this.intializeRecordInfoStorage()
       await new Promise((resolve) => {
-        RecordStorage.findById(request.query.recordingId, (error, recording) => {
+        RecordInfoStorage.findById(request.query.recordingId, (error, info) => {
           if (error) {
-            response.status(500)
-              .send('Recording could not be retrieved from database')
+            response.send(500)
             return resolve()
           }
-          response.send(recording)
-          return resolve()
-        })
+          RecordStorage.find({timeStamp: {
+            $gt: info.startTime,
+            $lt: info.endTime,
+          }}, (anotherError, recording) => {
+            if (anotherError) {
+              response.status(500)
+                .send('Recording could not be retrieved from database')
+              return resolve()
+            }
+            response.send(recording)
+            return resolve()
+          }
+          )
+        }
+        )
       })
     }
   }
+
+
 
   getListOfRecordings () {
     return async (request, response) => {
