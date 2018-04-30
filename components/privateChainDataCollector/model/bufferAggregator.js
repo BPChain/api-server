@@ -57,7 +57,11 @@ module.exports = async (options = {}) => {
 
   function saveRecording (aggregatedValues) {
     const RecordStorage = helper.intializeRecordStorage(options)
-    const recordEntry = helper.createRecordStorage({aggregatedValues, chainName, Storage: RecordStorage})
+    const recordEntry = helper.createRecordStorage({
+      aggregatedValues,
+      chainName,
+      Storage: RecordStorage,
+    })
 
     recordEntry.save((error, savedData) => {
       if (error) {
