@@ -9,6 +9,7 @@ const cors = require('cors')
 const express = require('express')
 const NodeCache = require('node-cache')
 const session = require('express-session')
+const morgan = require('morgan')
 
 const config = require('../config')
 
@@ -119,6 +120,8 @@ module.exports = ({
     'https://bpt-lab.org/bp2017w1-frontend',
   ], credentials: true}))
 
+  app.use(morgan('combined'))
+
   app.get('/api/:accessibility(private|public)/:chainName', handleGetStatistics)
 
   app.get('/api/getChainInfo',  getChainInfo)
@@ -136,6 +139,14 @@ module.exports = ({
   app.post('/api/setParameters', authMiddleware, setParameters)
 
   app.post('/api/createUser', authMiddleware, createUserRoute)
+
+  app.post('/api/startRecording', authMiddleware, activeChains.startRecording())
+
+  app.post('/api/stopRecording', authMiddleware, activeChains.stopRecording())
+
+  app.get('/api/getAllRecordings', authMiddleware, activeChains.getListOfRecordings())
+
+  app.get('/api/getRecording', authMiddleware, activeChains.getRecording())
 
   app.get('/*', (request, response) => {
     response.sendFile(path.join(__dirname, 'dataStorageAccessor/view/index.html'))

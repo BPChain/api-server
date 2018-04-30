@@ -5,6 +5,13 @@ const ActiveChains = require(
   '../../../../components/privateChainDataCollector/model/ActiveChains'
 )
 const config = require('../../../../config')
+
+const log = {
+  info: () => {},
+  error: () => {},
+  debug: () => {},
+}
+
 describe('privateChains', () => {
   describe('#getActiveChains()', () => {
     const activeChains = new ActiveChains({config})
@@ -154,15 +161,40 @@ describe('privateChains', () => {
     })
   })
   describe('#getScenario', () => {
-    // const activeChains = new ActiveChains({config})
+    const activeChains = new ActiveChains({config})
     it('should return undefined when no scenario runs', () => {
-
+      assert.deepEqual(activeChains.getScenario({
+        chainName: 'wurstChain',
+        target: 'gurkenPc'}), undefined)
+    })
+    it('should return the expected scenario once it has been set', () => {
+      const scenario = {name: 'some', period: 123, payloadSize: 123}
+      activeChains.setScenario({chainName: 'wurstChain', target: 'gurkenPc', scenario})
+      assert.deepEqual(activeChains.getScenario({
+        chainName: 'wurstChain',
+        target: 'gurkenPc'}),
+      {
+        'name': 'some',
+        'payloadSize': 123,
+        'period': 123,
+      })
+    })
+    it('should leave scenario undefined for chains it has not been set to', () => {
+      assert.deepEqual(activeChains.getScenario({
+        chainName: 'gurkenChain',
+        target: 'gurkenPc'}), undefined)
+      assert.deepEqual(activeChains.getScenario({
+        chainName: 'wurstChain',
+        target: 'wurstPc'}), undefined)
+      assert.deepEqual(activeChains.getScenario({
+        chainName: 'gurkenChain',
+        target: 'wurstPc'}), undefined)
     })
   })
   describe('#getState', () => {
-    // const activeChains = new ActiveChains({config})
-    it('should return undefined when no state is set', () => {
-
+    const activeChains = new ActiveChains({config})
+    it('should return {} when no state is set', () => {
+      assert.deepEqual(activeChains.getState({monitor: 'some'}), {})
     })
   })
   describe('#isChainActive', () => {
@@ -189,8 +221,148 @@ describe('privateChains', () => {
         {someChain: {miners: 1, hosts: 1}}
       )
       activeChains.removeMonitor({monitor: 'some'})
-      assert.equal(activeChains.getState({monitor: 'some'}), undefined)
+      assert.deepEqual(activeChains.getState({monitor: 'some'}), {})
 
     })
+  })
+  describe('#startRecording', () => {
+    it('should set the recording state accordingly', () => {
+      /* eslint-disable no-unused-vars */
+      const connection = {
+        model: (string, type) => {
+          return class Storage {
+            static findById (query, callbackFunction) {
+              callbackFunction(false, true)
+            }
+            lines () { }
+            save () { }
+          }
+        },
+      }
+      /* eslint-enable no-unused-vars */
+      const activeChains = new ActiveChains({config, log, connection})
+      const startRecording = activeChains.startRecording()
+      const request = {
+        body: {
+          recordingName: 'some',
+        },
+      }
+      const response = {
+        sendStatus: () => {
+          return true
+        },
+        send: () => {
+          return true
+        },
+      }
+      startRecording(request, response)
+      assert(activeChains.isRecording)
+      assert.equal(activeChains.recordingName, request.body.recordingName)
+      assert.notEqual(activeChains.startTime, 0)
+    })
+    it('should recognize unallowed recording names', () => {
+      const activeChains = new ActiveChains({config, log})
+      const startRecording = activeChains.startRecording()
+      const request = {
+        body: {
+          recordingName: 123,
+        },
+      }
+      const response = {
+        sendStatus: () => {
+          return true
+        },
+        send: () => {
+          return true
+        },
+        status: () => {
+          return {
+            send: () => {
+              return true
+            },
+          }
+        },
+      }
+      startRecording(request, response)
+      assert(!activeChains.isRecording)
+      assert.deepEqual(activeChains.recordingName, '')
+      assert.equal(activeChains.startTime, 0)
+    })
+  })
+  describe('#getRecording', () => {
+
+  })
+  describe('#getListOfRecordings', () => {
+    /* eslint-disable no-unused-vars */
+    const connection = {
+      model: (string, type) => {
+        return class Storage {
+          static findById (query, callbackFunction) {
+            callbackFunction(false, true)
+          }
+          lines () { }
+          save () { }
+        }
+      },
+    }
+    /* eslint-enable no-unused-vars */
+    const activeChains = new ActiveChains({config, log, connection})
+    const startRecording = activeChains.startRecording()
+    const stopRecording = activeChains.stopRecording()
+    const getRecording = activeChains.getRecording()
+    const request = {
+      body: {
+        recordingName: 'some',
+      },
+    }
+    const recordingRequest = {
+      query: {
+        recordingId: 'some',
+      },
+    }
+    const response = {
+      sendStatus: () => {
+        return true
+      },
+      send: () => {
+        return true
+      },
+    }
+    startRecording(request, response)
+    stopRecording(request, response)
+    getRecording(recordingRequest, response)
+  })
+  describe('#stopRecording', () => {
+    /* eslint-disable no-unused-vars */
+    const connection = {
+      model: (string, type) => {
+        return class Storage {
+          lines () { }
+          save () { }
+        }
+      },
+    }
+    /* eslint-enable no-unused-vars */
+    const activeChains = new ActiveChains({config, log, connection})
+    const startRecording = activeChains.startRecording()
+    const stopRecording = activeChains.stopRecording()
+    const request = {
+      body: {
+        recordingName: 'some',
+      },
+    }
+    const response = {
+      sendStatus: () => {
+        return true
+      },
+      send: () => {
+        return true
+      },
+    }
+    startRecording(request, response)
+    stopRecording(request, response)
+    assert(!activeChains.isRecording)
+    assert.equal(activeChains.recordingName, '')
+    assert.equal(activeChains.startTime, 0)
   })
 })

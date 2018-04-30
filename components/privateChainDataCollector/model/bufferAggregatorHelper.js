@@ -21,6 +21,20 @@ exports.createStorage = ({aggregatedValues, chainName, target, Storage}) => {
   )
 }
 
+exports.intializeRecordStorage = ({connection, StorageSchema}) =>
+  connection.model('recording_storage', StorageSchema)
+
+exports.createRecordStorage = ({aggregatedValues, chainName, Storage}) => {
+  return new Storage(
+    Object.assign({
+      chainName,
+      timeStamp: Date.now(),
+    },
+    aggregatedValues,
+    )
+  )
+}
+
 exports.aggregateNumberOfMiners = async (Buffer, chainName, target) => {
   const result = await Buffer
     .aggregate(

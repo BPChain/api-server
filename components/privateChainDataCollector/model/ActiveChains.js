@@ -2,10 +2,23 @@
   Holds state of active chain and checks if valid chain is selected
 */
 
+const Schema = require('mongoose').Schema
+
+const recordSchema = new Schema({
+  recordingName: {type: String},
+  startTime: {type: Number},
+  endTime: {type: Number},
+})
+
+const storageSchema = require('../../privateChainDataCollector/model/ethereumStorage')
+
+
 module.exports = class ActiveChains {
 
-  constructor ({config}) {
+  constructor ({config, connection, log}) {
+    this.log = log
     this.config = config
+    this.connection = connection
     this.emptyScenario = {name: 'noScenario', period: 0, payloadSize: 0}
     this.backendState = {
       /*
@@ -28,6 +41,11 @@ module.exports = class ActiveChains {
         }
       */
     }
+
+    this.isRecording = false
+    this.recordingName = ''
+    this.startTime = 0
+
   }
 
   setScenario ({chainName, target, scenario}) {
@@ -89,6 +107,109 @@ module.exports = class ActiveChains {
     }
     catch (error) {
       return false
+    }
+  }
+
+  startRecording () {
+    return (request, response) => {
+      const requestedName = request.body.recordingName
+
+      if (typeof requestedName !== 'string') {
+        return response.status(500)
+          .send('recording name was not of type string!')
+      }
+
+      this.log.debug(requestedName)
+
+      if (this.isRecording) {
+        this.log.debug('already recording')
+        return response.status(500)
+          .send('A recording is already in progress')
+      }
+      this.log.debug('starting recording')
+      this.isRecording = true
+      this.recordingName = requestedName
+      this.startTime = Date.now()
+
+      return response.sendStatus(200)
+    }
+  }
+
+  intializeRecordInfoStorage () {
+    return this.connection.model('recording_infos', recordSchema)
+  }
+
+  createRecordInfoStorage ({Storage, name}) {
+    this.log.debug('creating recording storage')
+    return new Storage({
+      recordingName: name,
+      startTime: this.startTime,
+      endTime: Date.now()}
+    )
+  }
+
+  intializeRecordStorage () {
+    return this.connection.model('recording_storage', storageSchema)
+  }
+
+  saveRecordingToDatabase ({nameToStore}) {
+    const Storage = this.intializeRecordInfoStorage()
+    const dataLine = this.createRecordInfoStorage({Storage, name: nameToStore})
+
+    dataLine.save((error, savedData) => {
+      if (error) {
+        this.log.error(`Error occured while storing record metadata: ${error}`)
+        throw error
+      }
+      else {
+        this.log.debug('Successfully stored recorded meatadata')
+        this.log.debug(`Stored record metadata: ${savedData}`)
+      }
+    })
+  }
+
+  getRecording () {
+    return async (request, response) => {
+      const RecordStorage = this.intializeRecordStorage()
+      await new Promise((resolve) => {
+        RecordStorage.findById(request.query.recordingId, (error, recording) => {
+          if (error) {
+            response.status(500)
+              .send('Recording could not be retrieved from database')
+            return resolve()
+          }
+          response.send(recording)
+          return resolve()
+        })
+      })
+    }
+  }
+
+  getListOfRecordings () {
+    return async (request, response) => {
+      const RecordInfoStorage = this.intializeRecordInfoStorage()
+      await new Promise((resolve) => {
+        RecordInfoStorage.find({}, (error, info) => {
+          if (error) {
+            response.send(500)
+            return resolve()
+          }
+          response.send(info)
+          return resolve()
+        })
+      })
+    }
+  }
+
+  stopRecording () {
+    return (request, response) => {
+      this.log.debug('stopping recording')
+      this.log.debug(this.recordingName)
+      this.saveRecordingToDatabase({nameToStore: this.recordingName})
+      this.isRecording = false
+      this.recordingName = ''
+      this.startTime = 0
+      return response.sendStatus(200)
     }
   }
 }
