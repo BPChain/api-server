@@ -76,7 +76,7 @@ module.exports = async (options = {}) => {
 
   function storeData (aggregatedValues) {
     const Storage = helper.intializeStorage({connection, StorageSchema})
-    const dataLine = helper.createStorage({aggregatedValues, chainName, Storage})
+    const dataLine = helper.createStorage({aggregatedValues, chainName, target, Storage})
 
     dataLine.save((error, savedData) => {
       if (error) {
