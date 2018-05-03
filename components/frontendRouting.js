@@ -14,7 +14,7 @@ const fileupload = require('express-fileupload')
 
 const config = require('../config')
 
-const upload = require('./scyllaLogParser/upload')
+const upload = require('./scyllaLogParser/component/upload')
 
 const authMiddleware = require('./authenticationHandler/authenticationMiddleware')
 const logOut = require('./authenticationHandler/logout')
