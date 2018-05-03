@@ -128,7 +128,7 @@ module.exports = ({
 
   app.use(fileupload())
 
-  app.post('/upload', authMiddleware, upload.upload)
+  app.post('/upload', authMiddleware, upload)
 
   app.get('/api/:accessibility(private|public)/:chainName', handleGetStatistics)
 

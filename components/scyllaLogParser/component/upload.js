@@ -2,7 +2,7 @@ const path = require('path')
 const crypto = require('crypto')
 const config = require('../../../config')
 
-exports.upload = (request, response) => {
+module.exports = (request, response) => {
   if (!request.files) {
     response.sendStatus(400)
   }
