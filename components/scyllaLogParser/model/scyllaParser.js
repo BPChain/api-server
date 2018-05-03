@@ -5,12 +5,12 @@ const parseString = require('xml2js').parseString
 module.exports = () => {
   const input = fs.readFileSync('/Users/annika/Downloads/mango (1).xes', 'utf8')
 
-  /*
+
   const executionPlan = {
     repetitions: 1,
     nodes: [],
   }
-  */
+
   const nodes = {
 
   }
@@ -87,8 +87,13 @@ module.exports = () => {
         }, [])
       })
 
+    Object.keys(nodes)
+      .forEach(key => {
+        executionPlan.nodes.push({name: key, transactions: nodes[key]})
+      })
+
   })
-  console.info(nodes)
+  return executionPlan
 }
 
 require('./scyllaParser')()
