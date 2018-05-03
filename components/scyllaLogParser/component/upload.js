@@ -6,7 +6,7 @@ module.exports = (request, response) => {
   if (!request.files) {
     response.sendStatus(400)
   }
-  const file = request.scyllalog
+  const file = request.files.scyllalog
   const name = crypto
     .createHash('sha512')
     .update(file.name)
