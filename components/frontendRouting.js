@@ -10,8 +10,11 @@ const express = require('express')
 const NodeCache = require('node-cache')
 const session = require('express-session')
 const morgan = require('morgan')
+const fileupload = require('express-fileupload')
 
 const config = require('../config')
+
+const upload = require('./scyllaLogParser/upload')
 
 const authMiddleware = require('./authenticationHandler/authenticationMiddleware')
 const logOut = require('./authenticationHandler/logout')
@@ -78,6 +81,7 @@ module.exports = ({
     cookie: {maxAge: 900000},
     sameSite: true,
   }))
+
   const sessionCache = new NodeCache({
     stdTTL: 1800,
     checkperiod: 900,
@@ -121,6 +125,10 @@ module.exports = ({
   ], credentials: true}))
 
   app.use(morgan('combined'))
+
+  app.use(fileupload())
+
+  app.post('/upload', authMiddleware, upload.upload)
 
   app.get('/api/:accessibility(private|public)/:chainName', handleGetStatistics)
 

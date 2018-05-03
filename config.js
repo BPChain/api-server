@@ -1,3 +1,5 @@
+const path = require('path')
+
 const config = {
   activePrivateChains: [
     'ethereum',
@@ -25,6 +27,7 @@ const config = {
   controllerPort: 4040,
   bufferSwitchTime: 30000,
   publicPollTime: 30000,
+  fileStorePath: path.join(__dirname, 'files'),
 }
 
 module.exports = config
