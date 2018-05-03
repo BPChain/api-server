@@ -3,7 +3,7 @@ const parseString = require('xml2js').parseString
 
 
 module.exports = () => {
-  const input = fs.readFileSync('/home/tom/Desktop/mango.xes', 'utf8')
+  const input = fs.readFileSync('/Users/annika/Downloads/mango (1).xes', 'utf8')
 
   /*
   const executionPlan = {
@@ -40,7 +40,15 @@ module.exports = () => {
             return -1
           }
           if (new Date(a.date) === new Date(b.date)) {
-            return 0
+            if (a.size < b.size) {
+              return -1
+            }
+            if (a.size === b.size) {
+              return 0
+            }
+            if (a.size > b.size) {
+              return 1
+            }
           }
           if (new Date(a.date) > new Date(b.date)) {
             return 1
@@ -60,5 +68,27 @@ module.exports = () => {
           return list.concat(object)
         }, [])
       })
+
+    Object.keys(nodes)
+      .map(item => {
+        return nodes[item] = nodes[item].reduce((list, object, index, elements) => {
+          if (index === 0) {
+            object.quantity = 1
+          }
+          else {
+            const last = elements[index - 1]
+            if (object.date === last.date && object.size === last.size) {
+              list[list.length - 1].quantity ++
+              return list
+            }
+            object.quantity = 1
+          }
+          return list.concat(object)
+        }, [])
+      })
+
   })
+  console.info(nodes)
 }
+
+require('./scyllaParser')()
