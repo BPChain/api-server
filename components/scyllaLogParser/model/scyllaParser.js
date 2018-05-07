@@ -98,5 +98,5 @@ module.exports = (input) => {
       })
 
   })
-  return executionPlan
+  return JSON.stringify(executionPlan)
 }
