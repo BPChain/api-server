@@ -21,14 +21,20 @@ module.exports = () => {
 
     eventLog.forEach(instance => {
       instance.forEach(event => {
-        const node = event.string.find(key => key.$.key === 'org:resource').$.value
-        const date = event.date[0].$.value
-        minDate = [minDate, date].sort()[0]
-        if (nodes[node]) {
-          nodes[node].push({date, size: 5}) // size = key: /.*\.payload$/
+        try {
+          const node = event.string.find(key => key.$.key === 'org:resource').$.value
+          const date = event.date[0].$.value
+          const size = event.string.find(key => /.*\.payload/.test(key.$.key)).$.value
+          minDate = [minDate, date].sort()[0]
+          if (nodes[node]) {
+            nodes[node].push({date, size: size})
+          }
+          else {
+            nodes[node] = [{date, size: size}]
+          }
         }
-        else {
-          nodes[node] = [{date, size: 5}]
+        catch (parseError) {
+          console.info(parseError.message)
         }
       })
     })
