@@ -16,5 +16,10 @@ describe('scyllaLogParser', () => {
       const expectedResult = testLogs.expectedResult
       assert.deepEqual(parsingResult, expectedResult)
     })
+    it('should throw an exception when the log is faulty', () => {
+      assert.throws(() => {
+        scyllaParser(testLogs.unexpectedInput)
+      }, TypeError)
+    })
   })
 })
