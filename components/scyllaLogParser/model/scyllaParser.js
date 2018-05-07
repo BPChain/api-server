@@ -1,5 +1,6 @@
 const parseString = require('xml2js').parseString
 
+const log = console
 
 module.exports = (input) => {
 
@@ -31,29 +32,30 @@ module.exports = (input) => {
           }
         }
         catch (parseError) {
-          console.info(parseError.message)
+          log.info(parseError.message)
         }
       })
     })
 
+    /* eslint-disable array-callback-return */
     Object.keys(nodes)
       .forEach(key => {
-        nodes[key] = nodes[key].sort((a, b) => {
-          if (new Date(a.date) < new Date(b.date)) {
+        nodes[key] = nodes[key].sort((valueA, valueB) => {
+          if (new Date(valueA.date) < new Date(valueB.date)) {
             return -1
           }
-          if (new Date(a.date) === new Date(b.date)) {
-            if (a.size < b.size) {
+          if (new Date(valueA.date) === new Date(valueB.date)) {
+            if (valueA.size < valueB.size) {
               return -1
             }
-            if (a.size === b.size) {
+            if (valueA.size === valueB.size) {
               return 0
             }
-            if (a.size > b.size) {
+            if (valueA.size > valueB.size) {
               return 1
             }
           }
-          if (new Date(a.date) > new Date(b.date)) {
+          if (new Date(valueA.date) > new Date(valueB.date)) {
             return 1
           }
         })
