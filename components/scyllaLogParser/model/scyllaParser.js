@@ -1,10 +1,7 @@
-const fs = require('fs')
 const parseString = require('xml2js').parseString
 
 
-module.exports = () => {
-  const input = fs.readFileSync('/Users/annika/Downloads/mango (1).xes', 'utf8')
-
+module.exports = (input) => {
 
   const executionPlan = {
     repetitions: 1,
@@ -101,5 +98,3 @@ module.exports = () => {
   })
   return executionPlan
 }
-
-require('./scyllaParser')()
