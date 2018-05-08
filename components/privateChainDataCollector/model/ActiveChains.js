@@ -220,4 +220,10 @@ module.exports = class ActiveChains {
       return response.sendStatus(200)
     }
   }
+
+  isRecordingActive () {
+    return (request, response) => {
+      return response.send(this.isRecording)
+    }
+  }
 }

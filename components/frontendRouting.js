@@ -156,6 +156,8 @@ module.exports = ({
 
   app.get('/api/recordings', authMiddleware, activeChains.getListOfRecordings())
 
+  app.get('/api/recordings/isRecording', authMiddleware, activeChains.isRecordingActive())
+
   app.get('/api/recordings/:id', authMiddleware, activeChains.getRecording())
 
   app.get('/*', (request, response) => {
