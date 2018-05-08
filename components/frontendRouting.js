@@ -150,7 +150,7 @@ module.exports = ({
 
   app.post('/api/createUser', authMiddleware, createUserRoute)
 
-  app.post('/api/startRecording/:name', authMiddleware, activeChains.startRecording())
+  app.post('/api/recordings/start', authMiddleware, activeChains.startRecording())
 
   app.post('/api/recordings/stop', authMiddleware, activeChains.stopRecording())
 

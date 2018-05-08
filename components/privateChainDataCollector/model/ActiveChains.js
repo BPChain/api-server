@@ -112,7 +112,7 @@ module.exports = class ActiveChains {
 
   startRecording () {
     return (request, response) => {
-      const requestedName = request.params.name
+      const requestedName = request.body.name
       this.log.debug('Requesting', requestedName)
       if (this.isRecording) {
         this.log.debug('already recording')

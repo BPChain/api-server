@@ -244,7 +244,7 @@ describe('privateChains', () => {
       const startRecording = activeChains.startRecording()
       const request = {
         body: {
-          recordingName: 'some',
+          name: 'some',
         },
       }
       const response = {
@@ -257,36 +257,8 @@ describe('privateChains', () => {
       }
       startRecording(request, response)
       assert(activeChains.isRecording)
-      assert.equal(activeChains.recordingName, request.body.recordingName)
+      assert.equal(activeChains.recordingName, request.body.name)
       assert.notEqual(activeChains.startTime, 0)
-    })
-    it('should recognize unallowed recording names', () => {
-      const activeChains = new ActiveChains({config, log})
-      const startRecording = activeChains.startRecording()
-      const request = {
-        body: {
-          recordingName: 123,
-        },
-      }
-      const response = {
-        sendStatus: () => {
-          return true
-        },
-        send: () => {
-          return true
-        },
-        status: () => {
-          return {
-            send: () => {
-              return true
-            },
-          }
-        },
-      }
-      startRecording(request, response)
-      assert(!activeChains.isRecording)
-      assert.deepEqual(activeChains.recordingName, '')
-      assert.equal(activeChains.startTime, 0)
     })
   })
   describe('#getRecording', () => {
@@ -312,7 +284,7 @@ describe('privateChains', () => {
     const getRecording = activeChains.getRecording()
     const request = {
       body: {
-        recordingName: 'some',
+        name: 'some',
       },
     }
     const recordingRequest = {
@@ -348,7 +320,7 @@ describe('privateChains', () => {
     const stopRecording = activeChains.stopRecording()
     const request = {
       body: {
-        recordingName: 'some',
+        name: 'some',
       },
     }
     const response = {
