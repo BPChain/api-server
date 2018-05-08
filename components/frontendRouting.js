@@ -14,7 +14,7 @@ const fileupload = require('express-fileupload')
 
 const config = require('../config')
 
-const upload = require('./scyllaLogParser/component/upload')
+const uploadFactory = require('./scyllaLogParser/component/uploadFactory')
 
 const authMiddleware = require('./authenticationHandler/authenticationMiddleware')
 const logOut = require('./authenticationHandler/logout')
@@ -94,6 +94,8 @@ module.exports = ({
     log,
   })
 
+  const upload = uploadFactory({connection, log})
+
   app.use((request, response, next) => {
     log.info('session cookie', request.sessionID)
     sessionCache.get(request.sessionID, (error, value) => {
@@ -126,9 +128,7 @@ module.exports = ({
 
   app.use(morgan('combined'))
 
-  app.use(fileupload())
-
-  app.post('/upload', authMiddleware, upload)
+  app.post('api/upload/:name', authMiddleware, upload)
 
   app.get('/api/:accessibility(private|public)/:chainName', handleGetStatistics)
 
