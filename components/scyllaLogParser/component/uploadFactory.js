@@ -15,8 +15,7 @@ function createScyllaStorage ({Storage, content, name}) {
   )
 }
 
-module.exports = ({connection, log}) => {
-
+module.exports.upload = ({connection, log}) => {
   return async (request, response) => {
     if (!request.body.log) {
       response.status(400)
@@ -43,6 +42,22 @@ module.exports = ({connection, log}) => {
         log.debug(`Stored parsed log: ${savedData}`)
         response.send(200)
       }
+    })
+  }
+}
+
+module.exports.getScenarios = ({connection}) => {
+  return async (request, response) => {
+    const schema = intializeScyllaSchema({connection})
+    await new Promise((resolve) => {
+      schema.find({}, (error, info) => {
+        if (error) {
+          response.send(500)
+          return resolve()
+        }
+        response.send(info)
+        return resolve()
+      })
     })
   }
 }
