@@ -112,15 +112,8 @@ module.exports = class ActiveChains {
 
   startRecording () {
     return (request, response) => {
-      const requestedName = request.body.recordingName
-
-      if (typeof requestedName !== 'string') {
-        return response.status(500)
-          .send('recording name was not of type string!')
-      }
-
-      this.log.debug(requestedName)
-
+      const requestedName = request.body.name
+      this.log.debug('Requesting', requestedName)
       if (this.isRecording) {
         this.log.debug('already recording')
         return response.status(500)
@@ -225,6 +218,12 @@ module.exports = class ActiveChains {
       this.recordingName = ''
       this.startTime = 0
       return response.sendStatus(200)
+    }
+  }
+
+  isRecordingActive () {
+    return (request, response) => {
+      return response.send(this.isRecording)
     }
   }
 }

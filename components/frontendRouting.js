@@ -10,7 +10,6 @@ const express = require('express')
 const NodeCache = require('node-cache')
 const session = require('express-session')
 const morgan = require('morgan')
-const fileupload = require('express-fileupload')
 
 const config = require('../config')
 
@@ -94,7 +93,8 @@ module.exports = ({
     log,
   })
 
-  const upload = uploadFactory({connection, log})
+  const upload = uploadFactory.upload({connection, log})
+  const getScenarios = uploadFactory.getScenarios({connection})
 
   app.use((request, response, next) => {
     log.info('session cookie', request.sessionID)
@@ -128,7 +128,9 @@ module.exports = ({
 
   app.use(morgan('combined'))
 
-  app.post('api/upload/:name', authMiddleware, upload)
+  app.post('/api/upload/', authMiddleware, upload)
+
+  app.get('/api/getAllScenarios', authMiddleware, getScenarios)
 
   app.get('/api/:accessibility(private|public)/:chainName', handleGetStatistics)
 
@@ -153,6 +155,8 @@ module.exports = ({
   app.post('/api/recordings/stop', authMiddleware, activeChains.stopRecording())
 
   app.get('/api/recordings', authMiddleware, activeChains.getListOfRecordings())
+
+  app.get('/api/recordings/isRecording', authMiddleware, activeChains.isRecordingActive())
 
   app.get('/api/recordings/:id', authMiddleware, activeChains.getRecording())
 
