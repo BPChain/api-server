@@ -272,6 +272,9 @@ describe('privateChains', () => {
           static findById (query, callbackFunction) {
             callbackFunction(false, true)
           }
+          static find (query, callbackFunction) {
+            callbackFunction(false, true)
+          }
           lines () { }
           save () { }
         }
