@@ -6,7 +6,6 @@ function intializeScyllaSchema ({connection}) {
 }
 
 function createScyllaStorage ({Storage, content, name}) {
-  this.log.debug('creating recording storage')
   return new Storage({
     logContent: content,
     logName: name,
