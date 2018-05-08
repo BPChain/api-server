@@ -288,8 +288,8 @@ describe('privateChains', () => {
       },
     }
     const recordingRequest = {
-      query: {
-        recordingId: 'some',
+      params: {
+        id: 'some',
       },
     }
     const response = {
