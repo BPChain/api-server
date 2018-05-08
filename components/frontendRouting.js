@@ -148,13 +148,13 @@ module.exports = ({
 
   app.post('/api/createUser', authMiddleware, createUserRoute)
 
-  app.post('/api/startRecording', authMiddleware, activeChains.startRecording())
+  app.post('/api/recordings/start', authMiddleware, activeChains.startRecording())
 
-  app.post('/api/stopRecording', authMiddleware, activeChains.stopRecording())
+  app.post('/api/recordings/stop', authMiddleware, activeChains.stopRecording())
 
-  app.get('/api/getAllRecordings', authMiddleware, activeChains.getListOfRecordings())
+  app.get('/api/recordings', authMiddleware, activeChains.getListOfRecordings())
 
-  app.get('/api/getRecording/:id', authMiddleware, activeChains.getRecording())
+  app.get('/api/recordings/:id', authMiddleware, activeChains.getRecording())
 
   app.get('/*', (request, response) => {
     response.sendFile(path.join(__dirname, 'dataStorageAccessor/view/index.html'))
