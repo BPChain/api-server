@@ -154,6 +154,8 @@ module.exports = ({
 
   app.post('/api/recordings/stop', authMiddleware, activeChains.stopRecording())
 
+  app.post('/api/recordings/cancel', authMiddleware, activeChains.cancelRecording())
+
   app.get('/api/recordings', authMiddleware, activeChains.getListOfRecordings())
 
   app.get('/api/recordings/isRecording', authMiddleware, activeChains.isRecordingActive())

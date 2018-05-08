@@ -221,6 +221,17 @@ module.exports = class ActiveChains {
     }
   }
 
+  cancelRecording () {
+    return (request, response) => {
+      this.log.debug('cancel recording')
+      this.log.debug(this.recordingName)
+      this.isRecording = false
+      this.recordingName = ''
+      this.startTime = 0
+      return response.sendStatus(200)
+    }
+  }
+
   isRecordingActive () {
     return (request, response) => {
       return response.send(JSON.stringify({

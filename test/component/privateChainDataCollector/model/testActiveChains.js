@@ -340,4 +340,37 @@ describe('privateChains', () => {
     assert.equal(activeChains.recordingName, '')
     assert.equal(activeChains.startTime, 0)
   })
+  describe('#cancelRecording', () => {
+    /* eslint-disable no-unused-vars */
+    const connection = {
+      model: (string, type) => {
+        return class Storage {
+          lines () { }
+          save () { }
+        }
+      },
+    }
+    /* eslint-enable no-unused-vars */
+    const activeChains = new ActiveChains({config, log, connection})
+    const startRecording = activeChains.startRecording()
+    const cancelRecording = activeChains.cancelRecording()
+    const request = {
+      body: {
+        name: 'some',
+      },
+    }
+    const response = {
+      sendStatus: () => {
+        return true
+      },
+      send: () => {
+        return true
+      },
+    }
+    startRecording(request, response)
+    cancelRecording(request, response)
+    assert(!activeChains.isRecording)
+    assert.equal(activeChains.recordingName, '')
+    assert.equal(activeChains.startTime, 0)
+  })
 })
