@@ -154,7 +154,7 @@ module.exports = ({
 
   app.get('/api/getAllRecordings', authMiddleware, activeChains.getListOfRecordings())
 
-  app.get('/api/getRecording', authMiddleware, activeChains.getRecording())
+  app.get('/api/getRecording/:id', authMiddleware, activeChains.getRecording())
 
   app.get('/*', (request, response) => {
     response.sendFile(path.join(__dirname, 'dataStorageAccessor/view/index.html'))

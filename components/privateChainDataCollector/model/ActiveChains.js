@@ -173,8 +173,8 @@ module.exports = class ActiveChains {
     return async (request, response) => {
       const RecordStorage = this.intializeRecordStorage()
       const RecordInfoStorage = this.intializeRecordInfoStorage()
-      await new Promise((resolve) => {
-        RecordInfoStorage.findById(request.query.recordingId, (error, info) => {
+      await new Promise(resolve => {
+        RecordInfoStorage.findById(request.params.id, (error, info) => {
           if (error) {
             response.send(500)
             return resolve()
