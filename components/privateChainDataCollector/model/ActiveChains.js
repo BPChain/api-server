@@ -223,7 +223,10 @@ module.exports = class ActiveChains {
 
   isRecordingActive () {
     return (request, response) => {
-      return response.send(this.isRecording)
+      return response.send(JSON.stringify({
+        creationDate: this.startTime,
+        isRecording: this.isRecording,
+      }))
     }
   }
 }
