@@ -128,7 +128,7 @@ module.exports = ({
 
   app.use(morgan('combined'))
 
-  app.post('/api/upload/:name', authMiddleware, upload)
+  app.post('/api/upload/', authMiddleware, upload)
 
   app.get('/api/getAllScenarios', authMiddleware, getScenarios)
 

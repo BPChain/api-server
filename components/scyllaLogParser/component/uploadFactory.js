@@ -21,7 +21,7 @@ module.exports.upload = ({connection, log}) => {
       response.status(400)
         .send('No file was uploaded!')
     }
-    if (!request.params.name) {
+    if (!request.body.name) {
       response.status(400)
         .send('No log name was provided!')
     }
