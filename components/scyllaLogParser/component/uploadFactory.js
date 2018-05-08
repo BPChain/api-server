@@ -25,7 +25,7 @@ module.exports.upload = ({connection, log}) => {
         .send('No log name was provided!')
     }
     const uploadedLog = request.body.log
-    const name = request.params.name
+    const name = request.body.name
     const parsedLog = scyllaParser(uploadedLog)
     const schema = intializeScyllaSchema({connection})
     const data = createScyllaStorage({Storage: schema, content: parsedLog, name: name})
