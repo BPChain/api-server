@@ -137,7 +137,7 @@ module.exports = class ActiveChains {
       recordingName: name,
       startTime: this.startTime,
       endTime: Date.now(),
-      chains: this.clientArray,
+      chains: this.clientInfos,
     }
     )
   }
