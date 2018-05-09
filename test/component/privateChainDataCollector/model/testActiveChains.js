@@ -261,9 +261,6 @@ describe('privateChains', () => {
       assert.notEqual(activeChains.startTime, 0)
     })
   })
-  describe('#getRecording', () => {
-
-  })
   describe('#getListOfRecordings', () => {
     /* eslint-disable no-unused-vars */
     const connection = {
@@ -284,15 +281,9 @@ describe('privateChains', () => {
     const activeChains = new ActiveChains({config, log, connection})
     const startRecording = activeChains.startRecording()
     const stopRecording = activeChains.stopRecording()
-    const getRecording = activeChains.getRecording()
     const request = {
       body: {
         name: 'some',
-      },
-    }
-    const recordingRequest = {
-      params: {
-        id: 'some',
       },
     }
     const response = {
@@ -305,7 +296,6 @@ describe('privateChains', () => {
     }
     startRecording(request, response)
     stopRecording(request, response)
-    getRecording(recordingRequest, response)
   })
   describe('#stopRecording', () => {
     /* eslint-disable no-unused-vars */

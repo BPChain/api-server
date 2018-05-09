@@ -43,6 +43,7 @@ class BlockchainController {
         const {target, chains, monitor, state} = JSON.parse(data)
         if (target) {
           this.clientArray.push({chains, target, connection})
+          this.activeChains.clientInfos = this.getClientInfos()
         }
         if (monitor) {
           this.activeChains.setState({monitor, state})
@@ -59,6 +60,7 @@ class BlockchainController {
         this.clientArray = this.clientArray.filter(
           client => client.connection !== connection
         )
+        this.activeChains.clientInfos = this.getClientInfos()
         this.log.info(`Open connections: ${this.clientArray}`)
       })
     })

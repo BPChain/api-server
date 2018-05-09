@@ -8,14 +8,13 @@ const recordSchema = new Schema({
   recordingName: {type: String},
   startTime: {type: Number},
   endTime: {type: Number},
+  chains: {type: [String]},
 })
-
-const storageSchema = require('../../privateChainDataCollector/model/ethereumStorage')
-
 
 module.exports = class ActiveChains {
 
   constructor ({config, connection, log}) {
+    this.clientInfos = []
     this.log = log
     this.config = config
     this.connection = connection
@@ -138,12 +137,9 @@ module.exports = class ActiveChains {
       recordingName: name,
       startTime: this.startTime,
       endTime: Date.now(),
+      chains: this.clientArray,
     }
     )
-  }
-
-  intializeRecordStorage () {
-    return this.connection.model('recording_storage', storageSchema)
   }
 
   saveRecordingToDatabase ({nameToStore}) {
@@ -161,37 +157,6 @@ module.exports = class ActiveChains {
       }
     })
   }
-
-  getRecording () {
-    return async (request, response) => {
-      const RecordStorage = this.intializeRecordStorage()
-      const RecordInfoStorage = this.intializeRecordInfoStorage()
-      await new Promise(resolve => {
-        RecordInfoStorage.findById(request.params.id, (error, info) => {
-          if (error) {
-            response.send(500)
-            return resolve()
-          }
-          RecordStorage.find({timeStamp: {
-            $gt: info.startTime,
-            $lt: info.endTime,
-          }}, (anotherError, recording) => {
-            if (anotherError) {
-              response.status(500)
-                .send('Recording could not be retrieved from database')
-              return resolve()
-            }
-            response.send(recording)
-            return resolve()
-          }
-          )
-        }
-        )
-      })
-    }
-  }
-
-
 
   getListOfRecordings () {
     return async (request, response) => {
