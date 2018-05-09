@@ -18,24 +18,24 @@ module.exports.upload = ({connection, log}) => {
   return async (request, response) => {
     const name = request.get('Scenario-Name')
     if (!request.body.log) {
-      response
+      return response
         .status(400)
         .send('No file was uploaded!')
     }
     if (!name) {
-      response
+      return response
         .status(400)
         .send('No log name was provided!')
     }
     const uploadedLog = request.files.file.data.toString('utf8')
-    log.info(uploadedLog)
+    log.info(uploadedLog.length)
     let parsedLog = ''
     try {
       parsedLog = scyllaParser(uploadedLog)
     }
     catch (error) {
       log.error(`Could not parse scylla file ${name}`)
-      response.status(400)
+      return response.status(400)
         .send(error.msg)
     }
 
@@ -45,13 +45,13 @@ module.exports.upload = ({connection, log}) => {
     data.save((error, savedData) => {
       if (error) {
         log.error(`Error occured while storing parsed log: ${error}`)
-        response.status(400)
+        return response.status(400)
           .send(error)
       }
       else {
         log.debug('Successfully stored parsed log')
         log.debug(`Stored parsed log: ${savedData}`)
-        response.send(200)
+        return response.send(200)
       }
     })
   }
