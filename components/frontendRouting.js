@@ -7,6 +7,7 @@ const path = require('path')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const express = require('express')
+const expressFileUpload = require('express-fileupload')
 const NodeCache = require('node-cache')
 const session = require('express-session')
 const morgan = require('morgan')
@@ -92,6 +93,7 @@ module.exports = ({
     sessionCache,
     log,
   })
+  app.use(expressFileUpload())
 
   const upload = uploadFactory.upload({connection, log})
   const getScenarios = uploadFactory.getScenarios({connection})
