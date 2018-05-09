@@ -27,10 +27,18 @@ module.exports.upload = ({connection, log}) => {
         .status(400)
         .send('No log name was provided!')
     }
-    log.info(Object.keys(request.files))
     const uploadedLog = request.files.file.data.toString('utf8')
+    log.info(uploadedLog)
+    let parsedLog = ''
+    try {
+      parsedLog = scyllaParser(uploadedLog)
+    }
+    catch (error) {
+      log.error(`Could not parse scylla file ${name}`)
+      response.status(400)
+        .send(error.msg)
+    }
 
-    const parsedLog = scyllaParser(uploadedLog)
     const schema = intializeScyllaSchema({connection})
     const data = createScyllaStorage({Storage: schema, content: parsedLog, name})
 
