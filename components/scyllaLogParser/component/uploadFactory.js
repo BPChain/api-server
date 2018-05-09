@@ -16,19 +16,23 @@ function createScyllaStorage ({Storage, content, name}) {
 
 module.exports.upload = ({connection, log}) => {
   return async (request, response) => {
+    const name = request.get('Scenario-Name')
     if (!request.body.log) {
-      response.status(400)
+      response
+        .status(400)
         .send('No file was uploaded!')
     }
-    if (!request.body.name) {
-      response.status(400)
+    if (!name) {
+      response
+        .status(400)
         .send('No log name was provided!')
     }
-    const uploadedLog = request.body.log
-    const name = request.body.name
+    log.info(Object.keys(request.files))
+    const uploadedLog = request.files.sampleFile.data.toString('utf8')
+
     const parsedLog = scyllaParser(uploadedLog)
     const schema = intializeScyllaSchema({connection})
-    const data = createScyllaStorage({Storage: schema, content: parsedLog, name: name})
+    const data = createScyllaStorage({Storage: schema, content: parsedLog, name})
 
     data.save((error, savedData) => {
       if (error) {
