@@ -93,7 +93,6 @@ module.exports = ({
     sessionCache,
     log,
   })
-  app.use(expressFileUpload())
 
   const upload = uploadFactory.upload({connection, log})
   const getScenarios = uploadFactory.getScenarios({connection})
@@ -119,6 +118,8 @@ module.exports = ({
     })
   })
 
+
+  app.use(expressFileUpload())
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({
     extended: true,
