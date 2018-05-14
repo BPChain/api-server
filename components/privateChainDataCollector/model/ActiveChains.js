@@ -8,7 +8,7 @@ const recordSchema = new Schema({
   recordingName: {type: String},
   startTime: {type: Number},
   endTime: {type: Number},
-  chains: {type: [Object]},
+  chains: {type: []},
 })
 
 module.exports = class ActiveChains {
@@ -138,8 +138,7 @@ module.exports = class ActiveChains {
       startTime: this.startTime,
       endTime: Date.now(),
       chains: this.clientInfos,
-    }
-    )
+    })
   }
 
   saveRecordingToDatabase ({nameToStore}) {
