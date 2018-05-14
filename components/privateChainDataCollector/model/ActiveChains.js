@@ -8,7 +8,7 @@ const recordSchema = new Schema({
   recordingName: {type: String},
   startTime: {type: Number},
   endTime: {type: Number},
-  chains: {type: [String]},
+  chains: {type: [Object]},
 })
 
 module.exports = class ActiveChains {
