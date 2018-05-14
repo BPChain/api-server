@@ -17,11 +17,6 @@ function createScyllaStorage ({Storage, content, name}) {
 module.exports.upload = ({connection, log}) => {
   return async (request, response) => {
     const name = request.get('Scenario-Name')
-    if (!request.body.log) {
-      return response
-        .status(400)
-        .send('No file was uploaded!')
-    }
     if (!name) {
       return response
         .status(400)
