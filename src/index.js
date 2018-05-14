@@ -7,7 +7,6 @@ const logger = require('../logger/createLogger')
 const createServer = require('./createServer')
 const mongoConnector = require('./mongoConnector')
 
-const consoleLogger = console
 
 async function start () {
   const connection = await mongoConnector
@@ -20,11 +19,5 @@ async function start () {
     log,
   })
 }
-
-process.on('uncaughtException', (error) => {
-  consoleLogger.error('Caught exception:')
-  consoleLogger.error(error)
-  consoleLogger.error(error.stack)
-})
 
 start()
