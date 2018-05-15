@@ -9,4 +9,5 @@ module.exports = new Schema({
   avgBlocktime: {type: Number},
   blockSize: {type: Number},
   avgDifficulty: {type: Number},
+  cpuUsage: {type: Number},
 })
