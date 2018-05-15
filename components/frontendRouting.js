@@ -6,6 +6,8 @@ const path = require('path')
 
 const bodyParser = require('body-parser')
 const cors = require('cors')
+const helmet = require('helmet')
+const csp = require('helmet-csp')
 const express = require('express')
 const expressFileUpload = require('express-fileupload')
 const NodeCache = require('node-cache')
@@ -128,6 +130,15 @@ module.exports = ({
     'http://localhost:4200',
     'https://bpt-lab.org/bp2017w1-frontend',
   ], credentials: true}))
+  app.use(helmet())
+
+  app.use(csp({
+    directives: {
+      defaultSrc: ['\'self\''],
+      scriptSrc: ['\'self\''],
+      fontSrc: ['\'self\'', 'fonts.googleapis.com'],
+    },
+  }))
 
   app.use(morgan('combined'))
 
