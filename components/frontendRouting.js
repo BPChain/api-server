@@ -133,7 +133,7 @@ module.exports = ({
     'https://bpt-lab.org/bp2017w1-frontend',
   ], credentials: true}))
   app.use(helmet())
-
+  app.use(helmet.referrerPolicy({policy: 'strict-origin'}))
   app.use(csp({
     directives: {
       defaultSrc: ['\'self\''],
