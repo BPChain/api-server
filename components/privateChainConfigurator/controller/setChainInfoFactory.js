@@ -24,17 +24,22 @@ module.exports = ({backendController, log, activeChains, connection}) => {
       response.sendStatus(500)
     }
     else {
+      let scenario = ''
+      if (parameters.hasOwnProperty('scenario')) {
+        log.info(`Setting scenario: '${parameters.scenario.name}'`)
+        activeChains.setScenario({chainName, target, scenario: parameters.scenario})
 
-      const schema = intializeScyllaSchema({connection})
-      const scenario  = await schema.findById(parameters.scenario.name, (error, info) => {
-        if (error) {
-          log.warn('error when looking up schema')
-          return ''
-        }
-        log.info('found scenario')
-        return info.logContent
-      })
-      // lookup in database
+        const schema = intializeScyllaSchema({connection})
+        scenario  = await schema.findById(parameters.scenario.name, (error, info) => {
+          if (error) {
+            log.warn('error when looking up schema')
+            return ''
+          }
+          log.info('found scenario')
+          return info.logContent
+        })
+      }
+
       if (backendController.sendMessage({
         message: JSON.stringify({
           parameters,
@@ -44,10 +49,6 @@ module.exports = ({backendController, log, activeChains, connection}) => {
         target,
       })) {
 
-        if (parameters.hasOwnProperty('scenario')) {
-          log.info(`Setting scenario: '${parameters.scenario.name}'`)
-          activeChains.setScenario({chainName, target, scenario: parameters.scenario})
-        }
         log.info('Successfully sent a start/stop request')
         response.sendStatus(200)
 
