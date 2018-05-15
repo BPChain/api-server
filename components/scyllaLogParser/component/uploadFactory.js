@@ -5,11 +5,12 @@ function intializeScyllaSchema ({connection}) {
   return connection.model('scylla_log', scyllaSchema)
 }
 
-function createScyllaStorage ({Storage, content, name}) {
+function createScyllaStorage ({Storage, content, name, description}) {
   return new Storage({
     logContent: content,
     logName: name,
     timestamp: Date.now(),
+    description,
   }
   )
 }
@@ -17,6 +18,7 @@ function createScyllaStorage ({Storage, content, name}) {
 module.exports.upload = ({connection, log}) => {
   return async (request, response) => {
     const name = request.get('Scenario-Name')
+    const description = request.get('Scenario-Description') || 'no description'
     if (!name) {
       return response
         .status(400)
@@ -35,7 +37,7 @@ module.exports.upload = ({connection, log}) => {
     }
 
     const schema = intializeScyllaSchema({connection})
-    const data = createScyllaStorage({Storage: schema, content: parsedLog, name})
+    const data = createScyllaStorage({Storage: schema, content: parsedLog, name, description})
 
     data.save((error, savedData) => {
       if (error) {

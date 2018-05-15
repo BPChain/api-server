@@ -133,7 +133,7 @@ module.exports = ({
 
   app.post('/api/upload/', authMiddleware, upload)
 
-  app.get('/api/getAllScenarios', authMiddleware, getScenarios)
+  app.get('/api/scenarios', authMiddleware, getScenarios)
 
   app.get('/api/:accessibility(private|public)/:chainName', handleGetStatistics)
 
