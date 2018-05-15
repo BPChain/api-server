@@ -39,7 +39,7 @@ module.exports.defineScenario = ({connection, log}) => {
       else {
         log.debug('Successfully stored parsed log')
         log.debug(`Stored parsed log: ${savedData}`)
-        return response.send(200)
+        return response.sendStatus(200)
       }
     })
   }
@@ -80,7 +80,7 @@ module.exports.upload = ({connection, log}) => {
       else {
         log.debug('Successfully stored parsed log')
         log.debug(`Stored parsed log: ${savedData}`)
-        return response.send(200)
+        return response.sendStatus(200)
       }
     })
   }
@@ -92,7 +92,7 @@ module.exports.getScenarios = ({connection}) => {
     await new Promise((resolve) => {
       schema.find({}, (error, info) => {
         if (error) {
-          response.send(500)
+          response.sendStatus(500)
           return resolve()
         }
         response.send(info)
