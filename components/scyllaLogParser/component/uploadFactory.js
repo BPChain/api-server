@@ -12,8 +12,7 @@ function createScyllaStorage ({Storage, content, name, description}) {
     logName: name,
     timestamp: Date.now(),
     description,
-  }
-  )
+  })
 }
 
 module.exports.defineScenario = ({connection, log}) => {
@@ -25,8 +24,9 @@ module.exports.defineScenario = ({connection, log}) => {
     const period = request.body.period
     const numberOfNodes = request.body.numberOfNodes
 
-    const parsedScenario = manualParser({payloadSize, period, numberOfNodes})
-
+    const parsedScenario = JSON.stringify(
+      manualParser({payloadSize, period, numberOfNodes})
+    )
     const schema = intializeScyllaSchema({connection})
     const data = createScyllaStorage({Storage: schema, content: parsedScenario, name, description})
 
