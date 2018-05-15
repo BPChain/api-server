@@ -65,6 +65,7 @@ module.exports = ({
     activeChains,
     backendController,
     log,
+    connection,
   })
 
   const createUserRoute = userCreationRouteFactory({
@@ -98,6 +99,7 @@ module.exports = ({
 
   const upload = uploadFactory.upload({connection, log})
   const getScenarios = uploadFactory.getScenarios({connection})
+  const defineScenario = uploadFactory.defineScenario({connection, log})
 
   app.use((request, response, next) => {
     log.info('session cookie', request.sessionID)
@@ -145,6 +147,8 @@ module.exports = ({
   app.post('/api/upload/', authMiddleware, upload)
 
   app.get('/api/scenarios', authMiddleware, getScenarios)
+
+  app.post('/api/scenarios', authMiddleware, defineScenario)
 
   app.get('/api/:accessibility(private|public)/:chainName', handleGetStatistics)
 
