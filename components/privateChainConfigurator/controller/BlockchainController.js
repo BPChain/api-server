@@ -67,7 +67,7 @@ class BlockchainController {
 
     this.intervalId = setInterval(() => {
       this.wsServer.clients.forEach(connection => {
-        if (connection.isAlive === false) {
+        if (!connection.isAlive) {
           return () => {
             this.log.info('Closing connection')
             const monitor = this.clientArray.find(client => client.connection === connection)
@@ -75,6 +75,7 @@ class BlockchainController {
               client => client.connection !== connection
             )
             this.activeChains.removeMonitor({monitor})
+            this.activeChains.clientInfos = this.getClientInfos()
             connection.terminate()
           }
         }
