@@ -33,7 +33,6 @@ describe('Aggregator', () => {
       sort: () => mockCollection,
       toArray: () => mockCollection,
       filter: () => mockCollection,
-      forEach: () => mockCollection,
       map: () => [1, 2, 3],
     }
     const result = await aggregator({

@@ -17,36 +17,6 @@ const resultReducer = require(
 
 const log = console
 
-const objectA = {
-  numberOfHosts: 2,
-  numberOfMiners: 2,
-  avgHashrate: 2,
-  avgBlocktime: 2,
-  avgBlockSize: 2,
-  avgDifficulty: 2,
-  avgCpuUsage: 2,
-}
-
-const objectB = {
-  numberOfHosts: 1,
-  numberOfMiners: 1,
-  avgHashrate: 1,
-  avgBlocktime: 1,
-  avgBlockSize: 1,
-  avgDifficulty: 1,
-  avgCpuUsage: 1,
-}
-
-const mockArrayB = [objectA, objectB, objectA, objectB, objectA,
-  objectB, objectA, objectB, objectA, objectB]
-
-const mockArrayC = [objectA, objectB, objectA, objectB, objectA,
-  objectB, objectA, objectB, objectA, objectB, objectA, objectB,
-  objectA, objectB, objectA, objectB, objectA, objectB, objectA, objectB]
-
-const mockArrayD = [objectA, objectB, objectA, objectB, objectA,
-  objectB, objectA, objectA, objectA, objectB, objectA]
-
 const mockArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 describe('dbRequests', () => {
@@ -60,65 +30,28 @@ describe('dbRequests', () => {
     it('should return 10 items if 10 items are requested', async () => {
       assert.equal(
         (await resultReducer({
-          lines: mockArrayB,
+          lines: mockArray,
           numberOfItems: 10,
         })).length,
         10,
       )
     })
-    it('should return 6 items if 6 items are requested', async () => {
+    it('should return <= 6 items if 6 items are requested', async () => {
       assert.equal(
         (await resultReducer({
-          lines: mockArrayB,
+          lines: mockArray,
           numberOfItems: 6,
-        })).length,
-        6,
+        })).length <= 6,
+        true,
       )
     })
     it('should return all items if numberOfItems > items.length', async () => {
       assert.equal(
         (await resultReducer({
-          lines: mockArrayB,
+          lines: mockArray,
           numberOfItems: 15,
         })).length,
         10,
-      )
-    })
-    it('should return correct average', async () => {
-      assert.equal(
-        (await resultReducer({
-          lines: mockArrayC,
-          numberOfItems: 10,
-        })).length,
-        10,
-      )
-      assert.equal(
-        (await resultReducer({
-          lines: mockArrayD,
-          numberOfItems: 10,
-        })).length,
-        10,
-      )
-      assert.equal(
-        (await resultReducer({
-          lines: mockArrayD,
-          numberOfItems: 7,
-        })).length,
-        7,
-      )
-      assert.equal(
-        (await resultReducer({
-          lines: mockArrayD,
-          numberOfItems: 1,
-        })).length,
-        1,
-      )
-      assert.equal(
-        (await resultReducer({
-          lines: mockArrayC,
-          numberOfItems: 1,
-        })).length,
-        1,
       )
     })
     it('should return less than 10k items if numberOfItems > 10k', async () => {
