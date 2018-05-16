@@ -25,10 +25,10 @@ module.exports = (input) => {
           const size = event.string.find(key => /.*\.payload/.test(key.$.key)).$.value
           minDate = [minDate, date].sort()[0]
           if (nodes[node]) {
-            nodes[node].push({date, size: size})
+            nodes[node].push({date, size})
           }
           else {
-            nodes[node] = [{date, size: size}]
+            nodes[node] = [{date, size}]
           }
         }
         catch (parseError) {
@@ -92,10 +92,8 @@ module.exports = (input) => {
         }, [])
       })
 
-    Object.keys(nodes)
-      .forEach(key => {
-        executionPlan.nodes.push({name: key, transactions: nodes[key]})
-      })
+    executionPlan.nodes = Object.keys(nodes)
+      .map(key => ({name: key, transactions: nodes[key]}))
 
   })
   return JSON.stringify(executionPlan)
