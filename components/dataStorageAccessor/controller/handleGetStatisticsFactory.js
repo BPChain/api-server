@@ -1,13 +1,7 @@
 /*
   Factory method for route function for statistics api
 */
-module.exports = (options = {}) => {
-  const {
-    connection,
-    log,
-    aggregator,
-  } = options
-
+module.exports = ({connection, aggregator}) => {
   return async (request, response) => {
     const {chainName, accessibility} = request.params
     const {startTime, endTime, target} = request.query
@@ -19,7 +13,6 @@ module.exports = (options = {}) => {
       accessibility,
     }
     if (!isNaN(Date.parse(startTime)) && !isNaN(Date.parse(endTime))) {
-      log.trace(`Access ${accessibility} items ${startTime}||${endTime}`)
       data = await aggregator({
         ...chainIdentifier,
         connection,
@@ -29,7 +22,6 @@ module.exports = (options = {}) => {
       })
     }
     else if (Number.isInteger(numberOfItems) && numberOfItems > 0) {
-      log.trace(`Access last ${numberOfItems} ${accessibility} items`)
       data = await aggregator({
         ...chainIdentifier,
         connection,
