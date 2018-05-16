@@ -1,7 +1,5 @@
 const checkSetParametersJson = require('./checkSetParametersJson')
-
 const scyllaSchema = require('../../scyllaLogParser/model/scyllaSchema')
-
 
 module.exports = ({backendController, log, activeChains, connection}) => {
   return async (request, response) => {
@@ -17,9 +15,7 @@ module.exports = ({backendController, log, activeChains, connection}) => {
 
     log.debug(`Trying to send a change request to ${target}`)
 
-    const isValidJson = checkSetParametersJson({json: parameters, log})
-
-    if (!isValidJson) {
+    if (!checkSetParametersJson({json: parameters, log})) {
       log.warn('json was not valid')
       response.sendStatus(500)
     }
@@ -30,12 +26,11 @@ module.exports = ({backendController, log, activeChains, connection}) => {
         activeChains.setScenario({chainName, target, scenario: parameters.scenario})
 
         const schema = intializeScyllaSchema({connection})
-        scenario  = await schema.findById(parameters.scenario.name, (error, info) => {
+        scenario = await schema.findById(parameters.scenario.name, (error, info) => {
           if (error) {
-            log.warn('error when looking up schema')
+            log.warn(`Could not find scenario: ${error.message}`)
             return ''
           }
-          log.info('found scenario')
           return info.logContent
         })
       }
@@ -48,10 +43,8 @@ module.exports = ({backendController, log, activeChains, connection}) => {
         }),
         target,
       })) {
-
         log.info('Successfully sent a start/stop request')
         response.sendStatus(200)
-
       }
       else {
         log.warn('Error occured trying to send a change request')
