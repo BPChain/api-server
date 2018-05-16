@@ -27,7 +27,7 @@ module.exports = ({backendController, log, activeChains, connection}) => {
 
         const schema = intializeScyllaSchema({connection})
         scenario = await schema.findById(parameters.scenario.name, (error, info) => {
-          if (error) {
+          if (error || !info) {
             log.warn(`Could not find scenario: ${error.message}`)
             return ''
           }
