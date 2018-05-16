@@ -3,7 +3,7 @@ module.exports = ({payloadSize, period, numberOfNodes}) => {
   const nodes = []
   for (let index = 0; index < numberOfNodes; index++) {
     nodes.push({
-      name: index,
+      name: index.toString(),
       transactions: [{
         delta: period,
         size: payloadSize,
@@ -13,7 +13,7 @@ module.exports = ({payloadSize, period, numberOfNodes}) => {
   }
 
   return {
-    repetitions: Infinity,
+    repetitions: 1000000,
     nodes,
   }
 }
