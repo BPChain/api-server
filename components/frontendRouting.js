@@ -12,7 +12,7 @@ const express = require('express')
 const expressFileUpload = require('express-fileupload')
 const NodeCache = require('node-cache')
 const session = require('express-session')
-const morgan = require('morgan')
+// const morgan = require('morgan')
 
 const config = require('../config')
 
@@ -102,7 +102,6 @@ module.exports = ({
   const defineScenario = uploadFactory.defineScenario({connection, log})
 
   app.use((request, response, next) => {
-    log.info('session cookie', request.sessionID)
     sessionCache.get(request.sessionID, (error, value) => {
       if (!error) {
         if (value !== undefined) {
@@ -142,7 +141,7 @@ module.exports = ({
     },
   }))
 
-  app.use(morgan('combined'))
+  // app.use(morgan('combined'))
 
   app.post('/api/upload/', authMiddleware, upload)
 
