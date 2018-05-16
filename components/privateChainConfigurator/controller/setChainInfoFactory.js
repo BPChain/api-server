@@ -35,12 +35,14 @@ module.exports = ({backendController, log, activeChains, connection}) => {
         })
       }
 
+      const message = JSON.stringify({
+        parameters,
+        chainName,
+        scenario,
+      })
+
       if (backendController.sendMessage({
-        message: JSON.stringify({
-          parameters,
-          chainName,
-          scenario,
-        }),
+        message,
         target,
       })) {
         log.info('Successfully sent a start/stop request')

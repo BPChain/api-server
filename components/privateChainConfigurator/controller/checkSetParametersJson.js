@@ -23,7 +23,6 @@ function hasOnlyExpectedkeys (json) {
 */
 
 module.exports = function isValidJson ({json, log}) {
-  log.info('Check whether setParameters json is valid')
   if (!hasOnlyExpectedkeys(json)) {
     log.warn(`Json has not only expected keys ${json} | ${expectedKeys}`)
     return false

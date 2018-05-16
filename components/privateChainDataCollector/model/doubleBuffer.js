@@ -55,7 +55,6 @@ module.exports = class DoubleBuffer {
       this.isBufferA = true
       this.activeBuffer = this.bufferA
     }
-    this.log.trace(`Changed Buffer to Buffer ${this.getActiveBufferLabel()}`)
   }
 
   aggregateBuffer (bufferAggregator) {
@@ -80,11 +79,10 @@ module.exports = class DoubleBuffer {
   storeTempPrivateData (privateData) {
     const BufferToStore = this.getActiveBuffer()
     const dataset = new BufferToStore(privateData)
-    dataset.save((error, savedModel) => {
+    dataset.save(error => {
       if (error) {
         throw error
       }
-      this.log.debug(`Stored private data: ${savedModel}`)
     })
   }
 }
