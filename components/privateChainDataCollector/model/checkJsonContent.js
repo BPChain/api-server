@@ -14,6 +14,7 @@ const expectedKeys = [
   'avgBlocktime',
   'blockSize',
   'avgDifficulty',
+  'cpuUsage',
 ]
 
 function hasAllKeys ({json, log}) {
@@ -40,5 +41,6 @@ module.exports = function isValidJson ({json, log}) {
     isNumeric(parsedJson.hashrate) &&
     isNumeric(parsedJson.avgBlocktime) &&
     isNumeric(parsedJson.blockSize) &&
-    isNumeric(parsedJson.avgDifficulty)
+    isNumeric(parsedJson.avgDifficulty) &&
+    isNumeric(parsedJson.cpuUsage)
 }
