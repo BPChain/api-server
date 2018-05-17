@@ -11,6 +11,7 @@ const BlockchainController =
   require('../components/privateChainConfigurator/controller/BlockchainController')
 const ActiveChains =
   require('../components/privateChainDataCollector/model/ActiveChains')
+const commonStorage = require('../components/publicChainDataCollector/model/commonStorage.js')
 
 module.exports = ({connection, config, log}) => {
   const activeChains = new ActiveChains({config, connection, log})
@@ -30,10 +31,7 @@ module.exports = ({connection, config, log}) => {
   })
   server.publicChainCollector = publicChainCollector({
     chainName: 'ethereum',
-    schema:
-      require(
-        '../components/publicChainDataCollector/model/commonStorage.js'
-      ),
+    schema: commonStorage,
     connection,
     config,
     log,
