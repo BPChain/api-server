@@ -48,6 +48,10 @@ module.exports.defineScenario = ({connection, log}) => {
 
 module.exports.upload = ({connection, log}) => {
   return async (request, response) => {
+    console.info('request', request)
+    console.info('body', request.body)
+    console.info('file', request.file)
+    console.info('data', request.data)
     const name = request.files.file.fileName
     const description = request.files.file.description || 'no description'
     // const description = request.get('Scenario-Description') || 'no description'
