@@ -8,7 +8,13 @@ const assert = require('assert')
 const privateChainCollector = require(
   '../../../../components/privateChainDataCollector/controller/listener'
 )
-const config = require('../../../../config')
+const config = Object.assign(require('../../../../config'),
+  {
+    ports: {
+      dataAggregator: 4321,
+    },
+  }
+)
 
 const log = console
 
@@ -20,12 +26,14 @@ describe('privateChainDataCollector', () => {
     it('should return correct object without error', () => {
 
       const controller = privateChainCollector({
-        activeChain: {get: () => {
-          return 'ethereum'
-        }},
+        activeChain: {get: () => 'ethereum'},
         log: console,
         config,
-        connection: {model: () => 'testModel'},
+        connection: {
+          model: () => class Buffer {
+            save () {}
+          },
+        },
       })
 
       controller.then(result => {
@@ -61,7 +69,7 @@ describe('privateChainDataCollector', () => {
     it('should send 415 on invalid JSON', () => {
       controller.then(result => {
         result.doubleBuffer.stopBufferInterval()
-        const ws = new WebSocket('ws://localhost:3030')
+        const ws = new WebSocket(`ws://localhost:${config.ports.dataAggregator}`)
         ws.on('open', () => {
           ws.send('}{')
           ws.on('message', (message) => {
@@ -77,7 +85,7 @@ describe('privateChainDataCollector', () => {
     it('should send 200 on valid JSON', () => {
       return controller.then(result => {
         result.doubleBuffer.stopBufferInterval()
-        const ws2 = new WebSocket('ws://localhost:3030')
+        const ws2 = new WebSocket(`ws://localhost:${config.ports.dataAggregator}`)
         ws2.on('open', () => {
           ws2.send(JSON.stringify({
             'chainName': 'ethereum',
@@ -87,6 +95,7 @@ describe('privateChainDataCollector', () => {
             'avgBlocktime': 64,
             'blockSize': 533,
             'avgDifficulty': 56,
+            'cpuUsage': 56,
           }))
           ws2.on('message', (message) => {
             assert.equal(message, 200)
