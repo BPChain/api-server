@@ -96,5 +96,5 @@ module.exports = (input) => {
       .map(key => ({name: key, transactions: nodes[key]}))
 
   })
-  return JSON.stringify(executionPlan)
+  return executionPlan
 }

@@ -24,9 +24,7 @@ module.exports.defineScenario = ({connection, log}) => {
     const period = request.body.period
     const numberOfNodes = request.body.numberOfNodes
 
-    const parsedScenario = JSON.stringify(
-      manualParser({payloadSize, period, numberOfNodes})
-    )
+    const parsedScenario = manualParser({payloadSize, period, numberOfNodes})
     const schema = intializeScyllaSchema({connection})
     const data = createScyllaStorage({Storage: schema, content: parsedScenario, name, description})
 
