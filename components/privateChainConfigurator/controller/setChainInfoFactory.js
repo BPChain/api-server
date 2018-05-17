@@ -29,8 +29,10 @@ module.exports = ({backendController, log, activeChains, connection}) => {
         scenario = await schema.findById(parameters.scenario.name, (error, info) => {
           if (error || !info) {
             log.warn(`Could not find scenario: '${parameters.scenario.name}'`)
+            delete parameters.scenario
             return ''
           }
+          delete parameters.scenario
           return info.logContent
         })
       }

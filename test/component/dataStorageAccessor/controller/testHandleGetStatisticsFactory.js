@@ -14,8 +14,13 @@ const log = {
 
 describe('handleGetStatisticsFactory', () => {
   it('should return function when no parameters are supplied', () => {
-    const route = handleGetStatisticsFactory()
-    assert(typeof route === 'function')
+
+    assert.throws(
+      () => {
+        handleGetStatisticsFactory()
+      },
+      TypeError,
+    )
   })
   it('should aggregate with startTime and endTime', async () => {
     const testStartTime = '2018-02-12'
