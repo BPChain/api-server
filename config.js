@@ -27,7 +27,6 @@ const config = {
   controllerPort: 4040,
   bufferSwitchTime: 30000,
   publicPollTime: 120000,
-  fileStorePath: path.join(__dirname, 'files'),
 }
 
 module.exports = config
