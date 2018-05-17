@@ -33,7 +33,7 @@ module.exports = ({backendController, log, activeChains, connection}) => {
             return ''
           }
           delete parameters.scenario
-          return JSON.parse(info.logContent)
+          return info.logContent
         })
       }
 
