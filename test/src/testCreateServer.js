@@ -4,7 +4,7 @@ const describe = require('mocha').describe
 const it = require('mocha').it
 const assert = require('assert')
 const createServer = require('../../src/createServer')
-const config = require('../../config')
+
 const log = {
   debug: () => {},
   info: () => {},
@@ -52,6 +52,13 @@ const connection = {
 describe('Create Server', () => {
   describe('Test create Server', () => {
     it('should return valid object with correct components', async () => {
+      const config = Object.assign(require('../../config'),
+        {
+          ports: {
+            dataAggregator: 13231,
+          },
+        }
+      )
       const server = createServer({
         activeChainName: 'ethereum',
         connection,
