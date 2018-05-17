@@ -181,7 +181,7 @@ module.exports = ({
     response.sendFile(path.join(__dirname, 'dataStorageAccessor/view/index.html'))
   })
 
-  return app.listen(config.frontendPort, () => {
-    log.info(`Frontend interface running on port ${config.frontendPort}`)
+  return app.listen(config.ports.frontend, () => {
+    log.info(`Frontend interface running on port ${config.ports.frontend}`)
   })
 }
