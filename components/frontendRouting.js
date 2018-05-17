@@ -16,7 +16,7 @@ const session = require('express-session')
 
 const config = require('../config')
 
-const uploadFactory = require('./scyllaLogParser/component/uploadFactory')
+const uploadFactory = require('./scyllaLogParser/controller/uploadFactory')
 
 const authMiddleware = require('./authenticationHandler/authenticationMiddleware')
 const logOut = require('./authenticationHandler/logout')
