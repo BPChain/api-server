@@ -58,9 +58,6 @@ module.exports = class DoubleBuffer {
   }
 
   aggregateBuffer (bufferAggregator) {
-    this.log.info(
-      `Aggregate buffer for ${this.activeChains.getActiveChains().length} active private chains`
-    )
     this.activeChains.getActiveChains()
       .forEach(item => {
         bufferAggregator({
@@ -74,6 +71,11 @@ module.exports = class DoubleBuffer {
           isRecording: this.activeChains.isRecording,
         })
       })
+    if (this.activeChains.getActiveChains().length) {
+      this.log.info(
+        `Aggregated ${this.activeChains.getActiveChains().length} active private chains`
+      )
+    }
   }
 
   storeTempPrivateData (privateData) {
