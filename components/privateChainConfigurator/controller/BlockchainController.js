@@ -72,10 +72,17 @@ class BlockchainController {
           this.clientArray = this.clientArray.filter(
             client => client.connection !== connection
           )
-          this.log.info(`Closing connection for monitor ${monitor.target}`)
-          this.activeChains.removeMonitor({monitor})
-          this.activeChains.clientInfos = this.getClientInfos()
-          connection.terminate()
+          try {
+            if (monitor) {
+              this.log.info(`Closing connection for monitor ${monitor.target}`)
+              this.activeChains.removeMonitor({monitor: monitor.target})
+              this.activeChains.clientInfos = this.getClientInfos()
+              connection.terminate()
+            }
+          }
+          catch (error) {
+            this.log.warn('Could nod close connection')
+          }
         }
         else {
           connection.isAlive = false
