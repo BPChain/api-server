@@ -77,8 +77,10 @@ class BlockchainController {
           this.activeChains.clientInfos = this.getClientInfos()
           connection.terminate()
         }
-        connection.isAlive = false
-        connection.ping()
+        else {
+          connection.isAlive = false
+          connection.ping()
+        }
       })
     }, 30000)
     return this.wsServer
