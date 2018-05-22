@@ -61,7 +61,7 @@ class BlockchainController {
           client => client.connection !== connection
         )
         this.activeChains.clientInfos = this.getClientInfos()
-        this.log.info(`Open connections: ${this.clientArray}`)
+        this.log.info(`Open connections: ${JSON.stringify(this.getClientInfos())}`)
       })
     })
 
