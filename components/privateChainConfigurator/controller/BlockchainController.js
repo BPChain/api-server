@@ -61,23 +61,21 @@ class BlockchainController {
           client => client.connection !== connection
         )
         this.activeChains.clientInfos = this.getClientInfos()
-        this.log.info(`Open connections: ${this.clientArray}`)
+        this.log.info(`Open connections: ${JSON.stringify(this.getClientInfos())}`)
       })
     })
 
     this.intervalId = setInterval(() => {
       this.wsServer.clients.forEach(connection => {
         if (!connection.isAlive) {
-          return () => {
-            this.log.info('Closing connection')
-            const monitor = this.clientArray.find(client => client.connection === connection)
-            this.clientArray = this.clientArray.filter(
-              client => client.connection !== connection
-            )
-            this.activeChains.removeMonitor({monitor})
-            this.activeChains.clientInfos = this.getClientInfos()
-            connection.terminate()
-          }
+          const monitor = this.clientArray.find(client => client.connection === connection)
+          this.clientArray = this.clientArray.filter(
+            client => client.connection !== connection
+          )
+          this.log.info(`Closing connection for monitor ${monitor}`)
+          this.activeChains.removeMonitor({monitor})
+          this.activeChains.clientInfos = this.getClientInfos()
+          connection.terminate()
         }
         connection.isAlive = false
         connection.ping()
