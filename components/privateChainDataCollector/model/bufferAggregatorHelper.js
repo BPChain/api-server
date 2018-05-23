@@ -131,3 +131,7 @@ exports.aggregateAverageDifficulty = async (Buffer, chainName, target) => {
 exports.aggregateAverageCpuUsage = async (Buffer, chainName, target) => {
   return await aggregateAverage(Buffer, chainName, target, 'cpuUsage')
 }
+
+exports.aggregateAverageTransactionsPerBlock = async (Buffer, chainName, target) => {
+  return await aggregateAverage(Buffer, chainName, target, 'avgTransactions')
+}

@@ -33,6 +33,7 @@ describe('handleGetStatisticsFactory', () => {
       avgBlockSize: 22,
       avgDifficulty: 2,
       avgCpuUsage: 2,
+      avgTransactions: 2,
       timeStamp: '2018-02-20',
     }
     const resultObject = {
@@ -43,6 +44,7 @@ describe('handleGetStatisticsFactory', () => {
       avgBlockSize: [22],
       avgDifficulty: [2],
       avgCpuUsage: [2],
+      avgTransactions: [2],
       timeStamp: ['2018-02-20'],
       chainName: 'ethereum',
     }
@@ -66,6 +68,7 @@ describe('handleGetStatisticsFactory', () => {
       avgBlockSize: 22,
       avgDifficulty: 2,
       avgCpuUsage: 2,
+      avgTransactions: 2,
       timeStamp: '2018-02-20',
     }
     const resultObject = {
@@ -76,6 +79,7 @@ describe('handleGetStatisticsFactory', () => {
       avgBlockSize: [22],
       avgDifficulty: [2],
       avgCpuUsage: [2],
+      avgTransactions: [2],
       timeStamp: ['2018-02-20'],
       chainName: 'ethereum',
     }
@@ -101,6 +105,7 @@ describe('handleGetStatisticsFactory', () => {
       avgBlockSize: 22,
       avgDifficulty: 2,
       avgCpuUsage: 2,
+      avgTransactions: 2,
       timeStamp: '2018-02-20',
     }
     const resultObject = {
@@ -111,6 +116,7 @@ describe('handleGetStatisticsFactory', () => {
       avgBlockSize: [22],
       avgDifficulty: [2],
       avgCpuUsage: [2],
+      avgTransactions: [2],
       timeStamp: ['2018-02-20'],
       chainName: 'ethereum',
     }

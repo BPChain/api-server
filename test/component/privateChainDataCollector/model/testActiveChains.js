@@ -14,7 +14,7 @@ const log = {
 
 describe('privateChains', () => {
   describe('#getActiveChains()', () => {
-    const activeChains = new ActiveChains({config})
+    const activeChains = new ActiveChains({config, log})
     it('should return an empty array if no chain is active', () => {
       assert.deepEqual(
         activeChains.getActiveChains(),
@@ -192,13 +192,13 @@ describe('privateChains', () => {
     })
   })
   describe('#getState', () => {
-    const activeChains = new ActiveChains({config})
+    const activeChains = new ActiveChains({config, log})
     it('should return {} when no state is set', () => {
       assert.deepEqual(activeChains.getState({monitor: 'some'}), {})
     })
   })
   describe('#isChainActive', () => {
-    const activeChains = new ActiveChains({config})
+    const activeChains = new ActiveChains({config, log})
     it('should return false when chain is not active', () => {
       activeChains.setState({monitor: 'some', state: {someChain: {miners: 0, hosts: 0}}})
       assert(!activeChains.isChainActive({monitor: 'some', chainName: 'someChain'}))
@@ -213,7 +213,7 @@ describe('privateChains', () => {
     })
   })
   describe('#removeMonitor', () => {
-    const activeChains = new ActiveChains({config})
+    const activeChains = new ActiveChains({config, log})
     it('should remove the given monitor', () => {
       activeChains.setState({monitor: 'some', state: {someChain: {miners: 1, hosts: 1}}})
       assert.deepEqual(

@@ -54,6 +54,7 @@ module.exports = ({connection, aggregator}) => {
       avgBlockSize: [],
       avgDifficulty: [],
       avgCpuUsage: [],
+      avgTransactions: [],
       timeStamp: [],
     })
     response.send(Object.assign(result, {chainName}))

@@ -96,6 +96,7 @@ describe('privateChainDataCollector', () => {
             'blockSize': 533,
             'avgDifficulty': 56,
             'cpuUsage': 56,
+            'avgTransactions': 333,
           }))
           ws2.on('message', (message) => {
             assert.equal(message, 200)

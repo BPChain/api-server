@@ -43,6 +43,8 @@ module.exports = async (options = {}) => {
           .aggregateAverageDifficulty(Buffer, chainName, target),
         aggregatedValues.avgCpuUsage = await helper
           .aggregateAverageCpuUsage(Buffer, chainName, target),
+        aggregatedValues.avgTransactions = await helper
+          .aggregateAverageTransactionsPerBlock(Buffer, chainName, target),
       ])
       .catch(log.error)
 

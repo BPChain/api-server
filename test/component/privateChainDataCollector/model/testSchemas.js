@@ -18,6 +18,7 @@ const compareEthereumSchema = new Schema({
   blockSize: {type: Number},
   avgDifficulty: {type: Number},
   cpuUsage: {type: Number},
+  avgTransactions: {type: Number},
 })
 
 const ethereumStorage = require(
@@ -34,6 +35,7 @@ const compareStorageSchema = new Schema({
   avgBlockSize: {type: Number},
   avgDifficulty: {type: Number},
   avgCpuUsage: {type: Number},
+  avgTransactions: {type: Number},
 })
 const log = console
 

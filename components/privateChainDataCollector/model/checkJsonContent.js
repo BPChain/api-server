@@ -12,6 +12,7 @@ const expectedKeys = [
   'isMining',
   'hashrate',
   'avgBlocktime',
+  'avgTransactions',
   'blockSize',
   'avgDifficulty',
   'cpuUsage',
@@ -42,5 +43,6 @@ module.exports = function isValidJson ({json, log}) {
     isNumeric(parsedJson.avgBlocktime) &&
     isNumeric(parsedJson.blockSize) &&
     isNumeric(parsedJson.avgDifficulty) &&
-    isNumeric(parsedJson.cpuUsage)
+    isNumeric(parsedJson.cpuUsage) &&
+    isNumeric(parsedJson.avgTransactions)
 }
