@@ -92,6 +92,7 @@ module.exports = class ActiveChains {
   }
 
   setState ({monitor, state}) {
+    this.log.info(`Setting state of ${monitor} to ${JSON.stringify(state)}`)
     this.backendState[monitor] = state
   }
 
