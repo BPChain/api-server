@@ -116,7 +116,7 @@ module.exports = class ActiveChains {
       this.log.debug('Requesting', requestedName)
       if (this.isRecording) {
         this.log.debug('already recording')
-        return response.status(500)
+        return response.sendStatus(500)
           .send('A recording is already in progress')
       }
       this.log.debug('starting recording')
