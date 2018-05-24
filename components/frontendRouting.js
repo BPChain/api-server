@@ -143,39 +143,39 @@ module.exports = ({
 
   // app.use(morgan('combined'))
 
-  app.post('/api/upload/', authMiddleware, upload)
+  app.post('/scenarios/upload/', authMiddleware, upload)
 
-  app.get('/api/scenarios', authMiddleware, getScenarios)
+  app.get('/scenarios', authMiddleware, getScenarios)
 
-  app.post('/api/scenarios', authMiddleware, defineScenario)
+  app.post('/scenarios', authMiddleware, defineScenario)
 
-  app.get('/api/:accessibility(private|public)/:chainName', handleGetStatistics)
+  app.get('/chain/:accessibility(private|public)/:chainName', handleGetStatistics)
 
-  app.get('/api/getChainInfo',  getChainInfo)
+  app.get('/chain',  getChainInfo)
 
   app.get('/log', displayLogs)
 
-  app.post('/login', logIn)
+  app.post('/user/login', logIn)
 
-  app.get('/checkLogin', authMiddleware, (request, response) => {
+  app.get('/user/check', authMiddleware, (request, response) => {
     response.sendStatus(200)
   })
 
-  app.post('/logout', authMiddleware, logOut)
+  app.post('/user/logout', authMiddleware, logOut)
 
-  app.post('/api/setParameters', authMiddleware, setParameters)
+  app.post('/chain', authMiddleware, setParameters)
 
-  app.post('/api/createUser', authMiddleware, createUserRoute)
+  app.post('/user/create', authMiddleware, createUserRoute)
 
-  app.post('/api/recordings/start', authMiddleware, activeChains.startRecording())
+  app.post('/recordings/start', authMiddleware, activeChains.startRecording())
 
-  app.post('/api/recordings/stop', authMiddleware, activeChains.stopRecording())
+  app.post('/recordings/stop', authMiddleware, activeChains.stopRecording())
 
-  app.post('/api/recordings/cancel', authMiddleware, activeChains.cancelRecording())
+  app.post('/recordings/cancel', authMiddleware, activeChains.cancelRecording())
 
-  app.get('/api/recordings', authMiddleware, activeChains.getListOfRecordings())
+  app.get('/recordings', authMiddleware, activeChains.getListOfRecordings())
 
-  app.get('/api/recordings/isRecording', authMiddleware, activeChains.isRecordingActive())
+  app.get('/recordings/isRecording', authMiddleware, activeChains.isRecordingActive())
 
   app.get('/*', (request, response) => {
     response.sendFile(path.join(__dirname, 'dataStorageAccessor/view/index.html'))
