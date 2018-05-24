@@ -47,7 +47,7 @@ module.exports = ({backendController, log, activeChains, connection}) => {
         message,
         target,
       })) {
-        log.info('Successfully sent a start/stop request')
+        log.info('Successfully sent a start/stop/scenario request')
         response.sendStatus(200)
       }
       else {
