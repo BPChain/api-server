@@ -1,6 +1,27 @@
-const validateUser = require('./validateUser')
+const  userHandler = require('./userHandler')
 
-module.exports = (options = {}) => {
+module.exports.authenticationMiddleware = (request, response, next) => {
+  if (request.isAuthenticated) {
+    return next()
+  }
+  response.sendStatus(401)
+}
+
+module.exports.logout = (request, response) => {
+  try {
+    request.session.destroy()
+    response
+      .status(200)
+      .send('logged out')
+  }
+  catch (error) {
+    response
+      .status(500)
+      .send('error')
+  }
+}
+
+module.exports.loginRouteFactory = (options = {}) => {
   const {
     connection,
     sessionCache,
@@ -13,7 +34,7 @@ module.exports = (options = {}) => {
       password,
     } = request.body
 
-    if (await validateUser({
+    if (await userHandler.validateUser({
       username,
       password,
       connection,

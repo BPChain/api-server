@@ -3,7 +3,8 @@
 const describe = require('mocha').describe
 const it = require('mocha').it
 const expect = require('chai').expect
-const logout = require('../../../components/authenticationHandler/logout')
+const loginLogoutHandler = require('../../../components/authenticationHandler/loginLogoutHandler')
+const logout = loginLogoutHandler.logout
 
 
 const mockRequest = {

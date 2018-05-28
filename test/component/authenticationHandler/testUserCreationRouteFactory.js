@@ -2,7 +2,8 @@
 
 const describe = require('mocha').describe
 const it = require('mocha').it
-const userCreationRouteFactory = require('../../../components/authenticationHandler/userCreationRouteFactory')
+const userHandler = require('../../../components/authenticationHandler/userHandler')
+const userCreationRouteFactory = userHandler.createUserRoute
 const log = {
   info: () => {},
   error: () => {},

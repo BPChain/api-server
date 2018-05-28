@@ -18,9 +18,6 @@ const config = require('../config')
 
 const uploadFactory = require('./scyllaLogParser/controller/uploadFactory')
 
-const authMiddleware = require('./authenticationHandler/authenticationMiddleware')
-const logOut = require('./authenticationHandler/logout')
-
 module.exports = ({
   backendController,
   activeChains,
@@ -36,14 +33,12 @@ module.exports = ({
     require('./loggerHandler/controller/displayLogsFactory')
   const setChainInfoFactory =
     require('./privateChainConfigurator/controller/setChainInfoFactory')
-  const loginRouteFactory =
-    require('./authenticationHandler/loginRouteFactory')
-  const userCreationRouteFactory =
-    require('./authenticationHandler/userCreationRouteFactory')
   const getChainInfoFactory =
     require('./privateChainConfigurator/controller/getChainInfoFactory')
 
-  const createUser = require('./authenticationHandler/createUser')
+
+  const userHandler = require('./authenticationHandler/userHandler')
+  const loginLogoutHandler = require('./authenticationHandler/loginLogoutHandler')
 
   const superAdmin = {
     username: process.env.FRONTEND_ADMIN,
@@ -51,7 +46,8 @@ module.exports = ({
   }
 
   log.info('Creating admin user')
-  createUser({connection, log, username: superAdmin.username, password: superAdmin.password})
+  userHandler
+    .createUser({connection, log, username: superAdmin.username, password: superAdmin.password})
 
   const handleGetStatistics = handleGetStatisticsFactory({
     connection,
@@ -68,7 +64,7 @@ module.exports = ({
     connection,
   })
 
-  const createUserRoute = userCreationRouteFactory({
+  const createUser = userHandler.createUserRoute({
     connection,
     log,
   })
@@ -91,7 +87,7 @@ module.exports = ({
     errorOnMissing: false,
   })
 
-  const logIn = loginRouteFactory({
+  const logIn = loginLogoutHandler.loginRouteFactory({
     connection,
     sessionCache,
     log,
@@ -127,10 +123,12 @@ module.exports = ({
   app.use(bodyParser.urlencoded({
     extended: true,
   }))
-  app.use(cors({origin: [
-    'http://localhost:4200',
-    'https://bpt-lab.org/bp2017w1-frontend',
-  ], credentials: true}))
+  app.use(cors({
+    origin: [
+      'http://localhost:4200',
+      'https://bpt-lab.org/bp2017w1-frontend',
+    ], credentials: true,
+  }))
   app.use(helmet())
   app.use(helmet.referrerPolicy({policy: 'strict-origin'}))
   app.use(csp({
@@ -143,39 +141,59 @@ module.exports = ({
 
   // app.use(morgan('combined'))
 
-  app.post('/scenarios/upload/', authMiddleware, upload)
+  app.post('/scenarios/upload/', loginLogoutHandler.authenticationMiddleware, upload)
 
-  app.get('/scenarios', authMiddleware, getScenarios)
+  app.get('/scenarios', loginLogoutHandler.authenticationMiddleware, getScenarios)
 
-  app.post('/scenarios', authMiddleware, defineScenario)
+  app.post('/scenarios', loginLogoutHandler.authenticationMiddleware, defineScenario)
 
   app.get('/chain/:accessibility(private|public)/:chainName', handleGetStatistics)
 
-  app.get('/chain',  getChainInfo)
+  app.get('/chain', getChainInfo)
 
   app.get('/log', displayLogs)
 
   app.post('/user/login', logIn)
 
-  app.get('/user/check', authMiddleware, (request, response) => {
+  app.get('/user/check', loginLogoutHandler.authenticationMiddleware, (request, response) => {
     response.sendStatus(200)
   })
 
-  app.post('/user/logout', authMiddleware, logOut)
+  app.post('/user/logout', loginLogoutHandler.authenticationMiddleware, loginLogoutHandler.logout)
 
-  app.post('/chain', authMiddleware, setParameters)
+  app.post('/chain', loginLogoutHandler.authenticationMiddleware, setParameters)
 
-  app.post('/user/create', authMiddleware, createUserRoute)
+  app.post('/user/create', loginLogoutHandler.authenticationMiddleware, createUser)
 
-  app.post('/recordings/start', authMiddleware, activeChains.startRecording())
+  app.post('/recordings/start',
+    loginLogoutHandler
+      .authenticationMiddleware,
+    activeChains
+      .startRecording())
 
-  app.post('/recordings/stop', authMiddleware, activeChains.stopRecording())
+  app.post('/recordings/stop',
+    loginLogoutHandler
+      .authenticationMiddleware,
+    activeChains
+      .stopRecording())
 
-  app.post('/recordings/cancel', authMiddleware, activeChains.cancelRecording())
+  app.post('/recordings/cancel',
+    loginLogoutHandler
+      .authenticationMiddleware,
+    activeChains
+      .cancelRecording())
 
-  app.get('/recordings', authMiddleware, activeChains.getListOfRecordings())
+  app.get('/recordings',
+    loginLogoutHandler
+      .authenticationMiddleware,
+    activeChains
+      .getListOfRecordings())
 
-  app.get('/recordings/isRecording', authMiddleware, activeChains.isRecordingActive())
+  app.get('/recordings/isRecording',
+    loginLogoutHandler
+      .authenticationMiddleware,
+    activeChains
+      .isRecordingActive())
 
   app.get('/*', (request, response) => {
     response.sendFile(path.join(__dirname, 'dataStorageAccessor/view/index.html'))

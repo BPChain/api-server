@@ -2,8 +2,8 @@ const describe = require('mocha').describe
 const it = require('mocha').it
 const expect = require('chai').expect
 const Schema = require('mongoose').Schema
-
-const userSchema = require('../../../components/authenticationHandler/userSchema')
+const userHandler = require('../../../components/authenticationHandler/userHandler')
+const userSchema = userHandler.userSchema
 
 const compareUserSchema = new Schema({
   timestamp: {type: Number},
