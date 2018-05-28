@@ -73,7 +73,7 @@ describe('privateChains', () => {
       }
     )
     it(
-      'should call storeTempPrivateData correctly',
+      'should call storeIncomingData correctly',
       () => {
         const doubleBuffer = new DoubleBuffer({
           connection: {
@@ -91,7 +91,7 @@ describe('privateChains', () => {
           config: {bufferSwitchTime: 1000},
         })
         assert.doesNotThrow(() => {
-          doubleBuffer.storeTempPrivateData()
+          doubleBuffer.storeIncomingData()
         })
         doubleBuffer.stopBufferInterval()
       }

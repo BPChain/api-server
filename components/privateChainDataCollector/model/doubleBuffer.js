@@ -78,7 +78,7 @@ module.exports = class DoubleBuffer {
     }
   }
 
-  storeTempPrivateData (privateData) {
+  storeIncomingData (privateData) {
     const BufferToStore = this.getActiveBuffer()
     const dataset = new BufferToStore(privateData)
     dataset.save()
