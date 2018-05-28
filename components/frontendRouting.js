@@ -31,11 +31,12 @@ module.exports = ({
     require('./dataStorageAccessor/controller/handleGetStatisticsFactory')
   const displayLogsFactory =
     require('./loggerHandler/controller/displayLogsFactory')
-  const setChainInfoFactory =
-    require('./privateChainConfigurator/controller/setChainInfoFactory')
-  const getChainInfoFactory =
-    require('./privateChainConfigurator/controller/getChainInfoFactory')
 
+  const privateChainConfigurator = require(
+    './/privateChainConfigurator/controller/privateConfigurator'
+  )
+  const setChainInfoFactory = privateChainConfigurator.setChainInfoFactory
+  const getChainInfoFactory = privateChainConfigurator.getChainInfoFactory
 
   const userHandler = require('./authenticationHandler/userHandler')
   const loginState = require('./authenticationHandler/loginLogoutHandler')

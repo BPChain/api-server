@@ -7,9 +7,10 @@ const chaiAsPromised = require('chai-as-promised')
 chai.use(chaiAsPromised)
 const expect = require('chai').expect
 
-const isValidJson = require(
-  '../../../../components/privateChainConfigurator/controller/checkSetParametersJson'
+const privateChainConfigurator = require(
+  '../../../../components/privateChainConfigurator/controller/privateConfigurator'
 )
+const isValidJson = privateChainConfigurator.isValidSetParametersJson
 
 describe('testCheckSetParametersJson', () => {
   const fakeLog = {
