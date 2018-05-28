@@ -25,7 +25,10 @@ module.exports = ({
   log,
 }) => {
 
-  const aggregator = require('./dataStorageAccessor/model/aggregator')
+  const dataRequests = require(
+    '../components/dataStorageAccessor/model/dataRequests',
+  )
+  const aggregator = dataRequests.aggregator
 
   const handleGetStatisticsFactory =
     require('./dataStorageAccessor/controller/handleGetStatisticsFactory')

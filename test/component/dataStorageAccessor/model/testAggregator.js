@@ -11,9 +11,10 @@ const chaiAsPromised = require('chai-as-promised')
 chai.use(chaiAsPromised)
 const expect = require('chai').expect
 
-const aggregator = require(
-  '../../../../components/dataStorageAccessor/model/aggregator',
+const dataRequests = require(
+  '../../../../components/dataStorageAccessor/model/dataRequests',
 )
+const aggregator = dataRequests.aggregator
 
 const log = console
 

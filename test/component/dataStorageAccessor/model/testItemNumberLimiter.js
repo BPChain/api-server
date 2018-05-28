@@ -5,9 +5,10 @@ const before = require('mocha').before
 const it = require('mocha').it
 const after = require('mocha').after
 
-const itemNumberLimiter = require(
-  '../../../../components/dataStorageAccessor/model/itemNumberLimiter',
+const dataRequests = require(
+  '../../../../components/dataStorageAccessor/model/dataRequests',
 )
+const itemNumberLimiter = dataRequests.itemNumberLimiter
 
 const log = console
 

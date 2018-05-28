@@ -11,9 +11,10 @@ const chaiAsPromised = require('chai-as-promised')
 chai.use(chaiAsPromised)
 const expect = require('chai').expect
 
-const timespanRequest = require(
-  '../../../../components/dataStorageAccessor/model/timespanRequest',
+const dataRequests = require(
+  '../../../../components/dataStorageAccessor/model/dataRequests',
 )
+const timespanRequest = dataRequests.timespanRequest
 
 const log = console
 
@@ -49,4 +50,3 @@ describe('TimespanRequest', () => {
     log.info('End testing TimespanRequest')
   })
 })
-

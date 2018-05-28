@@ -10,10 +10,10 @@ const chaiAsPromised = require('chai-as-promised')
 chai.use(chaiAsPromised)
 const expect = require('chai').expect
 
-
-const resultReducer = require(
-  '../../../../components/dataStorageAccessor/model/resultReducer'
+const dataRequests = require(
+  '../../../../components/dataStorageAccessor/model/dataRequests',
 )
+const resultReducer = dataRequests.resultReducer
 
 const log = console
 
