@@ -13,29 +13,11 @@ const mockRequest = {
   },
 }
 
-const failureRequest = {
-  session: {
-    destroy: () => {
-      throw new Error('some error')
-    },
-  },
-}
-
 const mockSuccess = {
   status: () => {
     return {
       send: () => {
         throw new Error('success')
-      },
-    }
-  },
-}
-
-const mockFailure = {
-  status: () => {
-    return {
-      send: () => {
-        throw new Error('failed to log out')
       },
     }
   },
@@ -48,9 +30,6 @@ describe('logout', () => {
     })
     it('should be able to log out users', async () => {
       expect(() => logout(mockRequest, mockSuccess)).to.throw('success')
-    })
-    it('should recognize errors', async () => {
-      expect(() => logout(failureRequest, mockFailure)).to.throw('failed to log out')
     })
   })
 })

@@ -8,17 +8,10 @@ module.exports.authenticate = (request, response, next) => {
 }
 
 module.exports.logout = (request, response) => {
-  try {
-    request.session.destroy()
-    response
-      .status(200)
-      .send('logged out')
-  }
-  catch (error) {
-    response
-      .status(500)
-      .send('error')
-  }
+  request.session.destroy()
+  response
+    .status(200)
+    .send('logged out')
 }
 
 module.exports.loginRouteFactory = (options = {}) => {
