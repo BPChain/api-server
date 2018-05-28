@@ -33,7 +33,7 @@ module.exports = ({
     require('./loggerHandler/controller/displayLogsFactory')
 
   const privateChainConfigurator = require(
-    './/privateChainConfigurator/controller/privateConfigurator'
+    './privateChainConfigurator/controller/privateConfigurator'
   )
   const setChainInfoFactory = privateChainConfigurator.setChainInfoFactory
   const getChainInfoFactory = privateChainConfigurator.getChainInfoFactory
