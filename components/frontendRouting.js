@@ -156,9 +156,7 @@ module.exports = ({
 
   app.post('/user/login', logIn)
 
-  app.get('/user/check', loginState.authenticate, (request, response) => {
-    response.sendStatus(200)
-  })
+  app.get('/user/check', loginState.authenticate, (request, response) => response.send('OK'))
 
   app.post('/user/logout', loginState.authenticate, loginState.logout)
 
