@@ -1,6 +1,6 @@
 const isodate = require('isodate')
 
-const logHTMLGenerator = require('../../../logger/logHTMLGenerator')
+const logHTMLGenerator = require('../model/logHTMLGenerator')
 
 module.exports = ({connection}) => {
   return async (request, response) => {

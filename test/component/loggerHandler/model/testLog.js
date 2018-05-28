@@ -5,7 +5,7 @@ const it = require('mocha').it
 const after = require('mocha').after
 
 const logSchema = require(
-  '../../logger/schema'
+  '../../../../components/loggerHandler/model/schema'
 )
 
 const log = console

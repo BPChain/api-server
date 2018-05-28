@@ -14,7 +14,7 @@ chai.use(chaiAsPromised)
 const expect = require('chai').expect
 
 const htmlGenerator = require(
-  '../../logger/logHTMLGenerator'
+  '../../../../components/loggerHandler/model/logHTMLGenerator'
 )
 
 const log = console
