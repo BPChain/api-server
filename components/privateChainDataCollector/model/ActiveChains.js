@@ -119,7 +119,7 @@ module.exports = class ActiveChains {
         return response.sendStatus(500)
           .send('A recording is already in progress')
       }
-      this.log.debug('starting recording')
+      this.log.debug('starting recording:', requestedName)
       this.isRecording = true
       this.recordingName = requestedName
       this.startTime = Date.now()
@@ -176,8 +176,7 @@ module.exports = class ActiveChains {
 
   stopRecording () {
     return (request, response) => {
-      this.log.debug('stopping recording')
-      this.log.debug(this.recordingName)
+      this.log.debug('Stopping recording:', this.recordingName)
       this.saveRecordingToDatabase({nameToStore: this.recordingName})
       this.isRecording = false
       this.recordingName = ''
@@ -188,8 +187,7 @@ module.exports = class ActiveChains {
 
   cancelRecording () {
     return (request, response) => {
-      this.log.debug('cancel recording')
-      this.log.debug(this.recordingName)
+      this.log.debug('Cancel recording', this.recordingName)
       this.isRecording = false
       this.recordingName = ''
       this.startTime = 0
