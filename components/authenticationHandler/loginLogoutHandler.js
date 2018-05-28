@@ -1,4 +1,42 @@
+const NodeCache = require('node-cache')
+const session = require('express-session')
 const  userHandler = require('./userHandler')
+
+module.exports.sessionCache = new NodeCache({
+  stdTTL: 18000,
+  checkperiod: 9000,
+  errorOnMissing: false,
+})
+
+module.exports.userSession = session({
+  secret: process.env.SESSION_SECRET || 'dummySecret',
+  resave: true,
+  saveUninitialized: true,
+  cookie: {maxAge: 90000000},
+  sameSite: true,
+})
+
+module.exports.checkUserSession = (sessionCache) => {
+  return (request, response, next) => {
+    sessionCache.get(request.sessionID, (error, value) => {
+      if (!error) {
+        if (value !== undefined) {
+          request.isAuthenticated = true
+          next()
+        }
+        else {
+          request.isAuthenticated = false
+          next()
+        }
+      }
+      else {
+        request.isAuthenticated = false
+        next()
+      }
+    })
+  }
+
+}
 
 module.exports.authenticate = (request, response, next) => {
   if (request.isAuthenticated) {
