@@ -5,7 +5,7 @@ const it = require('mocha').it
 const assert = require('assert')
 const expect = require('chai').expect
 const loginLogoutHandler = require('../../../components/authenticationHandler/loginLogoutHandler')
-const authMiddleware = loginLogoutHandler.authenticationMiddleware
+const authMiddleware = loginLogoutHandler.authenticate
 
 
 const mockRequest = {

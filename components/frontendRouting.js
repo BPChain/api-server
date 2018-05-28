@@ -38,7 +38,7 @@ module.exports = ({
 
 
   const userHandler = require('./authenticationHandler/userHandler')
-  const loginLogoutHandler = require('./authenticationHandler/loginLogoutHandler')
+  const loginState = require('./authenticationHandler/loginLogoutHandler')
 
   const superAdmin = {
     username: process.env.FRONTEND_ADMIN,
@@ -87,7 +87,7 @@ module.exports = ({
     errorOnMissing: false,
   })
 
-  const logIn = loginLogoutHandler.loginRouteFactory({
+  const logIn = loginState.loginRouteFactory({
     connection,
     sessionCache,
     log,
@@ -141,11 +141,11 @@ module.exports = ({
 
   // app.use(morgan('combined'))
 
-  app.post('/scenarios/upload/', loginLogoutHandler.authenticationMiddleware, upload)
+  app.post('/scenarios/upload/', loginState.authenticate, upload)
 
-  app.get('/scenarios', loginLogoutHandler.authenticationMiddleware, getScenarios)
+  app.get('/scenarios', loginState.authenticate, getScenarios)
 
-  app.post('/scenarios', loginLogoutHandler.authenticationMiddleware, defineScenario)
+  app.post('/scenarios', loginState.authenticate, defineScenario)
 
   app.get('/chain/:accessibility(private|public)/:chainName', handleGetStatistics)
 
@@ -155,45 +155,25 @@ module.exports = ({
 
   app.post('/user/login', logIn)
 
-  app.get('/user/check', loginLogoutHandler.authenticationMiddleware, (request, response) => {
+  app.get('/user/check', loginState.authenticate, (request, response) => {
     response.sendStatus(200)
   })
 
-  app.post('/user/logout', loginLogoutHandler.authenticationMiddleware, loginLogoutHandler.logout)
+  app.post('/user/logout', loginState.authenticate, loginState.logout)
 
-  app.post('/chain', loginLogoutHandler.authenticationMiddleware, setParameters)
+  app.post('/chain', loginState.authenticate, setParameters)
 
-  app.post('/user/create', loginLogoutHandler.authenticationMiddleware, createUser)
+  app.post('/user/create', loginState.authenticate, createUser)
 
-  app.post('/recordings/start',
-    loginLogoutHandler
-      .authenticationMiddleware,
-    activeChains
-      .startRecording())
+  app.post('/recordings/start', loginState.authenticate, activeChains.startRecording())
 
-  app.post('/recordings/stop',
-    loginLogoutHandler
-      .authenticationMiddleware,
-    activeChains
-      .stopRecording())
+  app.post('/recordings/stop', loginState.authenticate, activeChains.stopRecording())
 
-  app.post('/recordings/cancel',
-    loginLogoutHandler
-      .authenticationMiddleware,
-    activeChains
-      .cancelRecording())
+  app.post('/recordings/cancel', loginState.authenticate, activeChains.cancelRecording())
 
-  app.get('/recordings',
-    loginLogoutHandler
-      .authenticationMiddleware,
-    activeChains
-      .getListOfRecordings())
+  app.get('/recordings', loginState.authenticate, activeChains.getListOfRecordings())
 
-  app.get('/recordings/isRecording',
-    loginLogoutHandler
-      .authenticationMiddleware,
-    activeChains
-      .isRecordingActive())
+  app.get('/recordings/isRecording', loginState.authenticate, activeChains.isRecordingActive())
 
   app.get('/*', (request, response) => {
     response.sendFile(path.join(__dirname, 'dataStorageAccessor/view/index.html'))

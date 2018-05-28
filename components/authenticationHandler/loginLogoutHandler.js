@@ -1,6 +1,6 @@
 const  userHandler = require('./userHandler')
 
-module.exports.authenticationMiddleware = (request, response, next) => {
+module.exports.authenticate = (request, response, next) => {
   if (request.isAuthenticated) {
     return next()
   }
