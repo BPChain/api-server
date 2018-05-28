@@ -6,11 +6,17 @@ const path = require('path')
 
 const bodyParser = require('body-parser')
 const cors = require('cors')
+const helmet = require('helmet')
+const csp = require('helmet-csp')
 const express = require('express')
+const expressFileUpload = require('express-fileupload')
 const NodeCache = require('node-cache')
 const session = require('express-session')
+// const morgan = require('morgan')
 
 const config = require('../config')
+
+const uploadFactory = require('./scyllaLogParser/controller/uploadFactory')
 
 const authMiddleware = require('./authenticationHandler/authenticationMiddleware')
 const logOut = require('./authenticationHandler/logout')
@@ -28,8 +34,8 @@ module.exports = ({
     require('./dataStorageAccessor/controller/handleGetStatisticsFactory')
   const displayLogsFactory =
     require('./loggerHandler/controller/displayLogsFactory')
-  const changeParametersFactory =
-    require('./privateChainConfigurator/controller/changeParametersFactory')
+  const setChainInfoFactory =
+    require('./privateChainConfigurator/controller/setChainInfoFactory')
   const loginRouteFactory =
     require('./authenticationHandler/loginRouteFactory')
   const userCreationRouteFactory =
@@ -45,7 +51,7 @@ module.exports = ({
   }
 
   log.info('Creating admin user')
-  createUser({ connection, log, username: superAdmin.username, password: superAdmin.password })
+  createUser({connection, log, username: superAdmin.username, password: superAdmin.password})
 
   const handleGetStatistics = handleGetStatisticsFactory({
     connection,
@@ -55,10 +61,11 @@ module.exports = ({
   const displayLogs = displayLogsFactory({
     connection,
   })
-  const setParameters = changeParametersFactory({
-    backendController,
+  const setParameters = setChainInfoFactory({
     activeChains,
+    backendController,
     log,
+    connection,
   })
 
   const createUserRoute = userCreationRouteFactory({
@@ -74,9 +81,10 @@ module.exports = ({
     secret: process.env.SESSION_SECRET || 'dummySecret',
     resave: true,
     saveUninitialized: true,
-    cookie: { maxAge: 900000 },
+    cookie: {maxAge: 900000},
     sameSite: true,
   }))
+
   const sessionCache = new NodeCache({
     stdTTL: 1800,
     checkperiod: 900,
@@ -89,8 +97,11 @@ module.exports = ({
     log,
   })
 
+  const upload = uploadFactory.upload({connection, log})
+  const getScenarios = uploadFactory.getScenarios({connection})
+  const defineScenario = uploadFactory.defineScenario({connection, log})
+
   app.use((request, response, next) => {
-    log.info('session cookie', request.sessionID)
     sessionCache.get(request.sessionID, (error, value) => {
       if (!error) {
         if (value !== undefined) {
@@ -110,6 +121,8 @@ module.exports = ({
     })
   })
 
+
+  app.use(expressFileUpload())
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({
     extended: true,
@@ -118,30 +131,57 @@ module.exports = ({
     'http://localhost:4200',
     'https://bpt-lab.org/bp2017w1-frontend',
   ], credentials: true}))
+  app.use(helmet())
+  app.use(helmet.referrerPolicy({policy: 'strict-origin'}))
+  app.use(csp({
+    directives: {
+      defaultSrc: ['\'self\''],
+      scriptSrc: ['\'self\''],
+      fontSrc: ['\'self\'', 'fonts.googleapis.com'],
+    },
+  }))
 
-  app.get('/api/:accessibility(private|public)/:chainName', handleGetStatistics)
+  // app.use(morgan('combined'))
 
-  app.get('/api/getChainInfo',  getChainInfo)
+  app.post('/scenarios/upload/', authMiddleware, upload)
+
+  app.get('/scenarios', authMiddleware, getScenarios)
+
+  app.post('/scenarios', authMiddleware, defineScenario)
+
+  app.get('/chain/:accessibility(private|public)/:chainName', handleGetStatistics)
+
+  app.get('/chain',  getChainInfo)
 
   app.get('/log', displayLogs)
 
-  app.post('/login', logIn)
+  app.post('/user/login', logIn)
 
-  app.get('/checkLogin', authMiddleware, (request, response) => {
+  app.get('/user/check', authMiddleware, (request, response) => {
     response.sendStatus(200)
   })
 
-  app.post('/logout', authMiddleware, logOut)
+  app.post('/user/logout', authMiddleware, logOut)
 
-  app.post('/api/setParameters', authMiddleware, setParameters)
+  app.post('/chain', authMiddleware, setParameters)
 
-  app.post('/api/createUser', authMiddleware, createUserRoute)
+  app.post('/user/create', authMiddleware, createUserRoute)
+
+  app.post('/recordings/start', authMiddleware, activeChains.startRecording())
+
+  app.post('/recordings/stop', authMiddleware, activeChains.stopRecording())
+
+  app.post('/recordings/cancel', authMiddleware, activeChains.cancelRecording())
+
+  app.get('/recordings', authMiddleware, activeChains.getListOfRecordings())
+
+  app.get('/recordings/isRecording', authMiddleware, activeChains.isRecordingActive())
 
   app.get('/*', (request, response) => {
     response.sendFile(path.join(__dirname, 'dataStorageAccessor/view/index.html'))
   })
 
-  return app.listen(config.frontendPort, () => {
-    log.info(`Frontend interface running on port ${config.frontendPort}`)
+  return app.listen(config.ports.frontend, () => {
+    log.info(`Frontend interface running on port ${config.ports.frontend}`)
   })
 }

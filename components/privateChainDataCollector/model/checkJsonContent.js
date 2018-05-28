@@ -12,8 +12,10 @@ const expectedKeys = [
   'isMining',
   'hashrate',
   'avgBlocktime',
-  'gasPrice',
+  'avgTransactions',
+  'blockSize',
   'avgDifficulty',
+  'cpuUsage',
 ]
 
 function hasAllKeys ({json, log}) {
@@ -39,6 +41,8 @@ module.exports = function isValidJson ({json, log}) {
     (parsedJson.isMining === 1 || parsedJson.isMining === 0) &&
     isNumeric(parsedJson.hashrate) &&
     isNumeric(parsedJson.avgBlocktime) &&
-    isNumeric(parsedJson.gasPrice) &&
-    isNumeric(parsedJson.avgDifficulty)
+    isNumeric(parsedJson.blockSize) &&
+    isNumeric(parsedJson.avgDifficulty) &&
+    isNumeric(parsedJson.cpuUsage) &&
+    isNumeric(parsedJson.avgTransactions)
 }

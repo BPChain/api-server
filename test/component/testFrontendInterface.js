@@ -1,17 +1,13 @@
 const assert = require('assert')
 const describe = require('mocha')
   .describe
-const before = require('mocha')
-  .before
 const it = require('mocha')
   .it
-const after = require('mocha')
-  .after
 
 const frontendInterface = require(
   '../../components/frontendRouting.js'
 )
-
+const config = require('../../config.js')
 const log = console
 
 /* eslint-disable no-unused-vars */
@@ -34,20 +30,17 @@ const connection = {
   },
 }
 
+const ActiveChains = require('../../components/privateChainDataCollector/model/ActiveChains')
+const activeChains = new ActiveChains({config, connection, log})
+
 let app
 describe('publicChains', () => {
-  before(() => {
-    log.info('Start testing frontend interface')
-  })
   describe('frontendInterface', () => {
     it('should not throw an error', (done) => {
-      app = frontendInterface({log, connection})
+      app = frontendInterface({log, connection, activeChains})
       assert.ok(app)
+      app.close()
       done()
     })
-  })
-  after(() => {
-    app.close()
-    log.info('End testing frontend interface')
   })
 })

@@ -8,6 +8,8 @@ module.exports = new Schema({
   numberOfMiners: {type: Number},
   avgHashrate: {type: Number},
   avgBlocktime: {type: Number},
-  avgGasPrice: {type: Number},
+  avgBlockSize: {type: Number},
   avgDifficulty: {type: Number},
+  avgTransactions: {type: Number},
+  avgCpuUsage: {type: Number},
 })

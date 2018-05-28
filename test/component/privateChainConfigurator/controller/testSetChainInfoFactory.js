@@ -14,8 +14,8 @@ const expect = require('chai').expect
 
 const config = require('../../../../config')
 
-const changeParametersFactory = require(
-  '../../../../components/privateChainConfigurator/controller/changeParametersFactory'
+const setChainInfoFactory = require(
+  '../../../../components/privateChainConfigurator/controller/setChainInfoFactory'
 )
 
 const ActiveChains = require(
@@ -95,16 +95,6 @@ const stopRequest = {
   },
 }
 
-const switchRequest = {
-  body: {
-    parameters: JSON.stringify({
-      'switchChainTo': 'xain',
-    }),
-    chainName: 'ethereum',
-    target: 'aws',
-  },
-}
-
 const startStopRequest = {
   body: {
     parameters: JSON.stringify({
@@ -123,11 +113,11 @@ const testLog = {
   warn: () => {},
 }
 
-describe('ChangeParametersFactory', () => {
-  describe('ChangeParametersFactory construction', () => {
+describe('setChainInfoFactory', () => {
+  describe('setChainInfoFactory construction', () => {
     it('should be constructed without an error', () => {
       assert.doesNotThrow(() => {
-        const changeParametersRoute = changeParametersFactory({
+        const changeParametersRoute = setChainInfoFactory({
           backendController: backendControllerSuccess,
           log: testLog,
           activeChains,
@@ -137,9 +127,9 @@ describe('ChangeParametersFactory', () => {
     })
   })
 
-  describe('ChangeParametersFactory with parameters', () => {
+  describe('setChainInfoFactory with parameters', () => {
     it('should send expected message when no parameters were set and everything works', () => {
-      const changeParametersRoute = changeParametersFactory({
+      const changeParametersRoute = setChainInfoFactory({
         backendController: backendControllerSuccess,
         log: testLog,
         activeChains,
@@ -148,7 +138,7 @@ describe('ChangeParametersFactory', () => {
         .to.eventually.be.rejectedWith('success')
     })
     it('should send expected message when backendController returns false', () => {
-      const changeParametersRoute = changeParametersFactory({
+      const changeParametersRoute = setChainInfoFactory({
         backendController: backendControllerFailure,
         log: testLog,
         activeChains,
@@ -157,7 +147,7 @@ describe('ChangeParametersFactory', () => {
         .to.eventually.be.rejectedWith('send error')
     })
     it('should send expected message when json was not valid', () => {
-      const changeParametersRoute = changeParametersFactory({
+      const changeParametersRoute = setChainInfoFactory({
         backendController: backendControllerSuccess,
         log: testLog,
         activeChains,
@@ -166,7 +156,7 @@ describe('ChangeParametersFactory', () => {
         .to.eventually.be.rejectedWith('send error')
     })
     it('should send expected message when starting chain failed', () => {
-      const changeParametersRoute = changeParametersFactory({
+      const changeParametersRoute = setChainInfoFactory({
         backendController: backendControllerSuccess,
         log: testLog,
         activeChains: {add: () => false},
@@ -175,7 +165,7 @@ describe('ChangeParametersFactory', () => {
         .to.eventually.be.rejectedWith('set error')
     })
     it('should send expected message when stoping chain failed', () => {
-      const changeParametersRoute = changeParametersFactory({
+      const changeParametersRoute = setChainInfoFactory({
         backendController: backendControllerSuccess,
         log: testLog,
         activeChains: {remove: () => false},
@@ -183,44 +173,8 @@ describe('ChangeParametersFactory', () => {
       return expect(changeParametersRoute(stopRequest, setError))
         .to.eventually.be.rejectedWith('set error')
     })
-    it('should send expected message when switching chain failed', () => {
-      const changeParametersRoute = changeParametersFactory({
-        backendController: backendControllerSuccess,
-        log: testLog,
-        activeChains: {
-          add: () => false,
-          remove: () => false,
-        },
-      })
-      return expect(changeParametersRoute(switchRequest, setError))
-        .to.eventually.be.rejectedWith('set error')
-    })
-    it('should send expected message when switching chain failed', () => {
-      const changeParametersRoute = changeParametersFactory({
-        backendController: backendControllerSuccess,
-        log: testLog,
-        activeChains: {
-          add: () => true,
-          remove: () => false,
-        },
-      })
-      return expect(changeParametersRoute(switchRequest, setError))
-        .to.eventually.be.rejectedWith('set error')
-    })
-    it('should send expected message when switching chain failed', () => {
-      const changeParametersRoute = changeParametersFactory({
-        backendController: backendControllerSuccess,
-        log: testLog,
-        activeChains: {
-          add: () => false,
-          remove: () => true,
-        },
-      })
-      return expect(changeParametersRoute(switchRequest, setError))
-        .to.eventually.be.rejectedWith('set error')
-    })
-    it('should send expected message when one of multiple set/stop/switch failed', () => {
-      const changeParametersRoute = changeParametersFactory({
+    it('should send expected message when one of multiple set/stop failed', () => {
+      const changeParametersRoute = setChainInfoFactory({
         backendController: backendControllerSuccess,
         log: testLog,
         activeChains: {
@@ -231,8 +185,8 @@ describe('ChangeParametersFactory', () => {
       return expect(changeParametersRoute(startStopRequest, setError))
         .to.eventually.be.rejectedWith('set error')
     })
-    it('should send expected message when one of multiple set/stop/switch failed', () => {
-      const changeParametersRoute = changeParametersFactory({
+    it('should send expected message when one of multiple set/stop failed', () => {
+      const changeParametersRoute = setChainInfoFactory({
         backendController: backendControllerSuccess,
         log: testLog,
         activeChains: {

@@ -49,13 +49,21 @@ describe('testCheckSetParametersJson', () => {
             stopChain: 33,
             numberOfHosts: 'abc',
             numberOfMiners: 'cde',
-            switchChainTo: 33,
+            scenario: {
+              period: 'hallol',
+              payloadSize: 'seit 16 jahren 1&1',
+            },
           },
           log: fakeLog,
         }),
         false,
       )
     })
+    /* eslint-disable max-len */
+    assert.equal(isValidJson({json: {scenario: 'hallol'}, log: fakeLog}), false)
+    assert.equal(isValidJson({json: {scenario: {period: 'abece', payloadSize: 32}}, log: fakeLog}), false)
+    assert.equal(isValidJson({json: {scenario: {period: 33, payloadSize: 'art'}}, log: fakeLog}), false)
+
     it('should return false when Json has wrong keys', () => {
       assert.equal(
         isValidJson({
@@ -65,12 +73,17 @@ describe('testCheckSetParametersJson', () => {
             numbargrOfHosts: 'abc',
             numbesdfOfMiners: 'cde',
             sdf: 33,
+            scenasdrio: {
+              peretre: 313,
+              paylvvoadSize: 13123,
+            },
           },
           log: fakeLog,
         }),
         false,
       )
     })
+    assert.equal(isValidJson({json: {scenario: {frequency: 33, payloadSize: 33}}, log: fakeLog}), false)
     it('should return true when Json is as expected', () => {
       assert.equal(
         isValidJson({
@@ -79,7 +92,10 @@ describe('testCheckSetParametersJson', () => {
             stopChain: 'cde',
             numberOfHosts: 33,
             numberOfMiners: 33,
-            switchChainTo: 'fgh',
+            scenario: {
+              period: 313,
+              payloadSize: 13123,
+            },
           },
           log: fakeLog,
         }),
@@ -91,11 +107,8 @@ describe('testCheckSetParametersJson', () => {
       assert.equal(isValidJson({json: {numberOfMiners: 33, numberOfHosts: 33}, log: fakeLog}), true)
       assert.equal(isValidJson({json: {startChain: 'abc'}, log: fakeLog}), true)
       assert.equal(isValidJson({json: {stopChain: 'abc'}, log: fakeLog}), true)
-      assert.equal(isValidJson({json: {switchChainTo: 'abc'}, log: fakeLog}), true)
       assert.equal(isValidJson({json: {startChain: 'abc', stopChain: 'abc'}, log: fakeLog}), true)
-      assert.equal(isValidJson({json: {startChain: 'abc', switchChainTo: 'abc'}, log: fakeLog}), true)
-      assert.equal(isValidJson({json: {stopChain: 'abc', switchChainTo: 'abc'}, log: fakeLog}), true)
-      assert.equal(isValidJson({json: {startChain: 'abc', stopChain: 'abc', switchChainTo: 'abc'}, log: fakeLog}), true)
+      assert.equal(isValidJson({json: {scenario: {period: 343, payloadSize: 333}}, log: fakeLog}), true)
     })
   })
 })

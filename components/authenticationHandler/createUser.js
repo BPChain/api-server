@@ -53,7 +53,7 @@ module.exports = async (options = {}) => {
   }
 
   async function insertUserPromise () {
-    const opts = { upsert: true, new: true, setDefaultsOnInsert: true }
+    const opts = {upsert: true, new: true, setDefaultsOnInsert: true}
     const promise = new Promise(resolve => {
       User.findOneAndUpdate(query, user, opts, (error, result) => {
         if (error) {

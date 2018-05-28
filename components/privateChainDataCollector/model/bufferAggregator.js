@@ -21,7 +21,6 @@ module.exports = async (options = {}) => {
   const values = await aggregateValues()
   storeData(values)
 
-
   async function aggregateValues () {
     log.debug(`Aggregate files from ${filledBufferName}`)
     const Buffer = helper.initializeBuffer(options)
@@ -38,10 +37,14 @@ module.exports = async (options = {}) => {
           .aggregateAverageHashRate(Buffer, chainName, target),
         aggregatedValues.avgBlocktime = await helper
           .aggregateAverageBlockTime(Buffer, chainName, target),
-        aggregatedValues.avgGasPrice = await helper
-          .aggregateAverageGasPrice(Buffer, chainName, target),
+        aggregatedValues.avgBlockSize = await helper
+          .aggregateAverageBlockSize(Buffer, chainName, target),
         aggregatedValues.avgDifficulty = await helper
           .aggregateAverageDifficulty(Buffer, chainName, target),
+        aggregatedValues.avgCpuUsage = await helper
+          .aggregateAverageCpuUsage(Buffer, chainName, target),
+        aggregatedValues.avgTransactions = await helper
+          .aggregateAverageTransactionsPerBlock(Buffer, chainName, target),
       ])
       .catch(log.error)
 
@@ -49,9 +52,8 @@ module.exports = async (options = {}) => {
     return aggregatedValues
   }
 
-
   function storeData (aggregatedValues) {
-    const Storage = helper.intializeStorage(options)
+    const Storage = helper.intializeStorage({connection, StorageSchema})
     const dataLine = helper.createStorage({aggregatedValues, chainName, target, Storage})
 
     dataLine.save((error, savedData) => {

@@ -55,14 +55,10 @@ module.exports = class DoubleBuffer {
       this.isBufferA = true
       this.activeBuffer = this.bufferA
     }
-    this.log.trace(`Changed Buffer to Buffer ${this.getActiveBufferLabel()}`)
   }
 
   aggregateBuffer (bufferAggregator) {
-    this.log.info(
-      `Aggregate buffer for ${this.activeChains.getChains().length} active private chains`
-    )
-    this.activeChains.getChains()
+    this.activeChains.getActiveChains()
       .forEach(item => {
         bufferAggregator({
           filledBufferName: `_buffer_${this.getInactiveBufferLabel()}`,
@@ -72,18 +68,23 @@ module.exports = class DoubleBuffer {
           StorageSchema: this.StorageSchema,
           connection: this.connection,
           log: this.log,
+          isRecording: this.activeChains.isRecording,
         })
       })
+    if (this.activeChains.getActiveChains().length) {
+      this.log.info(
+        `Aggregated ${this.activeChains.getActiveChains().length} active private chains`
+      )
+    }
   }
 
   storeTempPrivateData (privateData) {
     const BufferToStore = this.getActiveBuffer()
     const dataset = new BufferToStore(privateData)
-    dataset.save((error, savedModel) => {
+    dataset.save(error => {
       if (error) {
         throw error
       }
-      this.log.debug(`Stored private data: ${savedModel}`)
     })
   }
 }

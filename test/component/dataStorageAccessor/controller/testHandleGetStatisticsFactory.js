@@ -14,8 +14,13 @@ const log = {
 
 describe('handleGetStatisticsFactory', () => {
   it('should return function when no parameters are supplied', () => {
-    const route = handleGetStatisticsFactory()
-    assert(typeof route === 'function')
+
+    assert.throws(
+      () => {
+        handleGetStatisticsFactory()
+      },
+      TypeError,
+    )
   })
   it('should aggregate with startTime and endTime', async () => {
     const testStartTime = '2018-02-12'
@@ -25,8 +30,10 @@ describe('handleGetStatisticsFactory', () => {
       numberOfMiners: 2,
       avgHashrate: 2,
       avgBlocktime: 22,
-      avgGasPrice: 22,
+      avgBlockSize: 22,
       avgDifficulty: 2,
+      avgCpuUsage: 2,
+      avgTransactions: 2,
       timeStamp: '2018-02-20',
     }
     const resultObject = {
@@ -34,8 +41,10 @@ describe('handleGetStatisticsFactory', () => {
       numberOfMiners: [2],
       avgHashrate: [2],
       avgBlocktime: [22],
-      avgGasPrice: [22],
+      avgBlockSize: [22],
       avgDifficulty: [2],
+      avgCpuUsage: [2],
+      avgTransactions: [2],
       timeStamp: ['2018-02-20'],
       chainName: 'ethereum',
     }
@@ -56,8 +65,10 @@ describe('handleGetStatisticsFactory', () => {
       numberOfMiners: 2,
       avgHashrate: 2,
       avgBlocktime: 22,
-      avgGasPrice: 22,
+      avgBlockSize: 22,
       avgDifficulty: 2,
+      avgCpuUsage: 2,
+      avgTransactions: 2,
       timeStamp: '2018-02-20',
     }
     const resultObject = {
@@ -65,8 +76,10 @@ describe('handleGetStatisticsFactory', () => {
       numberOfMiners: [2],
       avgHashrate: [2],
       avgBlocktime: [22],
-      avgGasPrice: [22],
+      avgBlockSize: [22],
       avgDifficulty: [2],
+      avgCpuUsage: [2],
+      avgTransactions: [2],
       timeStamp: ['2018-02-20'],
       chainName: 'ethereum',
     }
@@ -89,8 +102,10 @@ describe('handleGetStatisticsFactory', () => {
       numberOfMiners: 2,
       avgHashrate: 2,
       avgBlocktime: 22,
-      avgGasPrice: 22,
+      avgBlockSize: 22,
       avgDifficulty: 2,
+      avgCpuUsage: 2,
+      avgTransactions: 2,
       timeStamp: '2018-02-20',
     }
     const resultObject = {
@@ -98,8 +113,10 @@ describe('handleGetStatisticsFactory', () => {
       numberOfMiners: [2],
       avgHashrate: [2],
       avgBlocktime: [22],
-      avgGasPrice: [22],
+      avgBlockSize: [22],
       avgDifficulty: [2],
+      avgCpuUsage: [2],
+      avgTransactions: [2],
       timeStamp: ['2018-02-20'],
       chainName: 'ethereum',
     }

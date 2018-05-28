@@ -21,6 +21,20 @@ exports.createStorage = ({aggregatedValues, chainName, target, Storage}) => {
   )
 }
 
+exports.intializeRecordStorage = ({connection, StorageSchema}) =>
+  connection.model('recording_storage', StorageSchema)
+
+exports.createRecordStorage = ({aggregatedValues, chainName, Storage}) => {
+  return new Storage(
+    Object.assign({
+      chainName,
+      timeStamp: Date.now(),
+    },
+    aggregatedValues,
+    )
+  )
+}
+
 exports.aggregateNumberOfMiners = async (Buffer, chainName, target) => {
   const result = await Buffer
     .aggregate(
@@ -41,7 +55,7 @@ exports.aggregateNumberOfMiners = async (Buffer, chainName, target) => {
       {
         $group: {
           _id: 1,
-          count: { $sum: 1 },
+          count: {$sum: 1},
         },
       }])
     .exec()
@@ -65,7 +79,7 @@ exports.aggregateNumberOfHosts = async (Buffer, chainName, target) => {
       {
         $group: {
           _id: 1,
-          count: { $sum: 1 },
+          count: {$sum: 1},
         },
       }])
     .exec()
@@ -106,10 +120,18 @@ exports.aggregateAverageBlockTime = async (Buffer, chainName, target) => {
   return await aggregateAverage(Buffer, chainName, target, 'avgBlocktime')
 }
 
-exports.aggregateAverageGasPrice = async (Buffer, chainName, target) => {
-  return await aggregateAverage(Buffer, chainName, target, 'gasPrice')
+exports.aggregateAverageBlockSize = async (Buffer, chainName, target) => {
+  return await aggregateAverage(Buffer, chainName, target, 'blockSize')
 }
 
 exports.aggregateAverageDifficulty = async (Buffer, chainName, target) => {
   return await aggregateAverage(Buffer, chainName, target, 'avgDifficulty')
+}
+
+exports.aggregateAverageCpuUsage = async (Buffer, chainName, target) => {
+  return await aggregateAverage(Buffer, chainName, target, 'cpuUsage')
+}
+
+exports.aggregateAverageTransactionsPerBlock = async (Buffer, chainName, target) => {
+  return await aggregateAverage(Buffer, chainName, target, 'avgTransactions')
 }

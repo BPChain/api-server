@@ -4,7 +4,8 @@ const WebSocketServer = ws.Server
 
 class BlockchainController {
   constructor (options = {}) {
-    const {log = console, port = 4040, clientArray = []} = options
+    const {activeChains, log = console, port = 4040, clientArray = []} = options
+    this.activeChains = activeChains
     this.log = log
     this.port = port
     this.clientArray = clientArray
@@ -39,31 +40,54 @@ class BlockchainController {
       this.log.info(`Client connected on port ${this.port}`)
       connection.on('message', data => {
         this.log.info(`Client authentificated with: ${data}`)
-        const {target, chains} = JSON.parse(data)
-        this.clientArray.push({chains, target, connection})
+        const {target, chains, monitor, state} = JSON.parse(data)
+        if (target) {
+          this.clientArray.push({chains, target, connection})
+          this.activeChains.clientInfos = this.getClientInfos()
+        }
+        if (monitor) {
+          this.activeChains.setState({monitor, state})
+        }
       })
 
       connection.on('close', () => {
         this.log.info('Closing connection')
+        this.clientArray.forEach(client => {
+          if (client.connection !== connection) {
+            this.activeChains.removeMonitor({monitor: client.target})
+          }
+        })
         this.clientArray = this.clientArray.filter(
           client => client.connection !== connection
         )
-        this.log.info(`Open connections: ${this.clientArray}`)
+        this.activeChains.clientInfos = this.getClientInfos()
+        this.log.info(`Open connections: ${JSON.stringify(this.getClientInfos())}`)
       })
     })
+
     this.intervalId = setInterval(() => {
-      this.wsServer.clients.forEach((connection) => {
-        if (connection.isAlive === false) {
-          return () => {
-            this.log.info('Closing connection')
-            this.clientArray = this.clientArray.filter(
-              client => client.connection !== connection
-            )
-            connection.terminate()
+      this.wsServer.clients.forEach(connection => {
+        if (!connection.isAlive) {
+          const monitor = this.clientArray.find(client => client.connection === connection)
+          this.clientArray = this.clientArray.filter(
+            client => client.connection !== connection
+          )
+          try {
+            if (monitor) {
+              this.log.info(`Closing connection for monitor ${monitor.target}`)
+              this.activeChains.removeMonitor({monitor: monitor.target})
+              this.activeChains.clientInfos = this.getClientInfos()
+              connection.terminate()
+            }
+          }
+          catch (error) {
+            this.log.warn('Could nod close connection')
           }
         }
-        connection.isAlive = false
-        connection.ping()
+        else {
+          connection.isAlive = false
+          connection.ping()
+        }
       })
     }, 30000)
     return this.wsServer

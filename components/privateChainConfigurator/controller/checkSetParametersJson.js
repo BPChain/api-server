@@ -7,7 +7,7 @@ const expectedKeys = [
   'stopChain',
   'numberOfHosts',
   'numberOfMiners',
-  'switchChainTo',
+  'scenario',
 ]
 
 function hasOnlyExpectedkeys (json) {
@@ -23,15 +23,28 @@ function hasOnlyExpectedkeys (json) {
 */
 
 module.exports = function isValidJson ({json, log}) {
-  log.info('Check whether setParameters json is valid')
   if (!hasOnlyExpectedkeys(json)) {
     log.warn(`Json has not only expected keys ${json} | ${expectedKeys}`)
     return false
   }
   return Object.keys(json)
     .every(key => {
-      if (['startChain', 'stopChain', 'switchChainTo'].includes(key)) {
+      if (['startChain', 'stopChain'].includes(key)) {
         return !isNumeric(json[key])
+      }
+      else if (['scenario'].includes(key)) {
+        return Object.keys(json[key])
+          .every(subKey => {
+            if (['period', 'payloadSize'].includes(subKey)) {
+              return isNumeric(json[key][subKey])
+            }
+            else if (['name'].includes(subKey)) {
+              return !isNumeric(json[key][subKey])
+            }
+            else {
+              return false
+            }
+          })
       }
       return isNumeric(json[key])
     })

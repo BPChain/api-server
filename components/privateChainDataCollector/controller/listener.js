@@ -24,8 +24,8 @@ module.exports = async ({activeChains, log, config, connection}) => {
   })
 
   const WebSocketServer = ws.Server
-  const wsServer = new WebSocketServer({port: config.dataAggregatorPort})
-  log.info(`Backend socket running on port ${config.dataAggregatorPort}`)
+  const wsServer = new WebSocketServer({port: config.ports.dataAggregator})
+  log.info(`Backend socket running on port ${config.ports.dataAggregator}`)
   wsServer.on('connection', (socket) => {
     socket.on('message', (message) => {
       try {

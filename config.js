@@ -1,9 +1,4 @@
-const config = {
-  activePrivateChains: [
-    'ethereum',
-    'xain',
-    'multichain',
-  ],
+module.exports =  {
   ethereum: {
     publicChain: {
       numberOfMiners:
@@ -20,11 +15,11 @@ const config = {
       'https://api.nanopool.org/v1/eth/network/timetonextepoch',
     },
   },
-  dataAggregatorPort: 3030,
-  frontendPort: 2020,
-  controllerPort: 4040,
-  bufferSwitchTime: 15000,
-  publicPollTime: 30000,
+  ports: {
+    dataAggregator: 3030,
+    frontend: 2020,
+    controller: 4040,
+  },
+  bufferSwitchTime: 30000,
+  publicPollTime: 120000,
 }
-
-module.exports = config

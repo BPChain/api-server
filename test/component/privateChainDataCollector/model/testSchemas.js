@@ -15,8 +15,10 @@ const compareEthereumSchema = new Schema({
   isMining: {type: Number},
   hashrate: {type: Number},
   avgBlocktime: {type: Number},
-  gasPrice: {type: Number},
+  blockSize: {type: Number},
   avgDifficulty: {type: Number},
+  cpuUsage: {type: Number},
+  avgTransactions: {type: Number},
 })
 
 const ethereumStorage = require(
@@ -30,8 +32,10 @@ const compareStorageSchema = new Schema({
   numberOfMiners: {type: Number},
   avgHashrate: {type: Number},
   avgBlocktime: {type: Number},
-  avgGasPrice: {type: Number},
+  avgBlockSize: {type: Number},
   avgDifficulty: {type: Number},
+  avgCpuUsage: {type: Number},
+  avgTransactions: {type: Number},
 })
 const log = console
 

@@ -127,6 +127,9 @@ rules:
     - error
   no-with:
     - error
+  object-curly-spacing:
+    - error
+    - never
   one-var:
     - error
     - never
