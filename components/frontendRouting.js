@@ -78,13 +78,13 @@ module.exports = ({
     secret: process.env.SESSION_SECRET || 'dummySecret',
     resave: true,
     saveUninitialized: true,
-    cookie: {maxAge: 900000},
+    cookie: {maxAge: 90000000},
     sameSite: true,
   }))
 
   const sessionCache = new NodeCache({
-    stdTTL: 1800,
-    checkperiod: 900,
+    stdTTL: 18000,
+    checkperiod: 9000,
     errorOnMissing: false,
   })
 
