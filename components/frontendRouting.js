@@ -10,9 +10,6 @@ const helmet = require('helmet')
 const csp = require('helmet-csp')
 const express = require('express')
 const expressFileUpload = require('express-fileupload')
-const NodeCache = require('node-cache')
-const session = require('express-session')
-// const morgan = require('morgan')
 
 const config = require('../config')
 
@@ -77,51 +74,17 @@ module.exports = ({
 
   const app = express()
 
-  app.use(session({
-    secret: process.env.SESSION_SECRET || 'dummySecret',
-    resave: true,
-    saveUninitialized: true,
-    cookie: {maxAge: 90000000},
-    sameSite: true,
-  }))
+  app.use(loginState.userSession)
 
-  const sessionCache = new NodeCache({
-    stdTTL: 18000,
-    checkperiod: 9000,
-    errorOnMissing: false,
-  })
+  const sessionCache = loginState.sessionCache
 
-  const logIn = loginState.loginRouteFactory({
-    connection,
-    sessionCache,
-    log,
-  })
+  const logIn = loginState.loginRouteFactory({connection, sessionCache, log})
 
   const upload = uploadFactory.upload({connection, log})
   const getScenarios = uploadFactory.getScenarios({connection})
   const defineScenario = uploadFactory.defineScenario({connection, log})
 
-  app.use((request, response, next) => {
-    sessionCache.get(request.sessionID, (error, value) => {
-      if (!error) {
-        if (value !== undefined) {
-          request.isAuthenticated = true
-          next()
-        }
-        else {
-          request.isAuthenticated = false
-          next()
-        }
-      }
-      else {
-        log.warn('Session cache error!')
-        request.isAuthenticated = false
-        next()
-      }
-    })
-  })
-
-
+  app.use(loginState.checkUserSession(sessionCache))
   app.use(expressFileUpload())
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({
@@ -142,8 +105,6 @@ module.exports = ({
       fontSrc: ['\'self\'', 'fonts.googleapis.com'],
     },
   }))
-
-  // app.use(morgan('combined'))
 
   app.post('/scenarios/upload/', loginState.authenticate, upload)
 
