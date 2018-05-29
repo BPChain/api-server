@@ -22,12 +22,12 @@ module.exports = class DataCollector {
     return (request, response) => {
       const body = request.body
       try {
-        if (isValidJson({json: body, log: this.log})) {
+        if (isValidJson({json: body})) {
           this.doubleBuffer.storeIncomingData(body)
           response.sendStatus(200)
         }
         else {
-          throw new Error(`JSON has wrong content: ${body}`)
+          throw new Error(`JSON has wrong content: ${JSON.parse(body)}`)
         }
       }
       catch (error) {
