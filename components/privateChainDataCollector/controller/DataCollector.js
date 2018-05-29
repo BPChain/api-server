@@ -1,5 +1,5 @@
 const bufferAggregator = require('../model/bufferAggregator')
-const isValidJson = require('../model/checkJsonContent')
+const validContent = require('../model/checkJsonContent')
 const DoubleBuffer = require('../model/doubleBuffer')
 const StorageSchema = require('../model/ethereumStorage')
 const Schema = require('../model/ethereumSchema')
@@ -20,14 +20,13 @@ module.exports = class DataCollector {
 
   storeMessage () {
     return (request, response) => {
-      const body = request.body
       try {
-        if (isValidJson({json: body})) {
-          this.doubleBuffer.storeIncomingData(body)
+        if (validContent(request.body)) {
+          this.doubleBuffer.storeIncomingData(request.body)
           response.sendStatus(200)
         }
         else {
-          throw new Error(`JSON has wrong content: ${JSON.parse(body)}`)
+          throw new Error(`JSON has wrong content: ${JSON.stringify(request.body)}`)
         }
       }
       catch (error) {
