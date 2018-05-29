@@ -86,14 +86,11 @@ module.exports.createUser = async (options = {}) => {
     username,
     password,
   } = options
-
   if (!password || !username) {
     log.info('Username or password was empty!')
     return false
   }
-
   const User = await connection.model('usertable', this.userSchema)
-
   const secret = this.passwordHashGenerator({password})
   const user = new User({
     timestamp: Date.now(),
@@ -101,9 +98,7 @@ module.exports.createUser = async (options = {}) => {
     password: secret.password,
     salt: secret.salt,
   })
-
   const query = {username: user.username}
-
   if (await isUserPresent(User, query, log)) {
     return false
   }
