@@ -1,6 +1,6 @@
 const NodeCache = require('node-cache')
 const session = require('express-session')
-const  userHandler = require('./userHandler')
+const userHandler = require('./userHandler')
 
 module.exports.sessionCache = new NodeCache({
   stdTTL: 18000,
