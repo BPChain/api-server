@@ -12,3 +12,7 @@ database/data
 
 # coverage data
 coverage/
+
+# api documentation
+doc/
+apidoc.md
