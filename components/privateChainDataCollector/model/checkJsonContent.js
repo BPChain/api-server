@@ -29,20 +29,12 @@ function hasAllKeys ({json, log}) {
 }
 
 module.exports = function isValidJson ({json, log}) {
-  let parsedJson
-  try {
-    parsedJson = JSON.parse(json)
-  }
-  catch (error) {
-    return false
-  }
-
-  return hasAllKeys({json: parsedJson, log}) &&
-    (parsedJson.isMining === 1 || parsedJson.isMining === 0) &&
-    isNumeric(parsedJson.hashrate) &&
-    isNumeric(parsedJson.avgBlocktime) &&
-    isNumeric(parsedJson.blockSize) &&
-    isNumeric(parsedJson.avgDifficulty) &&
-    isNumeric(parsedJson.cpuUsage) &&
-    isNumeric(parsedJson.avgTransactions)
+  return hasAllKeys({json, log}) &&
+    (json.isMining === 1 || json.isMining === 0) &&
+    isNumeric(json.hashrate) &&
+    isNumeric(json.avgBlocktime) &&
+    isNumeric(json.blockSize) &&
+    isNumeric(json.avgDifficulty) &&
+    isNumeric(json.cpuUsage) &&
+    isNumeric(json.avgTransactions)
 }
