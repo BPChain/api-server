@@ -2,13 +2,18 @@
   "name": "api-server",
   "version": "1.0.0",
   "description": "api-server",
+  "apidoc": {
+    "title": "API Documentation of the Blockchain Benchmark Tool",
+    "url": "https://bpt-lab.org/bp2017w1-bpchain"
+  },
   "main": "index.js",
   "scripts": {
     "start": "nodemon --exec node -- src/index.js",
     "lint": "eslint .",
     "cover": "istanbul cover _mocha test --include-all-sources true --report lcovonly --default-excludes --",
     "test": "rm -rf coverage && npm run lint && npm run cover",
-    "coveralls": "cat ./coverage/lcov.info | coveralls && cat ./coverage/lcov.info | codeclimate-test-reporter && rm -rf ./coverage"
+    "coveralls": "cat ./coverage/lcov.info | coveralls && cat ./coverage/lcov.info | codeclimate-test-reporter && rm -rf ./coverage",
+    "apidoc": "apidoc -i ./components && apidoc-markdown -p doc -o apidoc.md"
   },
   "repository": {
     "type": "git",
@@ -21,6 +26,8 @@
   },
   "homepage": "https://github.com/BPChain/api-server#readme",
   "devDependencies": {
+    "apidoc": "^0.17.6",
+    "apidoc-markdown": "^0.2.0",
     "assert": "^1.4.1",
     "babel-eslint": "^8.2.2",
     "chai": "^4.1.2",
