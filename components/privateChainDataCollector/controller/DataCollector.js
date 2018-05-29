@@ -24,7 +24,7 @@ module.exports = class DataCollector {
       try {
         if (isValidJson({json: body, log: this.log})) {
           this.doubleBuffer.storeIncomingData(body)
-          response.send(200)
+          response.sendStatus(200)
         }
         else {
           throw new Error(`JSON has wrong content: ${body}`)
@@ -32,7 +32,7 @@ module.exports = class DataCollector {
       }
       catch (error) {
         this.log.error(`While receiving private data: ${error}`)
-        response.send(415)
+        response.sendStatus(415)
       }
     }
   }
