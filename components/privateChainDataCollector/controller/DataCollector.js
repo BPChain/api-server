@@ -18,20 +18,22 @@ module.exports = class DataCollector {
     })
   }
 
-  storeMessage (request, response) {
-    const body = request.body
-    try {
-      if (isValidJson({json: body, log: this.log})) {
-        this.doubleBuffer.storeIncomingData(body)
-        response.send(200)
+  storeMessage () {
+    return (request, response) => {
+      const body = request.body
+      try {
+        if (isValidJson({json: body, log: this.log})) {
+          this.doubleBuffer.storeIncomingData(body)
+          response.send(200)
+        }
+        else {
+          throw new Error(`JSON has wrong content: ${body}`)
+        }
       }
-      else {
-        throw new Error(`JSON has wrong content: ${body}`)
+      catch (error) {
+        this.log.error(`While receiving private data: ${error}`)
+        response.send(415)
       }
-    }
-    catch (error) {
-      this.log.error(`While receiving private data: ${error}`)
-      response.send(415)
     }
   }
 

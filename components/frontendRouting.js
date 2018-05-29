@@ -122,7 +122,7 @@ module.exports = ({
 
   app.get('/chain/:accessibility(private|public)/:chainName', handleGetStatistics)
 
-  app.post('/chain/private/:chainName', dataCollector.storeMessage)
+  app.post('/chain/private/:chainName', dataCollector.storeMessage())
 
   app.get('/chain', getChainInfo)
 
