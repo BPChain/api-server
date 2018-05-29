@@ -36,6 +36,49 @@ module.exports.userSchema = new Schema(
     autoIndex: false,
   })
 
+
+const isUserPresent = async (User, query, log) => {
+  let isAlreadyPresent = false
+  await User.findOne(query, (error, result) => {
+    if (error) {
+      log.error(error)
+      isAlreadyPresent = true
+    }
+    if (result) {
+      log.info('Username is already taken.')
+      isAlreadyPresent = true
+    }
+    else {
+      log.info('Username is free.')
+      isAlreadyPresent = false
+    }
+  })
+
+  return isAlreadyPresent
+}
+
+const insertUserPromise = async (User, user, query, log) => {
+  const opts = {upsert: true, new: true, setDefaultsOnInsert: true}
+  const promise = new Promise(resolve => {
+    User.findOneAndUpdate(query, user, opts, (error, result) => {
+      if (error) {
+        log.error(error)
+        return resolve(false)
+      }
+      else if (result) {
+        log.info('Successfully saved user.')
+        return resolve(true)
+      }
+      else {
+        log.info('No new user was created.')
+        return resolve(false)
+      }
+    })
+  })
+  return await promise
+}
+
+
 module.exports.createUser = async (options = {}) => {
   const {
     connection,
@@ -61,52 +104,10 @@ module.exports.createUser = async (options = {}) => {
 
   const query = {username: user.username}
 
-  if (await isUserPresent()) {
+  if (await isUserPresent(User, query, log)) {
     return false
   }
-  return await insertUserPromise()
-
-
-  async function isUserPresent () {
-    let isAlreadyPresent = false
-    await User.findOne(query, (error, result) => {
-      if (error) {
-        log.error(error)
-        isAlreadyPresent = true
-      }
-      if (result) {
-        log.info('Username is already taken.')
-        isAlreadyPresent = true
-      }
-      else {
-        log.info('Username is free.')
-        isAlreadyPresent = false
-      }
-    })
-
-    return isAlreadyPresent
-  }
-
-  async function insertUserPromise () {
-    const opts = {upsert: true, new: true, setDefaultsOnInsert: true}
-    const promise = new Promise(resolve => {
-      User.findOneAndUpdate(query, user, opts, (error, result) => {
-        if (error) {
-          log.error(error)
-          return resolve(false)
-        }
-        else if (result) {
-          log.info('Successfully saved user.')
-          return resolve(true)
-        }
-        else {
-          log.info('No new user was created.')
-          return resolve(false)
-        }
-      })
-    })
-    return await promise
-  }
+  return await insertUserPromise(User, user, query, log)
 }
 
 module.exports.createUserRoute = ({connection, log}) => {
