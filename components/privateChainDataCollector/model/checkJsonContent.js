@@ -22,7 +22,7 @@ function hasAllKeys (object) {
   return expectedKeys.every(item => {
     const keyExists = object.hasOwnProperty(item)
     if (!keyExists) {
-      throw new Error(`Missing key in backend JSON: ${item}`)
+      throw new Error(`Missing key in backend JSON: ${item} in ${JSON.stringify(object)}`)
     }
     return keyExists
   })
