@@ -14,6 +14,7 @@ const expressFileUpload = require('express-fileupload')
 const config = require('../config')
 
 const uploadFactory = require('./scyllaLogParser/controller/uploadFactory')
+const DataCollector = require('./privateChainDataCollector/controller/DataCollector')
 
 module.exports = ({
   backendController,
@@ -31,6 +32,13 @@ module.exports = ({
     require('./dataStorageAccessor/controller/handleGetStatisticsFactory')
   const displayLogsFactory =
     require('./loggerHandler/controller/displayLogsFactory')
+
+  const dataCollector = new DataCollector({
+    activeChains,
+    log,
+    config,
+    connection,
+  })
 
   const privateChainConfigurator = require(
     './privateChainConfigurator/controller/privateConfigurator'
@@ -114,6 +122,8 @@ module.exports = ({
 
   app.get('/chain/:accessibility(private|public)/:chainName', handleGetStatistics)
 
+  app.post('/chain/private/:chainName', dataCollector.storeMessage)
+
   app.get('/chain', getChainInfo)
 
   app.get('/log', displayLogs)
@@ -142,7 +152,11 @@ module.exports = ({
     response.sendFile(path.join(__dirname, 'dataStorageAccessor/view/index.html'))
   })
 
-  return app.listen(config.ports.frontend, () => {
+  const server = app.listen(config.ports.frontend, () => {
     log.info(`Frontend interface running on port ${config.ports.frontend}`)
   })
+  return () => {
+    dataCollector.stopBuffer()
+    server.close()
+  }
 }
