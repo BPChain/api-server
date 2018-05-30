@@ -51,12 +51,6 @@
  * @api {get} /chain Get Chain Info
  * @apiName GetChainInfo
  * @apiGroup Chains
- *
- * @apiParam {String} fileName Name of the uploaded scenario
- * @apiParam {String} [description] String desribing the scenario
- * @apiParam {Number} payloadSize Payload size of each transaction
- * @apiParam {Number} period The period time of transactions
- * @apiParam {Number} numberOfNodes The number of nodes for this scenario
  */
 
 /**
