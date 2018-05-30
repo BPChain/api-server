@@ -27,6 +27,8 @@
  * @apiName GetScenarios
  * @apiGroup Scenario
  *
+ * @apiParam {String} [id] Id of the scenario to filter for
+ *
  * @apiSuccess (200) {Object[]} scenarios List of scenarios
  * @apiSuccess (200) {Object[]} scenarios.scenario A single scenario
  * @apiSuccess (200) {String} scenarios.scenario.name Name of the scenario
