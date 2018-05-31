@@ -39,7 +39,7 @@ module.exports = class DoubleBuffer {
   }
 
   getInactiveBufferLabel () {
-    return  this.isBufferA ? 'b' : 'a'
+    return this.isBufferA ? 'b' : 'a'
   }
 
   stopBufferInterval () {

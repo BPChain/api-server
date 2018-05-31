@@ -1,6 +1,6 @@
 const bufferAggregator = require('../model/bufferAggregator')
 const validContent = require('../model/checkJsonContent')
-const DoubleBuffer = require('../model/doubleBuffer')
+const DoubleBuffer = require('../model/DoubleBuffer')
 const StorageSchema = require('../model/ethereumStorage')
 const Schema = require('../model/ethereumSchema')
 
