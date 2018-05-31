@@ -40,11 +40,11 @@ module.exports = class ActiveChains {
         }
       */
     }
-
-    this.isRecording = false
-    this.recordingName = ''
-    this.startTime = 0
-
+    this.recording = {
+      active: false,
+      name: '',
+      startTime: 0,
+    }
   }
 
   setScenario ({chainName, target, scenario}) {
@@ -114,15 +114,16 @@ module.exports = class ActiveChains {
     return (request, response) => {
       const requestedName = request.body.name
       this.log.debug('Requesting', requestedName)
-      if (this.isRecording) {
+      if (this.recording.active) {
         this.log.debug('already recording')
-        return response.sendStatus(500)
+        return response
+          .sendStatus(500)
           .send('A recording is already in progress')
       }
       this.log.debug('starting recording:', requestedName)
-      this.isRecording = true
-      this.recordingName = requestedName
-      this.startTime = Date.now()
+      this.recording.active = true
+      this.recording.name = requestedName
+      this.recording.startTime = Date.now()
 
       return response.sendStatus(200)
     }
@@ -133,10 +134,10 @@ module.exports = class ActiveChains {
   }
 
   createRecordInfoStorage ({Storage, name}) {
-    this.log.debug('creating recording storage')
+    this.log.debug('Creating recording storage')
     return new Storage({
       recordingName: name,
-      startTime: this.startTime,
+      startTime: this.recording.startTime,
       endTime: Date.now(),
       chains: this.clientInfos,
     })
@@ -176,21 +177,21 @@ module.exports = class ActiveChains {
 
   stopRecording () {
     return (request, response) => {
-      this.log.debug('Stopping recording:', this.recordingName)
-      this.saveRecordingToDatabase({nameToStore: this.recordingName})
-      this.isRecording = false
-      this.recordingName = ''
-      this.startTime = 0
+      this.log.debug('Stopping recording:', this.recording.name)
+      this.saveRecordingToDatabase({nameToStore: this.recording.name})
+      this.recording.active = false
+      this.recording.name = ''
+      this.recording.startTime = 0
       return response.sendStatus(200)
     }
   }
 
   cancelRecording () {
     return (request, response) => {
-      this.log.debug('Cancel recording', this.recordingName)
-      this.isRecording = false
-      this.recordingName = ''
-      this.startTime = 0
+      this.log.debug('Cancel recording', this.recording.nameame)
+      this.recording.active = false
+      this.recording.name = ''
+      this.recording.startTime = 0
       return response.sendStatus(200)
     }
   }
@@ -198,9 +199,9 @@ module.exports = class ActiveChains {
   isRecordingActive () {
     return (request, response) => {
       return response.send(JSON.stringify({
-        creationDate: this.startTime,
-        isRecording: this.isRecording,
-        recordingName: this.recordingName,
+        creationDate: this.recording.startTime,
+        isRecording: this.recording.active,
+        recordingName: this.recording.name,
       }))
     }
   }
