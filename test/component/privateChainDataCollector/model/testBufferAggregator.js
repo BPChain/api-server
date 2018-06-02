@@ -18,13 +18,12 @@ const log = console
 
 const callbackValues = {error: false, data: true}
 
+let resultList = [1]
 const model = () => {
   return class Storage {
     static aggregate ()  {
       return {
-        exec: () => {
-          return []
-        },
+        exec: () => resultList,
       }
     }
     lines () {}
@@ -60,6 +59,7 @@ const options = {
   log: {
     info: () => {},
     debug: () => {},
+    warn: () => {},
     error: () => {},
   },
 }
@@ -76,12 +76,11 @@ describe('privateChains', () => {
       const result = await bufferAggregator(options)
       assert.equal(result, undefined)
     })
-
     it('should throw an error when saving failes', async () => {
-      callbackValues.error = new Error('testError')
+      resultList = []
       await bufferAggregator(options)
         .catch(error => {
-          assert.equal(error, 'Error: testError')
+          assert.equal(error, 'Error: Can not aggregate ethereum testTarget hashrate')
         })
     })
   })

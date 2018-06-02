@@ -109,7 +109,10 @@ async function aggregateAverage (Buffer, chainName, target, field) {
         },
       }])
     .exec()
-  return result.length ? result[0].avgValue : 0
+  if (!result.length) {
+    throw new Error(`Can not aggregate ${chainName} ${target} ${field}`)
+  }
+  return result[0].avgValue
 }
 
 exports.aggregateAverageHashRate = async (Buffer, chainName, target) => {
