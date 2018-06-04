@@ -53,7 +53,13 @@ module.exports = async (options = {}) => {
       ])
 
 
+
     await Buffer.collection.remove({})
+    return postProcessAggregation(aggregatedValues)
+  }
+
+  function postProcessAggregation (aggregatedValues) {
+    aggregatedValues.avgCpuUsage *= aggregatedValues.numberOfHosts
     return aggregatedValues
   }
 
