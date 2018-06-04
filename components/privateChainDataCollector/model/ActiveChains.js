@@ -97,6 +97,7 @@ module.exports = class ActiveChains {
   }
 
   removeMonitor ({monitor}) {
+    this.log.info(`Removing state of ${monitor}`)
     this.backendState[monitor] = {}
   }
 
