@@ -1,9 +1,7 @@
 const assert = require('assert')
 
 const describe = require('mocha').describe
-const before = require('mocha').before
 const it = require('mocha').it
-const after = require('mocha').after
 
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
@@ -11,16 +9,13 @@ const chaiAsPromised = require('chai-as-promised')
 chai.use(chaiAsPromised)
 const expect = require('chai').expect
 
-const entriesRequest = require(
-  '../../../../components/dataStorageAccessor/model/entriesRequest',
+const dataRequests = require(
+  '../../../../components/dataStorageAccessor/model/dataRequests',
 )
+const entriesRequest = dataRequests.entriesRequest
 
-const log = console
 
 describe('EntriesRequest', () => {
-  before(() => {
-    log.info('Start testing EntriesRequest')
-  })
   const mockCollection = {
     find: () => mockCollection,
     limit: () => mockCollection,
@@ -48,8 +43,5 @@ describe('EntriesRequest', () => {
         })
     })
     assert(typeof entriesRequest === 'function')
-  })
-  after(() => {
-    log.info('End testing EntriesRequest')
   })
 })

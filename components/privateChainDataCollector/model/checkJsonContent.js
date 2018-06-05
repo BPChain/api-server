@@ -18,31 +18,23 @@ const expectedKeys = [
   'cpuUsage',
 ]
 
-function hasAllKeys ({json, log}) {
+function hasAllKeys (object) {
   return expectedKeys.every(item => {
-    const keyExists = json.hasOwnProperty(item)
+    const keyExists = object.hasOwnProperty(item)
     if (!keyExists) {
-      log.error(`Missing key in backend JSON: ${item}`)
+      throw new Error(`Missing key in backend JSON: ${item} in ${JSON.stringify(object)}`)
     }
     return keyExists
   })
 }
 
-module.exports = function isValidJson ({json, log}) {
-  let parsedJson
-  try {
-    parsedJson = JSON.parse(json)
-  }
-  catch (error) {
-    return false
-  }
-
-  return hasAllKeys({json: parsedJson, log}) &&
-    (parsedJson.isMining === 1 || parsedJson.isMining === 0) &&
-    isNumeric(parsedJson.hashrate) &&
-    isNumeric(parsedJson.avgBlocktime) &&
-    isNumeric(parsedJson.blockSize) &&
-    isNumeric(parsedJson.avgDifficulty) &&
-    isNumeric(parsedJson.cpuUsage) &&
-    isNumeric(parsedJson.avgTransactions)
+module.exports = object => {
+  return hasAllKeys(object) &&
+    (object.isMining === 1 || object.isMining === 0) &&
+    isNumeric(object.hashrate) &&
+    isNumeric(object.avgBlocktime) &&
+    isNumeric(object.blockSize) &&
+    isNumeric(object.avgDifficulty) &&
+    isNumeric(object.cpuUsage) &&
+    isNumeric(object.avgTransactions)
 }

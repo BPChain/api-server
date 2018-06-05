@@ -1,4 +1,3 @@
-const assert = require('assert')
 const describe = require('mocha')
   .describe
 const it = require('mocha')
@@ -33,13 +32,11 @@ const connection = {
 const ActiveChains = require('../../components/privateChainDataCollector/model/ActiveChains')
 const activeChains = new ActiveChains({config, connection, log})
 
-let app
 describe('publicChains', () => {
   describe('frontendInterface', () => {
     it('should not throw an error', (done) => {
-      app = frontendInterface({log, connection, activeChains})
-      assert.ok(app)
-      app.close()
+      const stop = frontendInterface({log, connection, activeChains})
+      stop()
       done()
     })
   })

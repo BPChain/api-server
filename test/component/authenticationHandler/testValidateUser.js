@@ -3,7 +3,8 @@
 const describe = require('mocha').describe
 const it = require('mocha').it
 const assert = require('assert')
-const validateUser = require('../../../components/authenticationHandler/validateUser')
+const userHandler = require('../../../components/authenticationHandler/userHandler')
+const validateUser = userHandler.validateUser
 const expect = require('chai').expect
 
 

@@ -3,7 +3,7 @@
 */
 
 const config = require('../config')
-const logger = require('../logger/createLogger')
+const logger = require('../components/loggerHandler/model/createLogger')
 const createServer = require('./createServer')
 const mongoConnector = require('./mongoConnector')
 

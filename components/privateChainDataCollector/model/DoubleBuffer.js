@@ -39,7 +39,7 @@ module.exports = class DoubleBuffer {
   }
 
   getInactiveBufferLabel () {
-    return  this.isBufferA ? 'b' : 'a'
+    return this.isBufferA ? 'b' : 'a'
   }
 
   stopBufferInterval () {
@@ -78,13 +78,9 @@ module.exports = class DoubleBuffer {
     }
   }
 
-  storeTempPrivateData (privateData) {
+  storeIncomingData (privateData) {
     const BufferToStore = this.getActiveBuffer()
     const dataset = new BufferToStore(privateData)
-    dataset.save(error => {
-      if (error) {
-        throw error
-      }
-    })
+    dataset.save()
   }
 }

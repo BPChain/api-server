@@ -1,20 +1,14 @@
 const assert = require('assert')
 
 const describe = require('mocha').describe
-const before = require('mocha').before
 const it = require('mocha').it
-const after = require('mocha').after
 
-const itemNumberLimiter = require(
-  '../../../../components/dataStorageAccessor/model/itemNumberLimiter',
+const dataRequests = require(
+  '../../../../components/dataStorageAccessor/model/dataRequests',
 )
-
-const log = console
+const itemNumberLimiter = dataRequests.itemNumberLimiter
 
 describe('ItemNumberLimiter', () => {
-  before(() => {
-    log.info('Start testing ItemNumberLimiter')
-  })
   it('should execute without throwing an error', () => {
     assert.doesNotThrow(() => {
       itemNumberLimiter()
@@ -32,9 +26,5 @@ describe('ItemNumberLimiter', () => {
   })
   it('should return max for value greater than max', () => {
     assert.equal(itemNumberLimiter(1000000), 10000)
-  })
-
-  after(() => {
-    log.info('End testing ItemNumberLimiter')
   })
 })

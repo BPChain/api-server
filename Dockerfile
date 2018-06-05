@@ -9,7 +9,6 @@ RUN npm install -g nodemon
 
 COPY src src
 COPY components components
-COPY logger logger
 COPY config.js config.js
 
 ENTRYPOINT ["npm", "start", "--"]

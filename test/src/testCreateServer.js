@@ -67,18 +67,13 @@ describe('Create Server', () => {
       })
       const keys = [
         'privateChainConfigurator',
-        'privateChainCollector',
         'publicChainCollector',
         'frontendRouting',
       ]
       assert.deepEqual(Object.keys(server), keys)
       clearInterval(server.publicChainCollector)
-      server.privateChainCollector.then(result => {
-        result.wsServer.close()
-        result.doubleBuffer.stopBufferInterval()
-      })
       server.privateChainConfigurator.stopServer()
-      server.frontendRouting.close()
+      server.frontendRouting()
     })
   })
 })

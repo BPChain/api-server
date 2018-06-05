@@ -1,18 +1,11 @@
 const describe = require('mocha').describe
-const before = require('mocha').before
 const it = require('mocha').it
-const after = require('mocha').after
 const assert = require('assert')
 const DoubleBuffer = require(
-  '../../../../components/privateChainDataCollector/model/doubleBuffer'
+  '../../../../components/privateChainDataCollector/model/DoubleBuffer'
 )
 
-const log = console
-
 describe('privateChains', () => {
-  before(() => {
-    log.info('Start testing private chains')
-  })
   describe('#doubleBuffer()', () => {
     it(
       'should should construct without error',
@@ -73,7 +66,7 @@ describe('privateChains', () => {
       }
     )
     it(
-      'should call storeTempPrivateData correctly',
+      'should call storeIncomingData correctly',
       () => {
         const doubleBuffer = new DoubleBuffer({
           connection: {
@@ -82,9 +75,7 @@ describe('privateChains', () => {
                 constructor () {
                   this.privateData
                 }
-                save (response) {
-                  response(false, true)
-                }
+                save () {}
               }
             },
           },
@@ -93,37 +84,10 @@ describe('privateChains', () => {
           config: {bufferSwitchTime: 1000},
         })
         assert.doesNotThrow(() => {
-          doubleBuffer.storeTempPrivateData()
+          doubleBuffer.storeIncomingData()
         })
         doubleBuffer.stopBufferInterval()
       }
     )
-    it(
-      'should throw error when saving fails',
-      () => {
-        const doubleBuffer = new DoubleBuffer({
-          connection: {
-            model: () => {
-              return class MockClass {
-                constructor () {
-                  this.privateData
-                }
-                save (response) {
-                  response(true, false)
-                }
-              }
-            },
-          },
-          activeChain: {getChains: () => { }},
-          log: {debug: () => { }},
-          config: {bufferSwitchTime: 1000},
-        })
-        assert.throws(() => doubleBuffer.storeTempPrivateData())
-        doubleBuffer.stopBufferInterval()
-      }
-    )
-  })
-  after(() => {
-    log.info('End testing privateChains')
   })
 })

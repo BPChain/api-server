@@ -4,7 +4,8 @@ const describe = require('mocha').describe
 const it = require('mocha').it
 const assert = require('assert')
 const expect = require('chai').expect
-const hashGenerator = require('../../../components/authenticationHandler/passwordHashGenerator')
+const userHandler = require('../../../components/authenticationHandler/userHandler')
+const hashGenerator = userHandler.passwordHashGenerator
 
 const password = 'abc'
 const hashToNotExpect = 'f4caa423c20262e67c3fc929d23e3b94b69c7000302287f64d63e03a952c91b66e65d07964d82333a05b3c3eca27720f57ad727dff77cfa7c3108b857e998e59'

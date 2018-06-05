@@ -1,9 +1,7 @@
 const assert = require('assert')
 
 const describe = require('mocha').describe
-const before = require('mocha').before
 const it = require('mocha').it
-const after = require('mocha').after
 
 const nanopoolCaller = require(
   '../../../../components/publicChainDataCollector/controller/nanopoolCaller'
@@ -11,12 +9,7 @@ const nanopoolCaller = require(
 
 const config = require('../../../../config')
 
-const log = console
-
 describe('nanopoolCaller', () => {
-  before(() => {
-    log.info('Start testing nanopoolCaller')
-  })
   describe('Creation', async () => {
     it('should log error when saving is not possible', () => {
       const intervalId = nanopoolCaller({
@@ -74,8 +67,5 @@ describe('nanopoolCaller', () => {
         clearInterval(intervalId)
       }, 190)
     })
-  })
-  after(() => {
-    log.info('End testing nanopoolCaller')
   })
 })

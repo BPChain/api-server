@@ -1,8 +1,6 @@
 const assert = require('assert')
 const describe = require('mocha').describe
-const before = require('mocha').before
 const it = require('mocha').it
-const after = require('mocha').after
 const path = require('path')
 
 const fse = require('fs-extra')
@@ -14,10 +12,8 @@ chai.use(chaiAsPromised)
 const expect = require('chai').expect
 
 const htmlGenerator = require(
-  '../../logger/logHTMLGenerator'
+  '../../../../components/loggerHandler/model/logHTMLGenerator'
 )
-
-const log = console
 
 const logObjects = [
   {
@@ -62,9 +58,6 @@ const testHTMLOutput = fse
     'UTF-8',
   )
 describe('publicChains', () => {
-  before(() => {
-    log.info('Start testing log HTML Generator')
-  })
   it('should throw an error when no data is supplied', () => {
     return expect(htmlGenerator).to.throw(TypeError)
   })
@@ -73,8 +66,5 @@ describe('publicChains', () => {
       const html = htmlGenerator({data: logObjects})
       assert.equal(html, testHTMLOutput)
     })
-  })
-  after(() => {
-    log.info('End testing log HTML Generator')
   })
 })

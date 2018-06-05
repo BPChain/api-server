@@ -1,7 +1,5 @@
 const describe = require('mocha').describe
-const before = require('mocha').before
 const it = require('mocha').it
-const after = require('mocha').after
 const expect = require('chai').expect
 const Schema = require('mongoose').Schema
 
@@ -37,12 +35,8 @@ const compareStorageSchema = new Schema({
   avgCpuUsage: {type: Number},
   avgTransactions: {type: Number},
 })
-const log = console
 
 describe('privateChains', () => {
-  before(() => {
-    log.info('Start testing private chain schemas')
-  })
   describe('ethereumSchema', () => {
     it('should return valid ethereum schema', (done) => {
       expect(ethereumSchema).to.deep.equal(compareEthereumSchema)
@@ -54,8 +48,5 @@ describe('privateChains', () => {
       expect(ethereumStorage).to.deep.equal(compareStorageSchema)
       done()
     })
-  })
-  after(() => {
-    log.info('End testing private chain schemas')
   })
 })

@@ -86,15 +86,24 @@ module.exports.upload = ({connection, log}) => {
 module.exports.getScenarios = ({connection}) => {
   return async (request, response) => {
     const schema = intializeScyllaSchema({connection})
-    await new Promise((resolve) => {
+    if (request.query.id) {
+      schema.findById(request.query.id, (error, info) => {
+        if (error) {
+          return response.sendStatus(404)
+        }
+        return response.send(info)
+      })
+    }
+    else {
       schema.find({}, (error, info) => {
         if (error) {
-          response.sendStatus(500)
-          return resolve()
+          return response.sendStatus(404)
         }
-        response.send(info)
-        return resolve()
+        return response.send(info)
       })
-    })
+    }
+
+
+
   }
 }

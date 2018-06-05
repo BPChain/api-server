@@ -256,9 +256,9 @@ describe('privateChains', () => {
         },
       }
       startRecording(request, response)
-      assert(activeChains.isRecording)
-      assert.equal(activeChains.recordingName, request.body.name)
-      assert.notEqual(activeChains.startTime, 0)
+      assert(activeChains.recording.active)
+      assert.equal(activeChains.recording.name, request.body.name)
+      assert.notEqual(activeChains.recording.startTime, 0)
     })
   })
   describe('#getListOfRecordings', () => {
@@ -311,6 +311,7 @@ describe('privateChains', () => {
     const activeChains = new ActiveChains({config, log, connection})
     const startRecording = activeChains.startRecording()
     const stopRecording = activeChains.stopRecording()
+
     const request = {
       body: {
         name: 'some',
@@ -326,9 +327,9 @@ describe('privateChains', () => {
     }
     startRecording(request, response)
     stopRecording(request, response)
-    assert(!activeChains.isRecording)
-    assert.equal(activeChains.recordingName, '')
-    assert.equal(activeChains.startTime, 0)
+    assert(!activeChains.recording.active)
+    assert.equal(activeChains.recording.name, '')
+    assert.equal(activeChains.recording.startTime, 0)
   })
   describe('#cancelRecording', () => {
     /* eslint-disable no-unused-vars */
@@ -359,8 +360,8 @@ describe('privateChains', () => {
     }
     startRecording(request, response)
     cancelRecording(request, response)
-    assert(!activeChains.isRecording)
-    assert.equal(activeChains.recordingName, '')
-    assert.equal(activeChains.startTime, 0)
+    assert(!activeChains.recording.active)
+    assert.equal(activeChains.recording.name, '')
+    assert.equal(activeChains.recording.startTime, 0)
   })
 })

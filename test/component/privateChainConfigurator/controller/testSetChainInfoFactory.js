@@ -14,9 +14,11 @@ const expect = require('chai').expect
 
 const config = require('../../../../config')
 
-const setChainInfoFactory = require(
-  '../../../../components/privateChainConfigurator/controller/setChainInfoFactory'
+const privateChainConfigurator = require(
+  '../../../../components/privateChainConfigurator/controller/privateConfigurator'
 )
+
+const setChainInfoFactory = privateChainConfigurator.setChainInfoFactory
 
 const ActiveChains = require(
   '../../../../components/privateChainDataCollector/model/ActiveChains'

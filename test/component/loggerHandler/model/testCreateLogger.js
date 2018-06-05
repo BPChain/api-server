@@ -3,7 +3,7 @@ const describe = require('mocha').describe
 const it = require('mocha').it
 
 const createLogger = require(
-  '../../logger/createLogger'
+  '../../../../components/loggerHandler/model/createLogger'
 )
 
 describe('createLogger', () => {

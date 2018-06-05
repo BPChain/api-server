@@ -17,8 +17,14 @@ module.exports = async (options = {}) => {
     log,
   } = options
 
-
-  const values = await aggregateValues()
+  let values = {}
+  try {
+    values = await aggregateValues()
+  }
+  catch (error) {
+    log.warn(error.message)
+    return
+  }
   storeData(values)
 
   async function aggregateValues () {
@@ -26,7 +32,6 @@ module.exports = async (options = {}) => {
     const Buffer = helper.initializeBuffer(options)
 
     const aggregatedValues = {}
-
     await Promise
       .all([
         aggregatedValues.numberOfHosts = await helper
@@ -46,9 +51,15 @@ module.exports = async (options = {}) => {
         aggregatedValues.avgTransactions = await helper
           .aggregateAverageTransactionsPerBlock(Buffer, chainName, target),
       ])
-      .catch(log.error)
+
+
 
     await Buffer.collection.remove({})
+    return postProcessAggregation(aggregatedValues)
+  }
+
+  function postProcessAggregation (aggregatedValues) {
+    aggregatedValues.avgCpuUsage *= aggregatedValues.numberOfHosts
     return aggregatedValues
   }
 

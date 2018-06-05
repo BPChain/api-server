@@ -1,19 +1,13 @@
 const assert = require('assert')
 
 const describe = require('mocha').describe
-const before = require('mocha').before
 const it = require('mocha').it
-const after = require('mocha').after
 
 const accessNanopool = require(
   '../../../../../components/publicChainDataCollector/model/ethereum/accessNanopool'
 )
-const log = console
 
 describe('Access Nanopool', () => {
-  before(() => {
-    log.info('Start testing accessNanopool')
-  })
   describe('accessNanopool returns correct type', () => {
     it('should return correct value if api is reachable', () => {
       accessNanopool({
@@ -41,8 +35,5 @@ describe('Access Nanopool', () => {
           assert.equal(result, 0)
         })
     })
-  })
-  after(() => {
-    log.info('End testing accessNanopool')
   })
 })

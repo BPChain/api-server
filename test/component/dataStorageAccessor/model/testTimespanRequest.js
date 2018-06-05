@@ -1,9 +1,7 @@
 const assert = require('assert')
 
 const describe = require('mocha').describe
-const before = require('mocha').before
 const it = require('mocha').it
-const after = require('mocha').after
 
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
@@ -11,16 +9,12 @@ const chaiAsPromised = require('chai-as-promised')
 chai.use(chaiAsPromised)
 const expect = require('chai').expect
 
-const timespanRequest = require(
-  '../../../../components/dataStorageAccessor/model/timespanRequest',
+const dataRequests = require(
+  '../../../../components/dataStorageAccessor/model/dataRequests',
 )
-
-const log = console
+const timespanRequest = dataRequests.timespanRequest
 
 describe('TimespanRequest', () => {
-  before(() => {
-    log.info('Start testing TimespanRequest')
-  })
   const mockCollection = {
     find: () => mockCollection,
     toArray: () => mockCollection,
@@ -45,8 +39,4 @@ describe('TimespanRequest', () => {
     })
     assert(typeof timespanRequest === 'function')
   })
-  after(() => {
-    log.info('End testing TimespanRequest')
-  })
 })
-

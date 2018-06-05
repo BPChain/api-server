@@ -3,8 +3,6 @@
 */
 
 const frontendRouting = require('../components/frontendRouting')
-const privateChainCollector =
-  require('../components/privateChainDataCollector/controller/listener')
 const publicChainCollector =
   require('../components/publicChainDataCollector/controller/nanopoolCaller')
 const BlockchainController =
@@ -23,12 +21,6 @@ module.exports = ({connection, config, log}) => {
   })
   privateChainConfigurator.start()
   server.privateChainConfigurator = privateChainConfigurator
-  server.privateChainCollector = privateChainCollector({
-    activeChains,
-    log,
-    config,
-    connection,
-  })
   server.publicChainCollector = publicChainCollector({
     chainName: 'ethereum',
     schema: commonStorage,
