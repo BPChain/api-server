@@ -1,7 +1,5 @@
 const describe = require('mocha').describe
-const before = require('mocha').before
 const it = require('mocha').it
-const after = require('mocha').after
 const assert = require('assert')
 
 const chai = require('chai')
@@ -15,14 +13,10 @@ const dataRequests = require(
 )
 const resultReducer = dataRequests.resultReducer
 
-const log = console
 
 const mockArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 describe('dbRequests', () => {
-  before(() => {
-    log.info('Start testing database requests')
-  })
   describe('#resultReducer()', () => {
     it('should throw an error when no lines are supplied', () => {
       return expect(resultReducer()).to.eventually.be.rejectedWith(TypeError)
@@ -63,8 +57,5 @@ describe('dbRequests', () => {
         true,
       )
     })
-  })
-  after(() => {
-    log.info('End testing database requests')
   })
 })

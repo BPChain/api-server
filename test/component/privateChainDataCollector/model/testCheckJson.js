@@ -1,19 +1,12 @@
 const describe = require('mocha').describe
-const before = require('mocha').before
 const it = require('mocha').it
-const after = require('mocha').after
 const assert = require('assert')
 
 const isValidJson = require(
   '../../../../components/privateChainDataCollector/model/checkJsonContent'
 )
 
-const log = console
-
 describe('privateChains', () => {
-  before(() => {
-    log.info('Start testing private chains')
-  })
   describe('#checkJson()', () => {
     it('should throw an Error when no options are provided', () => {
       assert.throws(() => {
@@ -75,8 +68,5 @@ describe('privateChains', () => {
         true,
       )
     })
-  })
-  after(() => {
-    log.info('End testing public chains')
   })
 })

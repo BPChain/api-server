@@ -1,7 +1,5 @@
 const describe = require('mocha').describe
-const before = require('mocha').before
 const it = require('mocha').it
-const after = require('mocha').after
 const assert = require('assert')
 const DataCollector = require(
   '../../../../components/privateChainDataCollector/controller/DataCollector'
@@ -14,12 +12,7 @@ const config = Object.assign(require('../../../../config'),
   }
 )
 
-const log = console
-
 describe('privateChainDataCollector', () => {
-  before(() => {
-    log.info('Start testing DataCollector')
-  })
   describe('listener', () => {
     it('should return correct object without error', () => {
       assert.doesNotThrow(() => {
@@ -36,8 +29,5 @@ describe('privateChainDataCollector', () => {
         dataCollector.stopBuffer()
       }, 'Error')
     })
-  })
-  after(() => {
-    log.info('End testing listener')
   })
 })

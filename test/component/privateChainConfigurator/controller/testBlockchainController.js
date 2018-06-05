@@ -3,19 +3,13 @@ const assert = require('assert')
 const WebSocket = require('ws')
 
 const describe = require('mocha').describe
-const before = require('mocha').before
 const it = require('mocha').it
-const after = require('mocha').after
 
 const BlockchainController = require(
   '../../../../components/privateChainConfigurator/controller/BlockchainController'
 )
-const log = console
 
 describe('BlockchainController', () => {
-  before(() => {
-    log.info('Start testing BlockchainController')
-  })
   describe('BlockchainController construction', () => {
     it('should be constructed without an error', () => {
       let blockchainController
@@ -89,9 +83,5 @@ describe('BlockchainController', () => {
       )
       blockchainController.stopServer()
     })
-  })
-  after(() => {
-    log.info('End testing BlockchainController')
-
   })
 })

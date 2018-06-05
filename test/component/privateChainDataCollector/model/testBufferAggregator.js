@@ -1,8 +1,6 @@
 const assert = require('assert')
 const describe = require('mocha').describe
-const before = require('mocha').before
 const it = require('mocha').it
-const after = require('mocha').after
 
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
@@ -13,8 +11,6 @@ const expect = require('chai').expect
 const bufferAggregator = require(
   '../../../../components/privateChainDataCollector/model/bufferAggregator'
 )
-
-const log = console
 
 const callbackValues = {error: false, data: true}
 
@@ -65,9 +61,6 @@ const options = {
 }
 
 describe('privateChains', () => {
-  before(() => {
-    log.info('Start testing bufferAggregator')
-  })
   describe('bufferAggregator',  () => {
     it('should throw an error when no options are supplied', async () => {
       return expect(bufferAggregator()).to.eventually.be.rejectedWith(TypeError)
@@ -83,8 +76,5 @@ describe('privateChains', () => {
           assert.equal(error, 'Error: Can not aggregate ethereum testTarget hashrate')
         })
     })
-  })
-  after(() => {
-    log.info('End testing bufferAggregator')
   })
 })

@@ -1,8 +1,6 @@
 const assert = require('assert')
 const describe = require('mocha').describe
-const before = require('mocha').before
 const it = require('mocha').it
-const after = require('mocha').after
 
 const displayLogs = require(
   '../../../../components/loggerHandler/controller/displayLogsFactory'
@@ -33,12 +31,7 @@ const connection = {
   },
 }
 
-const log = console
-
 describe('publicChains', () => {
-  before(() => {
-    log.info('Start testing frontend interface')
-  })
   describe('frontendInterface', () => {
     it('should create function if no options are passed', () => {
       const result = displayLogs
@@ -79,8 +72,5 @@ describe('publicChains', () => {
           assert.equal(returnedValue, undefined)
         })
     })
-  })
-  after(() => {
-    log.info('End testing frontend interface')
   })
 })

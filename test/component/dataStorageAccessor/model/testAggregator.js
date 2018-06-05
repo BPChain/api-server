@@ -1,9 +1,7 @@
 const assert = require('assert')
 
 const describe = require('mocha').describe
-const before = require('mocha').before
 const it = require('mocha').it
-const after = require('mocha').after
 
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
@@ -16,13 +14,7 @@ const dataRequests = require(
 )
 const aggregator = dataRequests.aggregator
 
-const log = console
-
 describe('Aggregator', () => {
-  before(() => {
-    log.info('Start testing Aggregator')
-  })
-
   it('should throw an error when no options are supplied', () => {
     return expect(aggregator()).to.eventually.be.rejectedWith(TypeError)
   })
@@ -70,8 +62,5 @@ describe('Aggregator', () => {
       numberOfItems: 20,
     })
     assert.deepEqual(result, [4, 5, 6])
-  })
-  after(() => {
-    log.info('End testing Aggregator')
   })
 })
