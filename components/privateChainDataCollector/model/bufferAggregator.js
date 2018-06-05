@@ -22,7 +22,7 @@ module.exports = async (options = {}) => {
     values = await aggregateValues()
   }
   catch (error) {
-    log.warn(error)
+    log.warn(error.message)
     return
   }
   storeData(values)
