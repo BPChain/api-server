@@ -116,6 +116,7 @@ module.exports = ({
   app.get('/log', displayLogs)
 
   app.get('/scenarios', loginState.authenticate, getScenarios)
+  app.get('/scenarios/:id', loginState.authenticate, getScenarios)
   app.post('/scenarios', loginState.authenticate, defineScenario)
   app.post('/scenarios/upload/', loginState.authenticate, upload)
 

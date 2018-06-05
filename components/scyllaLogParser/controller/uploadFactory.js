@@ -86,8 +86,8 @@ module.exports.upload = ({connection, log}) => {
 module.exports.getScenarios = ({connection}) => {
   return async (request, response) => {
     const schema = intializeScyllaSchema({connection})
-    if (request.query.id) {
-      schema.findById(request.query.id, (error, info) => {
+    if (request.params.id) {
+      schema.findById(request.params.id, (error, info) => {
         if (error) {
           return response.sendStatus(404)
         }
