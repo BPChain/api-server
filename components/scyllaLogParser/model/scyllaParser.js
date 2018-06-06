@@ -65,10 +65,10 @@ module.exports = (input) => {
       .map(item => {
         return nodes[item] = nodes[item].reduce((list, object, index, elements) => {
           if (index === 0) {
-            object.delta = new Date(object.date) - new Date(minDate)
+            object.delta = (new Date(object.date) - new Date(minDate)) / 1000
           }
           else {
-            object.delta =  new Date(object.date) - new Date(elements[index - 1].date)
+            object.delta = (new Date(object.date) - new Date(elements[index - 1].date)) / 1000
           }
           return list.concat(object)
         }, [])
