@@ -22,7 +22,7 @@ module.exports = (input) => {
         try {
           const node = event.string.find(key => key.$.key === 'org:resource').$.value
           const date = event.date[0].$.value
-          const size = event.string.find(key => /.*\.payload/.test(key.$.key)).$.value
+          const size = parseFloat(event.string.find(key => /.*\.payload/.test(key.$.key)).$.value)
           minDate = [minDate, date].sort()[0]
           if (nodes[node]) {
             nodes[node].push({date, size})

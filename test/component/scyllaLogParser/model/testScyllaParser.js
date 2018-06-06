@@ -14,7 +14,7 @@ describe('scyllaLogParser', () => {
     it('should return expected parsing results', () => {
       const parsingResult = scyllaParser(testLogs.expectedInput)
       const expectedResult = testLogs.expectedResult
-      assert.deepEqual(parsingResult, expectedResult)
+      assert.equal(JSON.stringify(parsingResult), JSON.stringify(expectedResult))
     })
     it('should throw an exception when the log is faulty', () => {
       assert.throws(() => {
